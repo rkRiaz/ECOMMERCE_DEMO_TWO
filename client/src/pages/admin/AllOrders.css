@@ -1,0 +1,52 @@
+.allOrders{
+    max-width: 1400px;
+    margin: 0 auto;
+    margin-top: 110px;
+    padding-bottom: 10px;
+}
+.completeDelivery{
+    background: #009e73 !important;
+}
+.allOrders__content {
+    margin: 0 10px;
+}
+.allOrders__orderedBox{
+    box-shadow: var(--darkShadow);
+    background: var(--mainWhite);
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 20px;
+}
+.timeLineController{
+    width: 100%;
+}
+.allOrders__details{
+    overflow-x: scroll;
+}
+.allOrders__details::-webkit-scrollbar {
+    display: none;
+}
+
+
+@media screen and (max-width: 576px) {
+    .timeLineController .btn {
+        font-size: 12px;
+    }
+    .allOrders__orderedBox .h5{
+        font-size: 15px !important;
+    } 
+    .allOrders__subTotal {
+        font-size: 20px !important;
+    } 
+    .allOrders__content {
+        margin: 0 10px; 
+    }
+    .allOrders__orderedBox{
+        padding: 10px;
+        margin-top: 10px;
+    }
+    .allOrders__customer__info{
+        line-height: 15px;
+    }
+}
+

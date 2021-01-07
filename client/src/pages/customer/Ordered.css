@@ -1,0 +1,41 @@
+.ordered{
+    max-width: 1400px;
+    margin: 0 auto;
+    margin-top: 110px;
+    
+}
+.ordered__content{
+    margin: 0 10px;
+}
+.orderedBox{
+    box-shadow: var(--darkShadow);
+    background: var(--mainWhite);
+    margin-top: 10px;
+    padding: 20px;
+    overflow-x: scroll;
+}
+.orderedBox::-webkit-scrollbar {
+    display: none;
+  }
+.orderedBox .cart{
+    height: 0;
+    overflow-y: hidden;
+    /* transition: .5s !important; */
+}
+.orderedBox .openCart{
+    height: 100%;
+}
+.noOrder{
+    margin-top: 200px;
+}
+
+@media screen and (max-width: 576px) {
+    .cart th{
+        font-size: 15px;
+    }
+
+    .orderedBox .h5{
+        font-size: 15px !important;
+    }
+
+}

@@ -1,0 +1,12 @@
+.editProduct {
+    max-width: 1400px;
+    margin: 0 auto;
+    margin-top: 110px;
+}
+.editProduct__content{
+    box-shadow: var(--darkShadow);
+    background: var(--mainWhite);
+    padding: 20px;
+    margin: 0 10px;
+    background: white;
+}
