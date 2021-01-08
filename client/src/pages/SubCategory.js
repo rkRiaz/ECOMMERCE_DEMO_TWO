@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import './SubCategory.css'
 import {Link, useParams} from 'react-router-dom'
-import CategoryProductCard from '../components/CategoryProductCard'
+import SubCategoryProductCard from '../components/SubCategoryProductCard'
 
 import home from '../assets/icons/home.svg'
 import rightArrow from '../assets/icons/right-arrow.svg'
@@ -71,42 +71,13 @@ function SubCategory() {
                 {/* subCategory__header ends */}
 
                 {/* subCategory__headline starts */}
-                <div className="subCategory__headline">KEYBOARD</div>
+                {/* <div className="subCategory__headline">KEYBOARD</div> */}
                 {/* subCategory__headline ends */}
             
                 <div className="subCategory__explore">
                     {/* subCategory__exploreLeft starts */}
                     <div className="subCategory__exploreLeft">
-                        <h5>Price Range</h5>
-
-                        <div to="#" className="subCategory__exploreLeftItem">
-                            <p>Brand</p>
-                            <img src={plus} alt=""/>
-                        </div>
-                        <div to="#" className="subCategory__exploreLeftItem">
-                            <p>Weight</p>
-                            <img src={plus} alt=""/>
-                        </div>
-                        <div to="#" className="subCategory__exploreLeftItem">
-                            <p>Quantity</p>
-                            <img src={plus} alt=""/>
-                        </div>
-                        <div to="#" className="subCategory__exploreLeftItem">
-                            <p>Type</p>
-                            <img src={plus} alt=""/>
-                        </div>
-                        <div to="#" className="subCategory__exploreLeftItem">
-                            <p>Variable</p>
-                            <img src={plus} alt=""/>
-                        </div>
-                        <div to="#" className="subCategory__exploreLeftItem">
-                            <p>features</p>
-                            <img src={plus} alt=""/>
-                        </div>
-                        <div to="#" className="subCategory__exploreLeftItem">
-                            <p>others</p>
-                            <img src={plus} alt=""/>
-                        </div>
+                        
                         {/* <div className="subCategory__exploreLeftRangeSlider">
                             <label>Min: </label>
                             <input type="number" value={minPrice} onChange={e => {setMinPrice(e.target.value)}} />
@@ -124,7 +95,35 @@ function SubCategory() {
                         </div> */}
                          {/* <RangeSlider/> */}
                         <div className="subCategory__exploreLeftDrawer">
-                      
+                            <h5>Price Range</h5>
+                            <div to="#" className="subCategory__exploreLeftItem">
+                                <p>Brand</p>
+                                <img src={plus} alt=""/>
+                            </div>
+                            <div to="#" className="subCategory__exploreLeftItem">
+                                <p>Weight</p>
+                                <img src={plus} alt=""/>
+                            </div>
+                            <div to="#" className="subCategory__exploreLeftItem">
+                                <p>Quantity</p>
+                                <img src={plus} alt=""/>
+                            </div>
+                            <div to="#" className="subCategory__exploreLeftItem">
+                                <p>Type</p>
+                                <img src={plus} alt=""/>
+                            </div>
+                            <div to="#" className="subCategory__exploreLeftItem">
+                                <p>Variable</p>
+                                <img src={plus} alt=""/>
+                            </div>
+                            <div to="#" className="subCategory__exploreLeftItem">
+                                <p>features</p>
+                                <img src={plus} alt=""/>
+                            </div>
+                            <div to="#" className="subCategory__exploreLeftItem">
+                                <p>others</p>
+                                <img src={plus} alt=""/>
+                            </div>
 
                         </div>
 
@@ -169,7 +168,7 @@ function SubCategory() {
                         <div className="subCategory__exploreRightProductssubCategory">
                             {
                                 subCategories.map(subCategory => (
-                                    <CategoryProductCard key={subCategory._id} product={subCategory}/> 
+                                    <SubCategoryProductCard key={subCategory._id} subCategory={subCategory}/> 
                                 ))
                             }
                         </div>

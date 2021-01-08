@@ -15,9 +15,29 @@ import {cartSideBar} from "../../store/actions/sideBarAction"
 const CartSideBar = (props) => {
 
     // const [isOpen, setIsOpen] = useState(true)
-    const [cart_products, setCart_products] = useState([])
+    // const [cart_products, setCart_products] = useState([])
 
 
+    console.log(props.busket.cart_products)
+    let { cart_products } = props.busket
+
+    let fetchData = () => {
+        props.busket.cart_products.map(busket_product => {  
+            axios.get(`http://localhost:8080/api/product/get-single-product-by-id/${busket_product._id}`)
+            .then(res => {
+                busket_product.productName = res.data.product.productName
+                busket_product.salePrice = res.data.product.salePrice
+                busket_product.productImage = res.data.product.productImages[0]
+            })
+            .catch(err => {
+                console.log(err)
+            })
+       })
+      
+    }
+    useEffect(() => {
+        fetchData()
+    }, [props.busket.busketNumbers])
     // useEffect(() => {
     //     let fetchData = async() => {
     //         let busketProducts = props.busket.cart_products
@@ -31,7 +51,31 @@ const CartSideBar = (props) => {
     //     }
     //     fetchData()
   
-    //   },[props.busket.busketNumbers])
+    //   },[props.busket.busketNumbers, props])
+
+    //     useEffect(() => {
+        
+    //     // console.log(props.busket.cart_products) 
+    //     let fetchProducts = []
+
+    //      for(let i=0; i<props.busket.cart_products.length; i++) {
+    //          axios.get(`http://localhost:8080/api/product/get-single-product-by-id/${props.busket.cart_products[i]._id}`)
+    //          .then(res => {
+    //             let product = res.data
+    //             product.quantity = props.busket.cart_products[i].quantity ? props.busket.cart_products[i].quantity : 1 
+    //             product.size  = props.busket.cart_products[i].size ? props.busket.cart_products[i].size : ''
+    //             product.color = props.busket.cart_products[i].color ? props.busket.cart_products[i].color: ''
+    //             product.weight = props.busket.cart_products[i].weight ? props.busket.cart_products[i].weight: 1
+    //             fetchProducts.push(product)
+    //          })
+    //      }
+
+    //     setCart_products(fetchProducts)
+        
+         
+    //     //  console.log(fetchProducts)
+       
+    // }, [props.busket.busketNumbers])
 
 
     // let { cart_products } = props.busket
@@ -99,7 +143,7 @@ const CartSideBar = (props) => {
                                                     <div className="tableRow " key={index}>
                                                        <hr/>
                                                         <div className="d-flex">
-                                                        <div className="mr-1" style={{ width: "170px"}}><img style={{ width: "100%", height: "150px" }} className="img-thumbnail" src={`/tempProductImages/${p.productImages ? p.productImages[0] : ''}`} alt="" /></div>
+                                                        <div className="mr-1" style={{ width: "170px"}}><img style={{ width: "100%", height: "150px" }} className="img-thumbnail" src={`/tempProductImages/${p.productImage ? p.productImage : ''}`} alt="" /></div>
                                                         <div className="ml-4 " style={{ width: "130px"}}>
                                                             <p className="font-weight-bold" style={{lineHeight: "17px"}}>{p.productName}</p>
                                                             <p className="text-danger font-weight-bold">&#2547; {p.salePrice}</p> 

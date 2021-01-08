@@ -62,42 +62,13 @@ function Category() {
                 {/* category__header ends */}
 
                 {/* category__headline starts */}
-                <div className="category__headline">KEYBOARD</div>
+                {/* <div className="category__headline">KEYBOARD</div> */}
                 {/* category__headline ends */}
             
                 <div className="category__explore">
                     {/* category__exploreLeft starts */}
                     <div className="category__exploreLeft">
-                        <h5>Price Range</h5>
-
-                        <div to="#" className="category__exploreLeftItem">
-                            <p>Brand</p>
-                            <img src={plus} alt=""/>
-                        </div>
-                        <div to="#" className="category__exploreLeftItem">
-                            <p>Weight</p>
-                            <img src={plus} alt=""/>
-                        </div>
-                        <div to="#" className="category__exploreLeftItem">
-                            <p>Quantity</p>
-                            <img src={plus} alt=""/>
-                        </div>
-                        <div to="#" className="category__exploreLeftItem">
-                            <p>Type</p>
-                            <img src={plus} alt=""/>
-                        </div>
-                        <div to="#" className="category__exploreLeftItem">
-                            <p>Variable</p>
-                            <img src={plus} alt=""/>
-                        </div>
-                        <div to="#" className="category__exploreLeftItem">
-                            <p>features</p>
-                            <img src={plus} alt=""/>
-                        </div>
-                        <div to="#" className="category__exploreLeftItem">
-                            <p>others</p>
-                            <img src={plus} alt=""/>
-                        </div>
+                        
                         {/* <div className="category__exploreLeftRangeSlider">
                             <label>Min: </label>
                             <input type="number" value={minPrice} onChange={e => {setMinPrice(e.target.value)}} />
@@ -115,8 +86,35 @@ function Category() {
                         </div> */}
                          {/* <RangeSlider/> */}
                         <div className="category__exploreLeftDrawer">
-                      
-
+                            <h5>Price Range</h5>
+                            <div to="#" className="category__exploreLeftItem">
+                                <p>Brand</p>
+                                <img src={plus} alt=""/>
+                            </div>
+                            <div to="#" className="category__exploreLeftItem">
+                                <p>Weight</p>
+                                <img src={plus} alt=""/>
+                            </div>
+                            <div to="#" className="category__exploreLeftItem">
+                                <p>Quantity</p>
+                                <img src={plus} alt=""/>
+                            </div>
+                            <div to="#" className="category__exploreLeftItem">
+                                <p>Type</p>
+                                <img src={plus} alt=""/>
+                            </div>
+                            <div to="#" className="category__exploreLeftItem">
+                                <p>Variable</p>
+                                <img src={plus} alt=""/>
+                            </div>
+                            <div to="#" className="category__exploreLeftItem">
+                                <p>features</p>
+                                <img src={plus} alt=""/>
+                            </div>
+                            <div to="#" className="category__exploreLeftItem">
+                                <p>others</p>
+                                <img src={plus} alt=""/>
+                            </div>
                         </div>
 
                     </div>

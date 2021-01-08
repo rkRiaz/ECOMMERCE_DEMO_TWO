@@ -1,8 +1,9 @@
 .footer{
     width: 100%;
-    background-color: #F9F9F9;
-    /* margin-top: 50px; */
     padding: 50px 0;
+    background: #536976;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #292E49, #536976);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #292E49, #536976); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 .footer__content{
     max-width: 1450px;
@@ -13,7 +14,7 @@
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    font-size: 24px;
+    font-size: 16px;
     font-weight: 400;
     border-bottom: 1px solid #707070;
     padding: 100px 0;
@@ -21,15 +22,15 @@
 
 .footer__top h5{
     position: relative;
-    font-size: 30px;
+    font-size: 20px;
     font-weight: 600;
-    color: #5D5D5D;
+    color: #cecece;
     margin-bottom: 30px;
 }
 .footer__top h5::after{
     content: " ";
     position: absolute;
-    background: #707070;
+    background: #cecece;
     bottom: -10px;
     left: 0;
     height: 3px;
@@ -55,9 +56,20 @@
     width: 42px;
     height: 42px;
 }
+.footer__topSocialIcons a,
+.footer__topAboutUs a,
+.footer__topOrderProcedure a{
+    color: #cecece !important;
+}
+.footer__topSocialIcons a:hover,
+.footer__topAboutUs a:hover,
+.footer__topOrderProcedure a:hover{
+    color: #aaaaaa !important;
+}
+
 
 .footer__topContactUs{
-    color: #5D5D5D;
+    color: #cecece;
 }
 
 .footer__bottom{
@@ -66,6 +78,7 @@
     justify-content: center;
     text-align: center;
     height: 350px;
+    color: #cecece;
 }
 .footer__bottomPaymentIcons{
     margin: 30px 0;
@@ -83,11 +96,11 @@
     height: 45px;
 }
 .footer__bottom h3{
-    font-size: 40px;
+    font-size: 30px;
     font-weight: 700;
 }
 .footer__bottomCopywrite p{
-    font-size: 20px;
+    font-size: 16x;
     font-weight: 400;
 }
 
@@ -100,10 +113,10 @@
 }
 @media screen and (max-width: 1200px) {
     .footer__top{
-        grid-template-columns: 1fr 1fr 1fr;
+        /* grid-template-columns: 2fr 2fr ; */
     }
     .footer__topContactUs{
-        margin-top: 50px;
+        /* margin-top: 50px; */
     }
 }
 @media screen and (max-width: 1024px) {
@@ -125,18 +138,47 @@
 
 }
 @media screen and (max-width: 768px) {
+    .footer{
+        padding: 0px;
+    }
     .footer__top{
-        grid-template-columns: 1fr 1fr;
-        font-size: 18px;        
+        grid-template-columns: 1fr 1fr ;   
+    }
+    .footer__topSocialLogo img{
+        width: 100px;
+        height: 100px;
+        margin-top: -30px;
+    }
+    .footer__topSocialIcons img{
+        width: 25px;
+        height: 25px;
     }
     .footer__topOrderProcedure{
-        margin-top: 50px;
+        margin-top: 25px;
+    }
+    .footer__topContactUs{
+        margin-top: 25px;
+
+    }
+    .footer__bottomPaymentIcons img{
+        width: 50px;
+        height: 30px;
+        margin-left: 10px;
+    }
+    .footer__bottomPaymentIcons img:nth-child(6){
+        width: 150px;
+        height: 40px;
+        margin-top: 10px;
     }
 }
 @media screen and (max-width: 480px) {
     .footer__top{
         grid-template-columns: 1fr;
     }
+    .footer__topAboutUs{
+        margin-top: 20px;
+    }
+
 }
 
 

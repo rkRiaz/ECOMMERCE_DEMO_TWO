@@ -113,6 +113,7 @@
     background-color: #081621 !important;
     margin-top: 30px;
     border: none !important;
+    box-shadow: var(--darkShadow);
 
 }
 

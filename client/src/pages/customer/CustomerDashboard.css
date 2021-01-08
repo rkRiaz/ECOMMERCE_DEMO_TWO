@@ -1,5 +1,5 @@
 .dashboard__container{
-    max-width: 1450px;
+    max-width: 1750px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -39,7 +39,7 @@
     display: flex;
 }
 .dashboard__left{
-    box-shadow: 1px 1px 2px 2px rgba(163, 180, 185, 0.5);
+    box-shadow: var(--darkShadow);
     padding: 20px;
     max-width: 1418px;
 }   
@@ -65,8 +65,8 @@
     /* padding-bottom: 20px; */
 }
 .dashboard__leftItem{
+    box-shadow: var(--darkShadow);
     text-align: center;
-    border: 1px solid #DEDEDE;
     width: 250px;
     margin: 10px;
     position: relative;

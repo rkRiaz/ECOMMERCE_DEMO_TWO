@@ -76,6 +76,8 @@
     border-radius: 10px !important;
     background-color: #081621;
     border: none !important;
+    box-shadow: var(--darkShadow);
+
 }
 .login__contentRightForm{
     display: flex;
@@ -122,6 +124,8 @@
     margin-top: 50px;
     border-radius: 10px !important;
     border: none !important;
+    box-shadow: var(--darkShadow);
+
 }
 @media screen and (max-width: 1750px) {
     .login__container {

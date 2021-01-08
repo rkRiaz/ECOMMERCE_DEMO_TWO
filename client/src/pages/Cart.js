@@ -11,33 +11,48 @@ import { MdReportProblem } from 'react-icons/md'
 import axios from 'axios'
 
 
-
 // import {cartSideBar__off} from '../store/actions/sideBarAction'
 // import axios from 'axios';
-
 
 const Cart = (props) => {
     const [checked, setChecked] = useState(false)
     const [warning, setWarning] = useState(null)
-    const [cart_products, setCart_products] = useState([])
-
-
+    // const [cart_products, setCart_products] = useState([])
+    
     console.log(props.busket.cart_products)
-    // useEffect(() => {
-    //   let fetchData = async() => {
-    //       let busketProducts = props.busket.cart_products
-    //       busketProducts.map(async busket_product => {
-    //         let fetchProduct =  await axios.get(`http://localhost:8080/api/product/get-single-product-by-id/${busket_product._id}`)
-    //         busket_product.ProductName = fetchProduct.data.product.productName
-    //         busket_product.salePrice = fetchProduct.data.product.salePrice
-    //         busket_product.productImages = fetchProduct.data.product.productImages 
-    //      })
-    //      setCart_products(busketProducts)
-    //   }
-    //   fetchData()
+    let { cart_products } = props.busket
 
-    // },[props.busket.busketNumbers])
+    let fetchData = () => {
+        props.busket.cart_products.map(busket_product => {  
+            axios.get(`http://localhost:8080/api/product/get-single-product-by-id/${busket_product._id}`)
+            .then(res => {
+                busket_product.productName = res.data.product.productName
+                busket_product.salePrice = res.data.product.salePrice
+                busket_product.productImage = res.data.product.productImages[0]
+            })
+            .catch(err => {
+                console.log(err)
+            })
+       })
+      
+    }
+    useEffect(() => {
+        fetchData()
+    }, [props.busket.busketNumbers])
 
+    
+
+    // let fetchData = async() => {
+    //     props.busket.cart_products.map(async busket_product => {  
+    //         let {data} =  await axios.get(`http://localhost:8080/api/product/get-single-product-by-id/${busket_product._id}`)
+    //         busket_product.productName = data.product.productName
+    //         busket_product.salePrice = data.product.salePrice
+    //         busket_product.productImage = data.product.productImages[0]
+    //    })
+      
+    // }
+
+    // fetchData()
 
     // useEffect(() => {
         
@@ -99,7 +114,7 @@ return(
         <div className="display-4 text-center">Your Cart is Empty<br /> <Link className="text-success" to="/">Go to shop</Link></div>
         :
         <div className="">
-            {console.log(cart_products)} 
+            {/* {console.log(cart_products)}  */}
             <div className="text-center text-dark" style={{padding: "2% 0", background: '#eaeaea'}}>
                 <div className="h2">My Cart</div>
                 <Link to="/"><div className="badge badge-secondary text-center">&#8594; Go To Shop</div></Link> 
@@ -119,7 +134,7 @@ return(
                             <tbody className="table__body">
                                 {cart_products.map(p => (
                                     <tr className="tableRow">
-                                        <td><Link to={`/product/${p._id}`}><img className="img-thumbnail mr-3" src={`/tempProductImages/${p.productImages ? p.productImages[0] : ''}`} alt="" />{p.productName}</Link></td>
+                                        <td><Link to={`/product/${p._id}`}><img className="img-thumbnail mr-3" src={`/tempProductImages/${p.productImage ? p.productImage : ''}`} alt="" />{p.productName}</Link></td>
                                         <td>{p.salePrice}</td>
                                         <td>
                                             <div className="productQuantityController d-flex font-weight-bolder">
