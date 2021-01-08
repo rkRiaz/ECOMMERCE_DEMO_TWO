@@ -1,9 +1,9 @@
 .banner{
-    max-width: 1750px;
+    max-width: 1450px;
     margin-left: auto;
     margin-right: auto;
     display: flex;
-    margin-top: 20px;
+    /* margin-top: 20px; */
 }
 .banner__firstColumn,
 .banner__thirdColumn{
@@ -16,7 +16,8 @@
 .banner__thirdColumnRowTwo {
     max-width: 476px;
     max-height: 295px;
-    box-shadow: var(--boxShadow);
+    box-shadow: var(--darkShadow);
+    background-color: #fff;
 }
 .banner__firstColumnRowTwo,
 .banner__thirdColumnRowTwo {
@@ -40,8 +41,7 @@
 .banner__secondColumnSlider{
     max-width: 740px;
     max-height: 610px;
-    box-shadow: var(--boxShadow);
-
+    box-shadow: var(--darkShadow);
 }
 .banner__secondColumnSliderImg{
     width: 100%;

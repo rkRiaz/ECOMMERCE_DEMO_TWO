@@ -1,11 +1,11 @@
 .footer{
     width: 100%;
     background-color: #F9F9F9;
-    margin-top: 50px;
+    /* margin-top: 50px; */
     padding: 50px 0;
 }
 .footer__content{
-    max-width: 1750px;
+    max-width: 1450px;
     margin-left: auto;
     margin-right: auto;
 }

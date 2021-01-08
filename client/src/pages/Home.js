@@ -26,7 +26,9 @@ function Home() {
 
     return (
         <div className="home">
-            <Banner/>
+            <div className="">
+                <Banner/>
+            </div>
             <div className="home__tab">
                 <NavTab />
             </div>

@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react'
 import './Header.css'
 import {connect} from 'react-redux'
 import {Link, useHistory} from 'react-router-dom'
-import MenuIcon from '@material-ui/icons/Menu';
 import {NavDropdown} from 'react-bootstrap'
 // import menu from '../dummy_db/menu'
 
@@ -16,6 +15,9 @@ import menuPhone from '../assets/icons/menuPhone.svg'
 
 
 import {FaRegUser} from 'react-icons/fa'
+import {HiMenu} from 'react-icons/hi'
+
+
 import searchIcon from '../assets/icons/search.svg'
 import axios from 'axios';
 
@@ -87,14 +89,14 @@ function Header(props) {
                         <img src={logo} alt=""/>
                     </Link>
                     <form className="header__middleSearch" onSubmit={submit}>
-                        <div className="header__middleSearchCategoryDropDown">
+                        {/* <div className="header__middleSearchCategoryDropDown">
                             <select onChange={e => console.log(e.target.value)}>
                                 <option value="categories">Categories</option> 
                                 <option value="b">Meat</option>    
                                 <option value="c">Fish</option>    
                                 <option value="d">Vegitable</option>    
                             </select>
-                        </div>
+                        </div> */}
                         <input type="text" placeholder="Search" onChange={e => setSearch(e.target.value)}/>
                         <div className="header__middleSearchIcon" onClick={submit}><img src={searchIcon} alt=""/></div>
                     </form>
@@ -106,8 +108,8 @@ function Header(props) {
                     </div>
 
                     {/*Responsive: will show under 768px starts*/}
-                    <div className="header__middleMenuBarIcon" onClick={e => setShowSideBar(!showSideBar)}> 
-                        <MenuIcon/>
+                    <div> 
+                        <HiMenu onClick={e => setShowSideBar(!showSideBar)} className="header__middleMenuBarIcon"/>
                     </div>
                     {/*Responsive: will show under 768px ends*/}
                 </div>

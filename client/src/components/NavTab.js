@@ -24,9 +24,12 @@ function NavTab() {
         var y = document.getElementsByClassName("tab__barBtn");
         for (let i = 0; i < x.length; i++) {
           x[i].style.display = "none";
-          y[i].style.color = "#38324F"
+          y[i].style.color = "#626262"
+          y[i].style.backgroundColor = "#fff"
         }
-        e.target.style.color = "#FE0000"
+        e.target.style.color = "#fff"
+        e.target.style.backgroundColor = "#0B273D"
+
         document.getElementById(productType).style.display = "grid";
     }
     
@@ -34,7 +37,7 @@ function NavTab() {
         <div className="tab">
             <div className="tab__container">
                 <div class="tab__bar">
-                    <div className="tab__barBtn" onClick={openProductType('featured')} style={{color: "#FE0000"}}>FEATURED</div>
+                    <div className="tab__barBtn" onClick={openProductType('featured')} style={{color: "#fff", backgroundColor: "#0B273D"}}>FEATURED</div>
                     <div className="tab__barBtn" onClick={openProductType('onsale')}>ON SALE</div>
                     <div className="tab__barBtn" onClick={openProductType('toprated')}>TOP RATED</div>
                     <div className="tab__barBtn" onClick={openProductType('newarrival')}>NEW ARRIVAL</div>
