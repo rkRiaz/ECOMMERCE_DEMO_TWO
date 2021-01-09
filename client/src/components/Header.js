@@ -22,18 +22,26 @@ import searchIcon from '../assets/icons/search.svg'
 import axios from 'axios';
 
 
-
-
+import riaz from '../assets/images/banana.svg'
 
 function Header(props) {
     const[categories, setCategories] = useState([])
-    const[search, setSearch] = useState('')
     const[showSideBar, setShowSideBar] = useState(false)
+    const[searchProducts, setSearchProducts] = useState('')
+
+
 
     const history = useHistory()
 
-    const submit = e => {
-        e.preventDefault()
+    const search = e => {
+        axios.get(`http://localhost:8080/api/product/get-products-by-text-search?q=${e.target.value}`)
+        .then(res => {
+            return console.log(res.data.searchProducts)
+            setSearchProducts(res.data.searchProducts)
+        })
+        .catch(err => {
+            console.log(err.response)
+        })
     }
 
     const action = name => e => {
@@ -88,7 +96,7 @@ function Header(props) {
                     <Link to="/" className="header__middleLogo">
                         <img src={logo} alt=""/>
                     </Link>
-                    <form className="header__middleSearch" onSubmit={submit}>
+                    <form className="header__middleSearch">
                         {/* <div className="header__middleSearchCategoryDropDown">
                             <select onChange={e => console.log(e.target.value)}>
                                 <option value="categories">Categories</option> 
@@ -97,9 +105,37 @@ function Header(props) {
                                 <option value="d">Vegitable</option>    
                             </select>
                         </div> */}
-                        <input type="text" placeholder="Search" onChange={e => setSearch(e.target.value)}/>
-                        <div className="header__middleSearchIcon" onClick={submit}><img src={searchIcon} alt=""/></div>
+                        <input type="text" placeholder="Search" onChange={search}/>
+                        <div className="header__middleSearchIcon"><img src={searchIcon} alt=""/></div>
+                        {/* //search results component  starts*/}
+                            <div className="header__middleSearchResult header__middleSearchResult__show">
+
+                                <Link to="#" className="header__middleSearchResultProduct">
+                                    <div className="header__middleSearchResultImage mr-3">
+                                        <img className="img-thumbnail" style={{ width: 70, height: 70 }} src={riaz} alt="" />
+                                    </div>
+                                    <div className="header__middleSearchResultInfo">
+                                        <div className="header__middleSearchResultName">Apple Juice</div>
+                                        <div className="header__middleSearchResultPrice"><strike>Tk. 500</strike>&nbsp; Tk. 450</div>
+                                        <div className="header__middleSearchResultCategory">Fruits</div>
+
+                                    </div>
+                                </Link>
+                                <Link to="#" className="header__middleSearchResultProduct">
+                                    <div className="header__middleSearchResultImage mr-3">
+                                        <img className="img-thumbnail" style={{ width: 70, height: 70 }} src={riaz} alt="" />
+                                    </div>
+                                    <div className="header__middleSearchResultInfo">
+                                        <div className="header__middleSearchResultName">Apple Juice</div>
+                                        <div className="header__middleSearchResultPrice"><strike>Tk. 500</strike>&nbsp; Tk. 450</div>
+                                        <div className="header__middleSearchResultCategory">Fruits</div>
+                                    </div>
+                                </Link>
+
+                            </div>
+                        {/* //search results component  ends*/}
                     </form>
+
                     <div className="header__middleIcons">
                         <Link to="/cart"> <img src={shoppingCart} alt=""/><sup className="header__middleIconsSup">{props.busket.busketNumbers}</sup> </Link>
                         <Link to="#"> <img src={menuHeart} alt=""/><sup className="header__middleIconsSup">0</sup> </Link>

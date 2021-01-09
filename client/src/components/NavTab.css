@@ -9,7 +9,7 @@
     box-shadow: var(--darkShadow);
     display: flex;
     justify-content: space-around;
-    font-size: 28px;
+    font-size: 20px;
     font-weight: 600;
     color:#626262;
     background-color: #fff;
@@ -21,15 +21,16 @@
     flex: 2.5;
     cursor: pointer;
     transition: .2s;
+    padding: 5px 0;
 }
 .tab__bar div:nth-child(4) {
     border: none;
 }
 .tab__bar div:hover{
     color: #fff !important;
-    background: #536976; 
-    background: -webkit-linear-gradient(to right, #292E49, #536976);  
-    background: linear-gradient(to right, #292E49, #536976);
+    background: #536976 !important; 
+    background: -webkit-linear-gradient(to right, #292E49, #536976) !important;  
+    background: linear-gradient(to right, #292E49, #536976) !important;
 }
 
 .tab__content {
@@ -39,7 +40,6 @@
     row-gap: 25px;
     justify-content: center;
     margin-top: 25px;
-
 }
 .tab__content a{
     color: #fff !important;
@@ -142,8 +142,8 @@
 }
 .btnCenter:hover{
     background: #16222A;  /* fallback for old browsers */
-background: -webkit-linear-gradient(to right, #3A6073, #16222A);  /* Chrome 10-25, Safari 5.1-6 */
-background: linear-gradient(to right, #3A6073, #16222A); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: -webkit-linear-gradient(to right, #3A6073, #16222A);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #3A6073, #16222A); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
 
 }
@@ -173,27 +173,20 @@ background: linear-gradient(to right, #3A6073, #16222A); /* W3C, IE 10+/ Edge, F
         margin-left: 20px;
         margin-right: 20px;
     }    
-    .tab__bar{
-        font-size: 25px;
-    }
     .tab__content {
         grid-template-columns: auto;
     }
 
 
 }
+
 @media screen and (max-width: 768px) {
-    .tab__bar{
-        font-size: 20px;
-    }
-}
-@media screen and (max-width: 576px) {
     .tab__bar{
         font-size: 16px;
     }
 }
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 468px) {
     .tab__bar{
-        font-size: 14px;
+        font-size: 13px;
     }
 }

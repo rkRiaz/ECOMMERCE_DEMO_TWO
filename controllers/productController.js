@@ -85,15 +85,22 @@ exports.getProductsBySubCategory = async (req, res, next) => {
     }
 }
 
-// exports.productsByTag = async(req, res, next) => {
-//     let { tag } = req.params
-//     try{
-//         let products = await Product.find({tag: tag})
-//             return res.status(200).json(products)
-//     } catch(e) {
-//         next(e)
-//     }
-// }
+//   Text SEARCH
+exports.getSearchProductByText = async (req, res) => {
+
+    try {
+        const query = req.query.q;
+        // return console.log(query)
+        const results = await Product.fuzzySearch({ query: query, prefixOnly: false, minSize: 1 })
+        return console.log(results)
+        res.status(200).json({
+            searchProducts: results
+        });
+    } catch (e) {
+        console.log(e);
+        next(e)
+    }
+}
 
 
 
@@ -119,9 +126,6 @@ exports.addProduct = async (req, res, next) => {
         return res.status(200).json({
             message: `Successfully added ${addProduct.productName} as category(${addProduct.category}) and sub category(${addProduct.subCategory})`
         })
-
-
-
     }
     catch(err) {
         console.log(err)
@@ -257,18 +261,4 @@ exports.deleteProduct = async (req, res, next) => {
 } 
 
 
-
-//   Text SEARCH
-exports.getSearchProductByText = async (req, res) => {
-    try {
-        const query = req.query.q;
-        const results = await Product.fuzzySearch({ query: query, prefixOnly: false, minSize: 1 })
-
-        res.status(200).json({
-            data: results
-        });
-    } catch (e) {
-        console.error(e);
-    }
-}
 

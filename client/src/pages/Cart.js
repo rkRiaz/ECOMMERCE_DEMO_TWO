@@ -15,9 +15,6 @@ import axios from 'axios'
 // import axios from 'axios';
 
 const Cart = (props) => {
-    const [checked, setChecked] = useState(false)
-    const [warning, setWarning] = useState(null)
-    // const [cart_products, setCart_products] = useState([])
     
     console.log(props.busket.cart_products)
     let { cart_products } = props.busket
@@ -95,14 +92,9 @@ const Cart = (props) => {
 
     let checkOut = (e) => {
         e.preventDefault()
-        // checked === false ? setWarning("You must agree with the terms and conditions of sales to check out.") : 
         // props.orderedProducts(customerId, orderedProducts, props.history)
     }
-    let termsHandler = e => {
-        e.preventDefault()
-        // props.cartSideBar__off()
-        // props.history.push("/terms-and-condition")
-    }
+
 
 
 
@@ -156,21 +148,18 @@ return(
                     <div className="checkOut text-right mt-4 px-3">
                         <div className="h3 font-weight-bold">SubTotal Amount: <strong style={{color: "#FE0000"}}>&#2547;{subTotal}</strong></div>
                         <p>Taxes, shipping and discounts codes calculated at checkout</p>
-                        <div className="d-flex justify-content-end my-2">
-                            <input onChange={e => setChecked(!checked)} className="mt-1" type="checkbox" /> &nbsp;&nbsp;
-                            <div className="text-danger" style={{textDecorationLine: "underline"}} onClick={termsHandler}>I agree with the terms and conditions.</div>    
-                        </div>
                         <button onClick={checkOut} className="btn btn-primary font-weight-bold mt-2" style={{width: 300, borderRadius: 5, background: '#0B273D', border: 'none', outline: 'none'}}>CHECK OUT</button>
                     </div>
                     {/* warning alert starts */}
-                    { warning === null ? "" : 
+                    {/* { warning === null ? "" : 
                     <div style={{position: "fixed", bottom: 0, left: 0, width: "100%", zIndex: 1000}} className="alert alert-warning alert-dismissible fade show text-center" role="alert">
                         <MdReportProblem className="mb-1"/><strong>&nbsp;&nbsp;&nbsp;{warning}</strong>
                         <button onClick={e => setWarning(null)} type="button" className="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    }{/* warning alert ends */}
+                    } */}
+                    {/* warning alert ends */}
                 </div>
         </div>
     }

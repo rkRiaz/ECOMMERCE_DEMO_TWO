@@ -4,6 +4,7 @@
     margin-right: auto;
     display: flex;
     /* margin-top: 20px; */
+
 }
 .banner__firstColumn,
 .banner__thirdColumn{
@@ -37,6 +38,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    z-index: 1;
 }
 .banner__secondColumnSlider{
     max-width: 740px;

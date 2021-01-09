@@ -25,7 +25,7 @@ function NavTab() {
         for (let i = 0; i < x.length; i++) {
           x[i].style.display = "none";
           y[i].style.color = "#626262"
-          y[i].style.backgroundColor = "#fff"
+          y[i].style.background = "#fff"
         }
         e.target.style.color = "#fff"
         e.target.style.backgroundColor = "#536976"
@@ -42,9 +42,9 @@ function NavTab() {
                     <div className="tab__barBtn" onClick={openProductType('featured')} 
                         style={{
                             color: "#fff",
-                            backgroundColor: "#536976",
-                            backgroundColor: "-webkit-linear-gradient(to right, #292E49, #536976)",
-                            backgroundColor: "linear-gradient(to right, #292E49, #536976)" }}>FEATURED</div>
+                            background: "#536976",
+                            background: "-webkit-linear-gradient(to right, #292E49, #536976)",
+                            background: "linear-gradient(to right, #292E49, #536976)" }}>FEATURED</div>
                     <div className="tab__barBtn" onClick={openProductType('onsale')}>ON SALE</div>
                     <div className="tab__barBtn" onClick={openProductType('toprated')}>TOP RATED</div>
                     <div className="tab__barBtn" onClick={openProductType('newarrival')}>NEW ARRIVAL</div>

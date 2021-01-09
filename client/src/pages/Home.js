@@ -8,6 +8,9 @@ import CategoryProductCard from '../components/CategoryProductCard'
 // import products from '../dummy_db/products'
 import axios from 'axios';
 
+//multi carousel 
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
 
 
 
@@ -25,7 +28,7 @@ function Home() {
         .catch(err => {
             console.log(err)
         })
-    }, [products])
+    }, [])
 
     useEffect(() => {
         axios.get(`http://localhost:8080/api/category/get-all-category`)
@@ -37,9 +40,29 @@ function Home() {
         })
     }, [])
 
+    const responsive = {
+  superLargeDesktop: {
+    // the naming can be any, depends on you.
+    breakpoint: { max: 4000, min: 3000 },
+    items: 7
+  },
+  desktop: {
+    breakpoint: { max: 3000, min: 1024 },
+    items: 6
+  },
+  tablet: {
+    breakpoint: { max: 1024, min: 464 },
+    items: 4
+  },
+  mobile: {
+    breakpoint: { max: 464, min: 0 },
+    items: 2
+  }
+};
+
     return (
         <div className="home">
-            <div className="">
+            <div className="home__banner">
                 <Banner/>
             </div>
             <div className="home__tab">
@@ -48,14 +71,23 @@ function Home() {
             <div className="home__category">
                 {/* make this font product sans */}
                 <h2>Categories</h2> 
-                <div className="home__categoryList">
-                    {
-                        categories ? categories.map(category => (
-                            <CategoryProductCard key={categories._id} category={category}/> 
-                        )) : 'loading' 
-                        
-                    }
-                </div>
+                
+                    <Carousel 
+                    style={{backgroundColor: 'red'}}
+        
+                      responsive={responsive}
+
+                      >
+                      
+                            {
+                                categories ? categories.map(category => (
+                                    <CategoryProductCard key={categories._id} category={category}/> 
+                                )) : 'loading' 
+                                
+                            }
+                      
+                    </Carousel>
+                
             </div>
 
             <div className="home__collection ">
