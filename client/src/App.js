@@ -21,6 +21,7 @@ import CustomerDashboard from './pages/customer/CustomerDashboard'
 
 // admin Routes
 import AdminDashboard from './pages/admin/AdminDashboard'
+import AllProducts from './pages/admin/AllProducts'
 import AddProduct from './pages/admin/AddProduct'
 import EditProduct from './pages/admin/EditProduct'
 
@@ -64,6 +65,7 @@ function App() {
               <Route exact path="/adminDashboard"  component={AdminDashboard} />
               {/* <Route exact path="/admin/customers"  component={Customers} />  */}
               {/* <Route exact path="/admin/all-orders"  component={AllOrders} />  */}
+              <Route exact path="/admin/all-products"  component={AllProducts} /> 
               <Route exact path="/admin/add-product" component={AddProduct} /> 
               <Route exact path="/admin/edit-product/:productId" component={EditProduct} /> 
 

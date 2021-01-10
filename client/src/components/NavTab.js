@@ -32,7 +32,7 @@ function NavTab() {
         e.target.style.backgroundColor = "-webkit-linear-gradient(to right, #292E49, #536976)"
         e.target.style.backgroundColor = "linear-gradient(to right, #292E49, #536976)" 
 
-        document.getElementById(productType).style.display = "grid";
+        document.getElementById(productType).style.display = "flex";
     }
     
     return (
@@ -55,23 +55,39 @@ function NavTab() {
                     <div className="tab__contentLeft">
                         <div className="tab__contentLeftTop">
                             <img src={tabImage1} alt=""/>
-                            <Link to="#" className="btnCenter" variant="primary">BUY NOW</Link>
+                            <div className="centerElement">
+                                <h3>Here are huge offers!</h3>
+                                <p>Summer Fooods available in our shop. Summer Fooods available in our shop. Summer Fooods available in our shop</p>
+                                <Link to="#" className="btn btn-primary" variant="primary">BUY NOW</Link>
+                            </div>
                         </div>
                         <div className="tab__contentLeftBottom">
                             <div className="tab__contentLeftBottomImg">
                                 <img src={tabImage2} alt=""/>
-                                <Link to="#" className="btnCenter btnCenterSmall" variant="primary">BUY NOW</Link>
+                                <div className="centerElement">
+                                    <h4>Here are huge offers!</h4>
+                                    <p>Summer Fooods</p>
+                                    <Link to="#" className="btn btn-primary" variant="primary">BUY NOW</Link>
+                                </div>
                             </div>
                             <div className="tab__contentLeftBottomImg">
                                 <img src={tabImage3} alt=""/>
-                                <Link to="#" className="btnCenter btnCenterSmall" variant="primary">BUY NOW</Link>
+                                <div className="centerElement">
+                                    <h4>Here are huge offers!</h4>
+                                    <p>Summer Fooods</p>
+                                    <Link to="#" className="btn btn-primary" variant="primary">BUY NOW</Link>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div className="tab__contentRight">
                         <div className="tab__contentRightImg">
-                            <img src={tabImage4} alt=""/>
-                            <Link to="#" className="btnCenter" variant="primary">BUY NOW</Link>
+                            <img src={tabImage6} alt=""/>
+                            <div className="centerElement">
+                                <h3>Here are huge offers!</h3>
+                                <p>Summer Fooods available in our shop. Summer Fooods available in our shop. Summer Fooods available in our shop</p>
+                                <Link to="#" className="btn btn-primary" variant="primary">BUY NOW</Link>
+                            </div>
                         </div> 
                     </div>
                 </div>
@@ -82,16 +98,28 @@ function NavTab() {
                     <div className="tab__contentLeft">
                         <div className="tab__contentLeftTop">
                             <img src={tabImage5} alt=""/>
-                            <Link to="#" className="btnCenter" variant="primary">BUY NOW</Link>
+                            <div className="centerElement">
+                                <h3>Here are huge offers!</h3>
+                                <p>Summer Fooods</p>
+                                <Link to="#" className="btn btn-primary" variant="primary">BUY NOW</Link>
+                            </div>
                         </div>
                         <div className="tab__contentLeftBottom">
                             <div className="tab__contentLeftBottomImg">
                                 <img src={tabImage2} alt=""/>
-                                <Link to="#" className="btnCenter btnCenterSmall" variant="primary">BUY NOW</Link>
+                                <div className="centerElement">
+                                    <h4>Here are huge offers!</h4>
+                                    <p>Summer Fooods</p>
+                                    <Link to="#" className="btn btn-primary" variant="primary">BUY NOW</Link>
+                                </div>
                             </div>
                             <div className="tab__contentLeftBottomImg">
                                 <img src={tabImage3} alt=""/>
-                                <Link to="#" className="btnCenter btnCenterSmall" variant="primary">BUY NOW</Link>
+                                <div className="centerElement">
+                                    <h4>Here are huge offers!</h4>
+                                    <p>Summer Fooods</p>
+                                    <Link to="#" className="btn btn-primary" variant="primary">BUY NOW</Link>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -99,7 +127,11 @@ function NavTab() {
                     <div className="tab__contentRight">
                         <div className="tab__contentRightImg">
                             <img src={tabImage5} alt=""/>
-                            <Link to="#" className="btnCenter" variant="primary">BUY NOW</Link>
+                            <div className="centerElement">
+                                <h3>Here are huge offers!</h3>
+                                <p>Summer Fooods</p>
+                                <Link to="#" className="btn btn-primary" variant="primary">BUY NOW</Link>
+                            </div>
                         </div> 
                     </div>
                 </div>
@@ -110,16 +142,28 @@ function NavTab() {
                     <div className="tab__contentLeft">
                         <div className="tab__contentLeftTop">
                             <img src={tabImage3} alt=""/>
-                            <Link to="#" className="btnCenter" variant="primary">BUY NOW</Link>
+                            <div className="centerElement">
+                                <h3>Here are huge offers!</h3>
+                                <p>Summer Fooods</p>
+                                <Link to="#" className="btn btn-primary" variant="primary">BUY NOW</Link>
+                            </div>
                         </div>
                         <div className="tab__contentLeftBottom">
                             <div className="tab__contentLeftBottomImg">
                                 <img src={tabImage2} alt=""/>
-                                <Link to="#" className="btnCenter btnCenterSmall" variant="primary">BUY NOW</Link>
+                                <div className="centerElement">
+                                    <h4>Here are huge offers!</h4>
+                                    <p>Summer Fooods</p>
+                                    <Link to="#" className="btn btn-primary" variant="primary">BUY NOW</Link>
+                                </div>
                             </div>
                             <div className="tab__contentLeftBottomImg">
                                 <img src={tabImage6} alt=""/>
-                                <Link to="#" className="btnCenter btnCenterSmall" variant="primary">BUY NOW</Link>
+                                <div className="centerElement">
+                                    <h4>Here are huge offers!</h4>
+                                    <p>Summer Fooods</p>
+                                    <Link to="#" className="btn btn-primary" variant="primary">BUY NOW</Link>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -127,7 +171,10 @@ function NavTab() {
                     <div className="tab__contentRight">
                         <div className="tab__contentRightImg">
                             <img src={tabImage6} alt=""/>
-                            <Link to="#" className="btnCenter" variant="primary">BUY NOW</Link>
+                            <div className="centerElement">
+                                <h3>Here are huge offers!</h3>
+                                <Link to="#" className="btn btn-primary" variant="primary">BUY NOW</Link>
+                            </div>
                         </div> 
                     </div>
                 </div>
@@ -138,23 +185,39 @@ function NavTab() {
                     <div className="tab__contentLeft">
                         <div className="tab__contentLeftTop">
                             <img src={tabImage4} alt=""/>
-                            <Link to="#" className="btnCenter" variant="primary">BUY NOW</Link>
+                            <div className="centerElement">
+                                <h3>Here are huge offers!</h3>
+                                <p>Summer Fooods</p>
+                                <Link to="#" className="btn btn-primary" variant="primary">BUY NOW</Link>
+                            </div>
                         </div>
                         <div className="tab__contentLeftBottom">
                             <div className="tab__contentLeftBottomImg">
                                 <img src={tabImage2} alt=""/>
-                                <Link to="#" className="btnCenter btnCenterSmall" variant="primary">BUY NOW</Link>
+                                <div className="centerElement">
+                                    <h4>Here are huge offers!</h4>
+                                    <p>Summer Fooods</p>
+                                    <Link to="#" className="btn btn-primary" variant="primary">BUY NOW</Link>
+                                </div>
                             </div>
                             <div className="tab__contentLeftBottomImg">
                                 <img src={tabImage3} alt=""/>
-                                <Link to="#" className="btnCenter btnCenterSmall" variant="primary">BUY NOW</Link>
+                                <div className="centerElement">
+                                    <h4>Here are huge offers!</h4>
+                                    <p>Summer Fooods</p>
+                                    <Link to="#" className="btn btn-primary" variant="primary">BUY NOW</Link>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div className="tab__contentRight">
                         <div className="tab__contentRightImg">
                             <img src={tabImage4} alt=""/>
-                            <Link to="#" className="btnCenter" variant="primary">BUY NOW</Link>
+                                 <div className="centerElement">
+                                    <h3>Here are huge offers!</h3>
+                                    <p>Summer Fooods</p>
+                                    <Link to="#" className="btn btn-primary" variant="primary">BUY NOW</Link>
+                                </div>
                         </div> 
                     </div>
                 </div>

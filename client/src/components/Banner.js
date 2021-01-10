@@ -8,6 +8,7 @@ import silderImgOne from '../assets/images/silderImgOne.svg'
 import bannerColumnTwoImageOne from '../assets/images/bannerColumnTwoImageOne.svg'
 import bannerColumnTwoImageTwo from '../assets/images/bannerColumnTwoImageTwo.svg'
 
+import tabImage6 from '../assets/images/tabImage6.jpg'
 
 
 function Banner() {
@@ -15,7 +16,7 @@ function Banner() {
         <div className="banner">
             <div className="banner__firstColumn">
                 <div className="banner__firstColumnRowOne">
-                    <img src={bannerColumnOneImageOne} alt=""/>
+                    <img src={tabImage6} alt=""/>
                 </div>
                 <div className="banner__firstColumnRowTwo">
                     <img src={bannerColumnOneImageTwo} alt=""/>    
@@ -26,7 +27,7 @@ function Banner() {
                     <Carousel.Item interval={1000} className="banner__secondColumnSliderImg">
                         <img
                         className="d-block w-100"
-                        src={silderImgOne}
+                        src={tabImage6}
                         alt="First slide"
                         />
                     </Carousel.Item>

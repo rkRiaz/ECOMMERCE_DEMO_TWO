@@ -42,9 +42,9 @@ const AdminLayout = (props) => {
     // }, [])
     return (
         <div className="layout">
-            <div className="topbar p-2">
-                <div onClick={toggle} className="toggleIcon mt-1"><FiMenu color="white" style={{fontSize: '25px'}}/></div>
-                <div className="h4 mt-3"> <Link to="/">Halal Shop Admin Panel</Link></div>
+            <div className="topbar p-3">
+                <div className="h4"> <Link to="#">Admin Panel</Link></div>
+                <div onClick={toggle} className="toggleIcon "><FiMenu color="white" style={{fontSize: '25px'}}/></div>
             </div>
 
             <div className={isOpen ? "leftBar showLeftBar" : "leftBar"} id="leftBarId">
@@ -55,9 +55,11 @@ const AdminLayout = (props) => {
                 </div>
                 </Link>
                 <div className="d-flex flex-column p-4">
-                    <Link to="/admin/dashboard" className="h5"><GoHome/>&nbsp;&nbsp;&nbsp;Dashboard</Link> 
+                    <Link to="/" className="h5"><GoHome/>&nbsp;&nbsp;&nbsp;Go Back To Shop</Link> 
+                    <Link to="/admin/dashboard" className="h5 mt-4"><GoHome/>&nbsp;&nbsp;&nbsp;Dashboard</Link> 
                     <Link to="/admin/all-orders" className="h5 mt-4"><RiShoppingCartLine/>&nbsp;&nbsp;&nbsp;Orders</Link> 
                     <Link to="/admin/customers" className="h5 mt-4"><FiUsers/>&nbsp;&nbsp;&nbsp;Customers</Link> 
+                    <Link to="/admin/all-products" className="h5 mt-4"><FiUsers/>&nbsp;&nbsp;&nbsp;All Products</Link> 
                     <Link to="/admin/add-product" className="h5 mt-4"><BiAddToQueue/>&nbsp;&nbsp;&nbsp;Add Product</Link> 
                     <Link to="" onClick={() => props.adminLogout(props.history)} className="h5 mt-4"><BiLogOutCircle/>&nbsp;&nbsp;&nbsp;LogOut</Link>
                 </div>

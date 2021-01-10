@@ -9,7 +9,6 @@ function EdirProduct() {
 
     //product section
     const [product, setProduct] = useState('')
-
     const [formData, setFormData] = useState(new FormData())
     const [error, setError] = useState({})
     const [category, setCategory] = useState([])
@@ -36,6 +35,8 @@ function EdirProduct() {
                 console.log(err.response)
             })
             formData.append(name, event.target.value)  
+            setProduct({...product, [name]: event.target.value})
+
         }
         if(name === 'files') {
             for(const key of Object.keys(event.target.files)) {
@@ -45,19 +46,21 @@ function EdirProduct() {
 
         } else{
             formData.set( name, event.target.value )
+            setProduct({...product, [name]: event.target.value})
         }
     };
 
     const submit = event => {
         event.preventDefault()
-        axios.post('http://localhost:8080/api/product/add-product', formData)
-        .then(res => {
-            console.log(res.data.message)
-            alert(res.data.message)
-        })
-        .catch(err => {
-            setError(err.response)
-        })
+        alert('Working on this page')
+        // axios.post('http://localhost:8080/api/product/edit-product', formData)
+        // .then(res => {
+        //     console.log(res.data.message)
+        //     alert(res.data.message)
+        // })
+        // .catch(err => {
+        //     setError(err.response)
+        // })
     }
     //products methods ends
 
@@ -93,13 +96,13 @@ function EdirProduct() {
     // categorty methods ends
 
     useEffect(() => {
-        // axios.get(`http://localhost:8080/api/category/get-all-category`)
-        // .then(res => {
-        //     setCategory(res.data.allCategory)
-        // })
-        // .catch(err => {
-        //     console.log(err.response)
-        // })
+        axios.get(`http://localhost:8080/api/category/get-all-category`)
+        .then(res => {
+            setCategory(res.data.allCategory)
+        })
+        .catch(err => {
+            console.log(err.response)
+        })
 
         axios.get(`http://localhost:8080/api/product/get-single-product-by-id/${productId}`)
         .then(res => {
@@ -108,25 +111,25 @@ function EdirProduct() {
         .catch(err => {
             console.log(err.response)
         })
-    }, [categoryFormData])
+    }, [])
 
     
 
 
 
-
+console.log(product)
 
         return (
            <AdminLayout>
                 <div className="editProduct">
                     <div className="d-flex justify-content-between">
                         <div className="editProduct__headline">Edit Product</div>
-                        <Button onClick={e => setShowCategoryFrom(!showCategoryForm)} className="btn btn-primary m-2">Add Category</Button>
+                        <Button onClick={e => setShowCategoryFrom(!showCategoryForm)} className="btn btn-primary m-2">Edit Category</Button>
                     </div>
                     <div className="editProduct__content">
                         <Form onSubmit={submit} className="editProduct__contentForm" encType="multipart/form-data">
                                 <Form.Group className="editProduct__contentFormGroup">
-                                    <Form.Control onChange={change('productName')} isInvalid={error.productName ? true : false} className="editProduct__contentInput" type="text" value={product.productName} />
+                                    <Form.Control onChange={change('productName')} isInvalid={error.productName ? true : false} className="editProduct__contentInput" type="text" value={product.productName}/>
                                     <Form.Control.Feedback type="invalid" tooltip>
                                         {error.productName ? error.productName : ""}
                                     </Form.Control.Feedback>
@@ -143,9 +146,9 @@ function EdirProduct() {
                                         custom
                                     >
                                         <option value={product.categorySlug}>{product.categorySlug}</option>
-                                        {/* {category.map(c => (
+                                        {category.map(c => (
                                            <option value={c.categorySlug}>{c.category}</option> 
-                                        ))} */}
+                                        ))}
                                       
                                     
                                     </Form.Control> 
@@ -233,9 +236,9 @@ function EdirProduct() {
                                             custom
                                         >
                                             <option value="">Choose Existing Category</option>
-                                            {/* {category.map(c => (
+                                            {category.map(c => (
                                             <option value={c.categorySlug}>{c.category}</option> 
-                                            ))} */}
+                                            ))}
                                         </Form.Control>
                                     </Form.Group>
                                     <Form.Group className="addCategory__contentFormGroup">
@@ -267,9 +270,9 @@ function EdirProduct() {
                                         custom
                                     >
                                         <option value="">Choose Existing Category</option>
-                                        {/* {category.map(c => (
+                                        {category.map(c => (
                                         <option value={c.categorySlug}>{c.category}</option> 
-                                        ))} */}
+                                        ))}
                                     </Form.Control>
                                     </Form.Group>
                                     <Form.Group className="addCategory__contentFormGroup">
@@ -312,7 +315,7 @@ function EdirProduct() {
                                         accept="image/*"
                                     />    
                                 </Form.Group>
-                                <Button className="text-center mt-3" type="submit">Add Category</Button>
+                                <Button className="text-center mt-3" type="submit">Edit Category</Button>
                                 <Button onClick={e => setShowCategoryFrom(!showCategoryForm)} className="text-center btn btn-danger mt-2" >Close</Button>
                         </Form>
                     </div>    
