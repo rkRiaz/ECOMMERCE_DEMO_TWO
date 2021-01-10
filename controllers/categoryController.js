@@ -69,15 +69,15 @@ exports.addCategoryOrPushSubCategoryIntoCategory = async (req, res, next) => {
            })
         } else {
             let subCategory = {
-                name: subCategoryName,
-                subCategorySlug: subCategorySlug
+                name: subCategoryName ? subCategoryName : '',
+                subCategorySlug: subCategorySlug ? subCategorySlug : ''
             }
-            subCategory.subCategoryImage = req.files[1].filename
+            subCategory.subCategoryImage = req.files[1] ? req.files[1].filename : ''
 
             let newCategory = new Category({
                 category: categoryName,
                 categorySlug: categorySlug,
-                subCategory
+                subCategory: subCategoryName || subCategorySlug ? subCategory : []
             })
             newCategory.categoryImage= req.files[0].filename
 

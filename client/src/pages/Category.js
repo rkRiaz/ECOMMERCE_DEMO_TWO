@@ -1,9 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import './Category.css'
-import {Link} from 'react-router-dom'
-import ProductCard from '../components/ProductCard'
-import products from '../dummy_db/products'
-
+import {Link, useParams} from 'react-router-dom'
+import SubCategoryProductCard from '../components/SubCategoryProductCard'
 
 import home from '../assets/icons/home.svg'
 import rightArrow from '../assets/icons/right-arrow.svg'
@@ -11,16 +9,24 @@ import plus from '../assets/icons/plus.svg'
 import axios from 'axios'
 
 
-
-
 // import RangeSlider from '../components/RangeSlider'
 
 function Category() {
     const [categories, setCategories] = useState([])
+    const[subCategories, setSubCategories] =useState([])
 
 
-    const[minPrice, setMinPrice] =useState(0)
-    const[maxPrice, setMaxPrice] =useState(100)
+    const {categorySlug} = useParams()
+
+    useEffect(() => {
+        axios.get(`http://localhost:8080/api/category/find-sub-categories-by-category-slug/${categorySlug}`)
+        .then(res => {
+            setSubCategories(res.data.subCategories)
+        })
+        .catch(err => {
+            console.log(err.response)
+        })
+    }, [subCategories])
 
     useEffect(() => {
         axios.get(`http://localhost:8080/api/category/get-all-category`)
@@ -30,40 +36,21 @@ function Category() {
         .catch(err => {
             console.log(err.response)
         })
-    }, [])
+    }, [categorySlug])
+    
 
-    const onSliderChange = (value) => {
-        // setMinPrice(value[0])
-        // setMaxPrice(value[1])
-        // console.log(minPrice + maxPrice)
-    };
-    //   const onMinChange = (e) => {
-    //     this.setState({
-    //       min: +e.target.value || 0,
-    //     });
-    //   };
-    //   const onMaxChange = (e) => {
-    //     this.setState({
-    //       max: +e.target.value || 100,
-    //     });
-    //   };
 
     return (
         <div className="category">
-            {console.log(`${minPrice}, ${maxPrice}`)}
+            {/* category__header starts */}
+            <div className="category__header">
+                <img src={home} alt=""/>
+                <Link to="/">Home</Link>
+                <img className="category__headerArrowIcon" src={rightArrow} alt=""/>
+                <Link to="#">{categorySlug}</Link>
+            </div>
+            {/* category__header ends */}
             <div className="category__content">
-                {/* category__header starts */}
-                <div className="category__header">
-                    <img src={home} alt=""/>
-                    <Link to="#">ACCESSORIES</Link>
-                    <img className="category__headerArrowIcon" src={rightArrow} alt=""/>
-                    <Link to="#">FRUITS</Link>
-                </div>
-                {/* category__header ends */}
-
-                {/* category__headline starts */}
-                {/* <div className="category__headline">KEYBOARD</div> */}
-                {/* category__headline ends */}
             
                 <div className="category__explore">
                     {/* category__exploreLeft starts */}
@@ -115,6 +102,7 @@ function Category() {
                                 <p>others</p>
                                 <img src={plus} alt=""/>
                             </div>
+
                         </div>
 
                     </div>
@@ -122,44 +110,43 @@ function Category() {
 
 
                     {/* category__exploreRight starts */}
+                    
                     <div className="category__exploreRight">
                         <div className="category__exploreRightCategory">
                             {
                                 categories.map(category => (
-                                    <Link to={`category/${category.categorySlug}`}>{category.category}</Link>
+                                    <Link to={`${category.categorySlug}`}>{category.category}</Link>
 
                                 ))
                             }
                     
                         </div>
                         <div className="category__exploreRightSort">
-                            <div className="header__middleSearchSortDropDown">
-                                <h5>SHOW</h5>
+                            <div className="category__exploreRightSortDropDown">
                                 <select onChange={e => console.log(e.target.value)}>
-                                    <option value="1">1</option> 
-                                    <option value="2">2</option>    
-                                    <option value="3">3</option>    
-                                    <option value="4">4</option>    
-                                </select>
-                            </div>
-                            <div className="header__middleSearchSortDropDown">
-                                <h5>SHORT BY</h5>
-                                <select onChange={e => console.log(e.target.value)}>
-                                    <option value="default">default</option> 
+                                    <option value="default">sort by default</option> 
                                     <option value="meat">Meat</option>    
                                     <option value="fish">Fish</option>    
                                     <option value="vegitable">Vegitable</option>    
+                                </select>
+                            </div>
+                            <div className="category__exploreRightSortDropDown">
+                                <select onChange={e => console.log(e.target.value)}>
+                                    <option value="">show</option> 
+                                    <option value="2">2</option>    
+                                    <option value="3">3</option>    
+                                    <option value="4">4</option>    
                                 </select>
                             </div>
                         </div>
 
 
                         <div className="category__exploreRightProductsCategory">
-                            {/* {
-                                products.map(product => (
-                                    <ProductCard key={product._id} product={product}/> 
+                            {
+                                subCategories.map(subCategory => (
+                                    <SubCategoryProductCard key={subCategory._id} subCategory={subCategory}/> 
                                 ))
-                            } */}
+                            }
                         </div>
 
 

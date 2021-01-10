@@ -31,7 +31,7 @@ function ProductCard(props) {
     return (
         <div className="productCard">
             
-                <Link to={product?.salePrice ? `product/${product?._id}` : `product/${product?.subCategorySlug}`}>
+                <Link to={`/product/${product?._id}`}>
                     <img className="productCardLargeImage" src={`/tempProductImages/${product?.productImages[0]}`} alt=""/> 
                     <div className="productCard__name px-3 mt-4">{product?.productName}</div>
                     <div className="productCard__price px-3 my-2">

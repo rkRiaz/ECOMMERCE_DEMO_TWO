@@ -70,9 +70,9 @@ exports.getProductsByCategory = async (req, res, next) => {
 }
 
 exports.getProductsBySubCategory = async (req, res, next) => {
-    const subCategory = req.params.slug;
+    const subCategorySlug = req.params.slug;
     try {
-        let products = await Product.find({ subCategory })
+        let products = await Product.find({ subCategorySlug })
         res.status(200).json({
             products: products,
             message: 'Products by sub category fetch Successfully!'
@@ -92,7 +92,7 @@ exports.getSearchProductByText = async (req, res) => {
         const query = req.query.q;
         // return console.log(query)
         const results = await Product.fuzzySearch({ query: query, prefixOnly: false, minSize: 1 })
-        return console.log(results)
+        // return console.log(results)
         res.status(200).json({
             searchProducts: results
         });

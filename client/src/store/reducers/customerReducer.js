@@ -5,7 +5,6 @@ const init = {
     customerInfo: {},
     customerToken: '',
     error: {},
-    updateError: {}
 }
 
 const customerReducer = (state=init, action) => {
@@ -22,12 +21,6 @@ const customerReducer = (state=init, action) => {
             return {
                 ...state,
                 error: action.payload.error,
-            }
-        }
-        case Types.UPDATE_CUSTOMER_ERROR: {
-            return {
-                ...state,
-                updateError: action.payload.updateError
             }
         }
 

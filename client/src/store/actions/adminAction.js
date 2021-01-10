@@ -1,46 +1,58 @@
 import axios from 'axios'
 import * as Types from './types'
-// import jwtDecode from 'jwt-decode'
+import jwtDecode from 'jwt-decode'
 import setAuthToken from '../../utils/setAuthToken'
 
 
 
-export const adminLogin = (admin, history) => dispatch => {
-    axios.post('/admin/login', admin)
+
+export const adminLogin = (loginInfo, history) => dispatch => {
+    axios.put('http://localhost:8080/api/admin/login', loginInfo)
         .then(res => {
-            let admin_auth = res.data
-            localStorage.setItem('admin_auth', admin_auth)
-            setAuthToken(admin_auth)
-            // let decodeToken = jwtDecode(token)
+            let token = res.data.token
+            localStorage.setItem('admin_auth_token', token)
+            setAuthToken(token)
+            let decodeToken = jwtDecode(token)
+
             dispatch({
-                type: Types.ADMIN_AUTH,
+                type: Types.SET_ADMIN,
                 payload: {
-                    admin: admin_auth
+                    adminToken: token,
+                    adminInfo: decodeToken
                 }
             })
-            history.push('/admin/dashboard')
+            
+            // history.location.pathname === "/admin/cart" ? 
+            // history.push("/admin/cart") :
+            // history.push("/adminDashboard")
         })
-
         .catch(error => {
             dispatch({
-                type: Types.ADMIN_ERROR,
+                type: Types.SET_ADMIN_ERROR,
                 payload: {
                     error: error.response.data
-                }
+                },
             })
-            // console.log(error)
+            // dispatch({
+            //     type: Types.SIDE_BARS,
+            //     payload: {
+            //         addProduct: '',
+            //         open: history.location.pathname === "/admin/signup-login" ? false : true,
+            //     }
+            // })
+            console.log(error)
         })
 }
 
-export const adminLogout = history => dispatch => {
-    localStorage.removeItem('admin_auth')
+export const adminLogout = () => dispatch => {
+    localStorage.removeItem('admin_auth_token')
     dispatch({
-        type: Types.ADMIN_AUTH,
+        type: Types.SET_ADMIN,
         payload: {
-            user: {}
+            adminLoggedIn: false,
+            adminInfo: {}
         }
     })
-    history.push('/')
 }
 
 

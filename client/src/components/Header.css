@@ -120,23 +120,43 @@
 }
 .header__middleSearch input{
     flex: .8;
-    height: 66px;
+    height: 50px;
     outline: none;
     border: none;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+
+}
+.header__middleSearchIcon{
+    display: grid;
+    place-items: center;
+    width: 80px;
+    height: 50px;
+    background-color: #fe0000;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+.header__middleSearchIcon img{
+    width: 30px;
+    height: 30px;
+}
+.header__middleIcons a {
+    margin-left: 20px;
+    position: relative;
 }
 .header__middleSearchResult{
+    display: none;
     position: absolute;
     background-color: #fff;
-    height: auto;
+    max-height: 400px;
     width: 82.4%;
     top: 105%;
     box-shadow: var(--darkShadow);
     z-index: 1000;
     overflow-y: scroll;
 }
-
 .header__middleSearchResult__show{
-    /* display: ; */
+    display: block;
 }
 .header__middleSearchResultProduct{
     display: flex;
@@ -151,6 +171,7 @@
 }
 .header__middleSearchResultCategory{
     font-size: 14px;
+    text-transform: capitalize;
 }
 .header__middleSearchResultPrice{
     color: #02C449;
@@ -163,19 +184,7 @@
     padding-left: 20px;
 }
 
-.header__middleSearchIcon{
-    display: grid;
-    place-items: center;
-    width: 94px;
-    height: 66px;
-    background-color: #DA0707;
-}
 
-
-.header__middleIcons a {
-    margin-left: 20px;
-    position: relative;
-}
 .header__middleIcons img{
     height: 41px;
     width: 41px;
@@ -329,7 +338,7 @@
 .header__menuContent a{
     position: relative;
     margin: 10px 30px;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 600;
     /* font-family: var(--bangleFont); */
 }
@@ -442,7 +451,6 @@
 .dropdown-item{
     margin:5px 0 !important;
     background-color: #0B273D !important;
-    font-size: 18px !important;
     font-family: var(--openSans) !important;
     position: unset !important;
     margin: 15px  0 !important;
@@ -456,6 +464,8 @@
 }
 .dropdown-menu{
     background-color: #0B273D !important;
+    font-size: 14px !important;
+
 }
 .nav-link {    
     padding: 0 !important;

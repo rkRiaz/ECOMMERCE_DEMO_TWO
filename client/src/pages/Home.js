@@ -41,24 +41,29 @@ function Home() {
     }, [])
 
     const responsive = {
-  superLargeDesktop: {
-    // the naming can be any, depends on you.
-    breakpoint: { max: 4000, min: 3000 },
-    items: 7
-  },
-  desktop: {
-    breakpoint: { max: 3000, min: 1024 },
-    items: 6
-  },
-  tablet: {
-    breakpoint: { max: 1024, min: 464 },
-    items: 4
-  },
-  mobile: {
-    breakpoint: { max: 464, min: 0 },
-    items: 2
-  }
-};
+        superLargeDesktop: {
+            // the naming can be any, depends on you.
+            breakpoint: { max: 4000, min: 3000 },
+            items: 7,
+            slidesToSlide: 6
+
+        },
+        desktop: {
+            breakpoint: { max: 3000, min: 1024 },
+            items: 6,
+            slidesToSlide: 5
+        },
+        tablet: {
+            breakpoint: { max: 1024, min: 464 },
+            items: 4,
+            slidesToSlide: 3
+        },
+        mobile: {
+            breakpoint: { max: 464, min: 0 },
+            items: 2,
+            slidesToSlide: 1
+        }
+    };
 
     return (
         <div className="home">
@@ -73,19 +78,16 @@ function Home() {
                 <h2>Categories</h2> 
                 
                     <Carousel 
-                    style={{backgroundColor: 'red'}}
-        
-                      responsive={responsive}
-
-                      >
-                      
-                            {
-                                categories ? categories.map(category => (
-                                    <CategoryProductCard key={categories._id} category={category}/> 
-                                )) : 'loading' 
-                                
-                            }
-                      
+                        infinite={true} 
+                        responsive={responsive}
+                
+                    >
+                    {
+                        categories ? categories.map(category => (
+                            <CategoryProductCard key={categories._id} category={category}/> 
+                        )) : 'loading' 
+                        
+                    }
                     </Carousel>
                 
             </div>

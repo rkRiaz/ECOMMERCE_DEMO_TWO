@@ -4,26 +4,6 @@ import jwtDecode from 'jwt-decode'
 import setAuthToken from '../../utils/setAuthToken'
 
 
-export const update = (customerId, history) => dispatch => {
-    axios.put(`/api/customer/update/${customerId}`)
-        .then((res) => {
-            dispatch({
-                type: Types.SET_CUSTOMER,
-                payload: {
-                    customer: res.data
-                }
-            })
-            history.push("/customer/dashboard")
-        })
-        .catch(error => {
-            dispatch({
-                type: Types.UPDATE_CUSTOMER_ERROR,
-                payload: {
-                    updateError: error.response.data
-                }
-            })
-        })
-}
 
 export const login = (loginInfo, history) => dispatch => {
     axios.put('http://localhost:8080/api/customer/login', loginInfo)

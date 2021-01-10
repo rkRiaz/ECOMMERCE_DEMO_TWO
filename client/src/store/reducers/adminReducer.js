@@ -1,25 +1,28 @@
 import * as Types from '../actions/types'
 
 const init = {
-    adminLoggedIn: false,
+    adminLoggedIn: true,
+    adminInfo: {},
+    adminToken: '',
     error: {},
 }
 
 const adminReducer = (state=init, action) => {
     switch(action.type) {
-        case Types.ADMIN_AUTH: {
+        case Types.SET_ADMIN: {
             return {
-                adminLoggedIn: action.payload.admin ? true : false,
-                error: {}
+                ...state,
+                adminToken: action.payload.adminToken,
+                adminInfo: action.payload.adminInfo,
+                adminLoggedIn: Object.keys(action.payload.adminInfo).length !== 0,
             }
         }
-        case Types.ADMIN_ERROR: {
+        case Types.SET_ADMIN_ERROR: {
             return {
                 ...state,
                 error: action.payload.error,
             }
         }
-
         default: return state
     }
 }

@@ -1,5 +1,6 @@
 export const SET_ADMIN = 'SET_ADMIN'
 export const SET_ADMIN_ERROR = 'SET_ADMIN_ERROR'
+export const UPDATE_ADMIN_ERROR = 'UPDATE_ADMIN_ERROR'
 
 
 export const SET_CUSTOMER = 'SET_CUSTOMER'

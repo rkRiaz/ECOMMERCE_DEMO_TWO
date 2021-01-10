@@ -24,6 +24,9 @@ import blogVideo from '../assets/images/Blog-Banner-03.svg'
 import jelly from '../assets/images/jelly.svg'
 import axios from 'axios';
 
+//multi carousel 
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
 
 
 function ProductDetails(props) {
@@ -71,6 +74,31 @@ function ProductDetails(props) {
       fetchData()
     }, [])
 
+    const responsive = {
+        superLargeDesktop: {
+            // the naming can be any, depends on you.
+            breakpoint: { max: 4000, min: 3000 },
+            items: 5,
+            slidesToSlide: 4
+
+        },
+        desktop: {
+            breakpoint: { max: 3000, min: 1024 },
+            items: 4,
+            slidesToSlide: 3
+        },
+        tablet: {
+            breakpoint: { max: 1024, min: 464 },
+            items: 3,
+            slidesToSlide: 2
+        },
+        mobile: {
+            breakpoint: { max: 464, min: 0 },
+            items: 3,
+            slidesToSlide: 2
+        }
+    };
+
     return (
         <div className="details">
 
@@ -78,11 +106,11 @@ function ProductDetails(props) {
             <div className="details__header">
                 <div className="details__headerContainer">
                     <img src={home} alt=""/>
-                    <Link to="#">ACCESSORIES</Link>
+                    <Link to="/">Home</Link>
                     <img className="details__headerArrowIcon" src={rightArrow} alt=""/>
-                    <Link to="#">FRUITS</Link>
+                    <Link to={`/category/${product.categorySlug}`}>{product.categorySlug}</Link>
                     <img className="details__headerArrowIcon" src={rightArrow} alt=""/>
-                    <Link to="#">{product.name}</Link>
+                    <Link to="#">{product.productName}</Link>
                 </div>
             </div>
         {/* details__header ends */}
@@ -96,13 +124,18 @@ function ProductDetails(props) {
                             <img src={`/tempProductImages/${largeImage}`} alt=""/>
                         </div>
                         <div className="details__topLeftSmallImgs">
-                           {
-                            product? product.productImages.map(image => (
-                            <div onClick={changeImage} data-image={image} className="details__topLeftSmallImg mr-4">
-                                <img src={`/tempProductImages/${image}`} alt=""/>
-                            </div>
-                            )) : '' 
-                           }
+                            <Carousel 
+            
+                                responsive={responsive}
+                            >
+                                { 
+                                    product? product.productImages.map(image => (
+                                    <div onClick={changeImage} data-image={image} className="details__topLeftSmallImg">
+                                        <img src={`/tempProductImages/${image}`} alt=""/>
+                                    </div>
+                                    )) : '' 
+                                }
+                            </Carousel>
                         </div>
                     </div>
 
@@ -110,10 +143,10 @@ function ProductDetails(props) {
                         <div className="product__name">{product.productName}</div>
                         <div className="product__info">
                             <ul>
-                                <li><span>Price</span>&nbsp;&nbsp;&nbsp;&nbsp;{product?.salePrice}&#2547;</li>
-                                <li><span>Status </span>{product.available ? "In Stock" : "Out of Stock"}</li>
-                                <li><span>Product Code </span>{product?.productCode}</li>
-                                <li><span>Brand </span>{product?.brand}</li>
+                                <li><span>Price</span>&nbsp;&nbsp;&nbsp;{product?.salePrice}&#2547;</li>
+                                <li><span>Status&nbsp;&nbsp;&nbsp;</span>{product.available ? "In Stock" : "Out of Stock"}</li>
+                                <li><span>Product Code&nbsp;&nbsp;&nbsp;</span>{product?.productCode}</li>
+                                <li><span>Brand&nbsp;&nbsp;&nbsp;</span>{product?.brand}</li>
                             </ul>
                         </div>
                         <div className="product__details">{product?.shortDescription}</div>
@@ -133,27 +166,39 @@ function ProductDetails(props) {
                                 )) 
                             }
                         </div>
-                        <div className="product__price">
+                        <div className="product__infoPrice">
                             {/* product-sans font not imported */}
                             {quantity * product?.salePrice}&#2547;
                         </div>
                         <div className="product__action">
                             <div className="product__actionQuantity">
-                                <div onClick={subtractHandler} className="" style={{cursor: 'pointer', borderRight: '1px solid #707070'}}>-</div>
-                                <div className="" style={{borderRight: ' 1px solid #707070', width: "100%"}}>{quantity}</div>
+                                <div onClick={subtractHandler} className="" style={{cursor: 'pointer', borderRight: '1px solid #dbdbdb'}}>-</div>
+                                <div className="" style={{borderRight: ' 1px solid #dbdbdb', width: "100%"}}>{quantity}</div>
                                 <div onClick={addHandler} className="" style={{cursor: 'pointer'}}>+</div>
                             </div>
                             <Link onClick={() => {props.addToBusket(product._id, quantity, props.history)}}to="#" className="product__actionBuy"><img src={shoppingCart} alt=""/> BUY NOW</Link>
                             <Link to="#" className="product__actionWish"><img src={heartWhite} alt=""/></Link>
-                            <Link to="#" className="product__actionCart"><img src={shoppingCart} alt=""/></Link>
+                            <Link to="/cart" className="product__actionCart"><img src={shoppingCart} alt=""/></Link>
                         </div>
+                        {/* admin product edit starts  */}
+                            {
+                                props.admin.adminLoggedIn 
+                                ?
+                                <div className="product__admin d-flex mt-2">
+                                    <Link to={`/admin/edit-product/${product ? product._id : ''}`} className="product__adminEdit btn btn-primary ml-1"> EDITT</Link>
+                                    <Link to="#" className="product__adminDelete btn btn-danger ml-1"> DELETE</Link>
+                                </div> 
+                                :
+                                ""
+                            }
+                        {/* admin product edit ends  */}
                         <div className="productSocial">
                             <h4>Share In</h4>
                             <div className="productSocial__icons">
-                                <Link to=""><img src={facebook} alt=""/></Link>
-                                <Link to=""><img src={twitter} alt=""/></Link>
-                                <Link to=""><img src={instagram} alt=""/></Link>
-                                <Link to=""><img src={linkedin} alt=""/></Link>
+                                <Link to="#"><img src={facebook} alt=""/></Link>
+                                <Link to="#"><img src={twitter} alt=""/></Link>
+                                <Link to="#"><img src={instagram} alt=""/></Link>
+                                <Link to="#"><img src={linkedin} alt=""/></Link>
                             </div>
                         </div>
                     </div>
@@ -165,30 +210,28 @@ function ProductDetails(props) {
                 <div className="details__bottom">
           
                     <div className="details__bottomLeft ">
-                        <div className="details__bottomLeftHeader">
-                            <span className="nav__btn" onClick={navigate('description')}>Description</span>
-                            <span className="nav__btn" onClick={navigate('reviews')}>Reviews (15)</span>
-                        </div>
-
-                        <div id="description" className="navClass details__bottomLeftContent">
-                            <h3>Description :</h3>
-                            <p> Halaldokan.com is an online shop in Dhaka, Bangladesh. We believe time is valuable to our fellow Dhaka residents, and that they should not 
-                                have to waste hours in traffic, brave bad weather and wait in line just to buy basic necessities like eggs! This is why Halaldokan delivers 
-                                everything you need right at your door-step and at no additional cost.
-                            </p>
-                            <div className="details__bottomLeftContentVideo">
-                                {/* <video width="320" height="240" autoplay>
-                                    <source src={blogVideo} type="video/mp4" />
-                                </video> */}
-                                <img src={blogVideo} alt=""/>
-                                <div className="details__bottomLeftContentIcon">
-                                    <img src={youtube} alt=""/>
+                            <div className="details__bottomLeftHeader">
+                                <div className="nav__btn" onClick={navigate('description')}>Description</div>
+                                <div className="nav__btn" onClick={navigate('reviews')}>Reviews (15)</div>
+                            </div>
+                            <div id="description" className="navClass details__bottomLeftContent">
+                                <h3>Description :</h3>
+                                <p> Halaldokan.com is an online shop in Dhaka, Bangladesh. We believe time is valuable to our fellow Dhaka residents, and that they should not 
+                                    have to waste hours in traffic, brave bad weather and wait in line just to buy basic necessities like eggs! This is why Halaldokan delivers 
+                                    everything you need right at your door-step and at no additional cost.
+                                </p>
+                                <div className="details__bottomLeftContentVideo">
+                                    {/* <video width="320" height="240" autoplay>
+                                        <source src={blogVideo} type="video/mp4" />
+                                    </video> */}
+                                    <img src={blogVideo} alt=""/>
+                                    <div className="details__bottomLeftContentIcon">
+                                        <img src={youtube} alt=""/>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div id="reviews" className="navClass details__bottomLeftContentRivews p-4" style={{display: 'none'}}>
-                                <h3>Reviews (15) :</h3>
+                            <div id="reviews" className="navClass details__bottomLeftContentRivews p-4" style={{display: 'none'}}>
                                 <div className="details__bottomLeftContentRivewsItem">
                                     <h3>Saiful Islam</h3>
                                     <div className="product__review my-3">
@@ -208,101 +251,8 @@ function ProductDetails(props) {
                                         everything you need right at your door-step and at no additional cost.
                                     </p>
                                 </div>
-                                <div className="details__bottomLeftContentRivewsItem">
-                                    <h3>Saiful Islam</h3>
-                                    <div className="product__review my-3">
-                                        {
-                                            Array(4).fill().map((_, i) => (
-                                                <img className="product__reviewIcon" key={i} src={starYellow} alt=""/>
-                                            )) 
-                                        }
-                                        {
-                                            Array(1).fill().map((_, i) => (
-                                                <img className="product__reviewIcon" key={i} src={starDark} alt=""/>
-                                            )) 
-                                        }
-                                    </div>
-                                    <p> Halaldokan.com is an online shop in Dhaka, Bangladesh. We believe time is valuable to our fellow Dhaka residents, and that they should not 
-                                        have to waste hours in traffic, brave bad weather and wait in line just to buy basic necessities like eggs! This is why Halaldokan delivers 
-                                        everything you need right at your door-step and at no additional cost.
-                                    </p>
-                                </div>
-                                <div className="details__bottomLeftContentRivewsItem">
-                                    <h3>Saiful Islam</h3>
-                                    <div className="product__review my-3">
-                                        {
-                                            Array(4).fill().map((_, i) => (
-                                                <img className="product__reviewIcon" key={i} src={starYellow} alt=""/>
-                                            )) 
-                                        }
-                                        {
-                                            Array(1).fill().map((_, i) => (
-                                                <img className="product__reviewIcon" key={i} src={starDark} alt=""/>
-                                            )) 
-                                        }
-                                    </div>
-                                    <p> Halaldokan.com is an online shop in Dhaka, Bangladesh. We believe time is valuable to our fellow Dhaka residents, and that they should not 
-                                        have to waste hours in traffic, brave bad weather and wait in line just to buy basic necessities like eggs! This is why Halaldokan delivers 
-                                        everything you need right at your door-step and at no additional cost.
-                                    </p>
-                                </div>
-                                <div className="details__bottomLeftContentRivewsItem">
-                                    <h3>Saiful Islam</h3>
-                                    <div className="product__review my-3">
-                                        {
-                                            Array(4).fill().map((_, i) => (
-                                                <img className="product__reviewIcon" key={i} src={starYellow} alt=""/>
-                                            )) 
-                                        }
-                                        {
-                                            Array(1).fill().map((_, i) => (
-                                                <img className="product__reviewIcon" key={i} src={starDark} alt=""/>
-                                            )) 
-                                        }
-                                    </div>
-                                    <p> Halaldokan.com is an online shop in Dhaka, Bangladesh. We believe time is valuable to our fellow Dhaka residents, and that they should not 
-                                        have to waste hours in traffic, brave bad weather and wait in line just to buy basic necessities like eggs! This is why Halaldokan delivers 
-                                        everything you need right at your door-step and at no additional cost.
-                                    </p>
-                                </div>
-                                <div className="details__bottomLeftContentRivewsItem">
-                                    <h3>Saiful Islam</h3>
-                                    <div className="product__review my-3">
-                                        {
-                                            Array(4).fill().map((_, i) => (
-                                                <img className="product__reviewIcon" key={i} src={starYellow} alt=""/>
-                                            )) 
-                                        }
-                                        {
-                                            Array(1).fill().map((_, i) => (
-                                                <img className="product__reviewIcon" key={i} src={starDark} alt=""/>
-                                            )) 
-                                        }
-                                    </div>
-                                    <p> Halaldokan.com is an online shop in Dhaka, Bangladesh. We believe time is valuable to our fellow Dhaka residents, and that they should not 
-                                        have to waste hours in traffic, brave bad weather and wait in line just to buy basic necessities like eggs! This is why Halaldokan delivers 
-                                        everything you need right at your door-step and at no additional cost.
-                                    </p>
-                                </div>
-                                <div className="details__bottomLeftContentRivewsItem">
-                                    <h3>Saiful Islam</h3>
-                                    <div className="product__review my-3">
-                                        {
-                                            Array(4).fill().map((_, i) => (
-                                                <img className="product__reviewIcon" key={i} src={starYellow} alt=""/>
-                                            )) 
-                                        }
-                                        {
-                                            Array(1).fill().map((_, i) => (
-                                                <img className="product__reviewIcon" key={i} src={starDark} alt=""/>
-                                            )) 
-                                        }
-                                    </div>
-                                    <p> Halaldokan.com is an online shop in Dhaka, Bangladesh. We believe time is valuable to our fellow Dhaka residents, and that they should not 
-                                        have to waste hours in traffic, brave bad weather and wait in line just to buy basic necessities like eggs! This is why Halaldokan delivers 
-                                        everything you need right at your door-step and at no additional cost.
-                                    </p>
-                                </div>
+                                
+ 
                             </div>
                     </div>
 
@@ -339,7 +289,7 @@ function ProductDetails(props) {
                         </div>
                     </div>
                 </div>
-                {/* details__bottom starts */}
+                {/* details__bottom ends */}
 
             </div>
        
@@ -353,6 +303,7 @@ function ProductDetails(props) {
 }
 
 const mapStateToProps = state => ({
+    admin: state.admin,
     customer: state.customer,
     busket: state.busket
 })

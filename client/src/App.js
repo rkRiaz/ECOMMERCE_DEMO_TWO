@@ -22,6 +22,8 @@ import CustomerDashboard from './pages/customer/CustomerDashboard'
 // admin Routes
 import AdminDashboard from './pages/admin/AdminDashboard'
 import AddProduct from './pages/admin/AddProduct'
+import EditProduct from './pages/admin/EditProduct'
+
 // import EditProduct from './pages/admin/EditProduct'
 // import Customers from './pages/admin/Customers'
 // import AllOrders from './pages/admin/AllOrders'
@@ -44,8 +46,8 @@ function App() {
             
             <Switch>
               <Route exact path="/"><Header/><Home/><Footer/></Route>
-              <Route exact path="/category"><Header/><Category/><Footer/></Route>
-              <Route exact path="/category/:categorySlug"><Header/><SubCategory/><Footer/></Route>
+              <Route exact path="/subCategory/:subCategorySlug"><Header/><SubCategory/><Footer/></Route>
+              <Route exact path="/category/:categorySlug"><Header/><Category/><Footer/></Route>
               <Route exact path="/product/:productId"><Header/><ProductDetails/><Footer/></Route>
 
               {/* customer Routes */}
@@ -63,6 +65,8 @@ function App() {
               {/* <Route exact path="/admin/customers"  component={Customers} />  */}
               {/* <Route exact path="/admin/all-orders"  component={AllOrders} />  */}
               <Route exact path="/admin/add-product" component={AddProduct} /> 
+              <Route exact path="/admin/edit-product/:productId" component={EditProduct} /> 
+
               {/* <Route exact path="/admin/edit-product/:productId" component={EditProduct} />  */}
 
               <Route exact path="/cart"><Header/><Cart/><Footer/></Route>

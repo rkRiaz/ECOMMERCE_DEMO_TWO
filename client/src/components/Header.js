@@ -36,7 +36,7 @@ function Header(props) {
     const search = e => {
         axios.get(`http://localhost:8080/api/product/get-products-by-text-search?q=${e.target.value}`)
         .then(res => {
-            return console.log(res.data.searchProducts)
+             console.log(res.data.searchProducts)
             setSearchProducts(res.data.searchProducts)
         })
         .catch(err => {
@@ -108,29 +108,25 @@ function Header(props) {
                         <input type="text" placeholder="Search" onChange={search}/>
                         <div className="header__middleSearchIcon"><img src={searchIcon} alt=""/></div>
                         {/* //search results component  starts*/}
-                            <div className="header__middleSearchResult header__middleSearchResult__show">
+                            <div className={searchProducts ? "header__middleSearchResult header__middleSearchResult__show" : "header__middleSearchResult"}>
+                                {
+                                searchProducts.length === 0 ? 
+                                <p className="h5 p-3">No Product Found</p> :
+                                    searchProducts.map(searchProduct => {
+                                    <Link to="#" className="header__middleSearchResultProduct">
+                                        <div className="header__middleSearchResultImage mr-3">
+                                            <img className="img-thumbnail" style={{ width: 70, height: 70 }} src={`/tempProductImages/${searchProduct.productImages[0]}`} alt="" />
+                                        </div>
+                                        <div className="header__middleSearchResultInfo">
+                                            <div className="header__middleSearchResultName">{searchProduct.productName}</div>
+                                            <div className="header__middleSearchResultPrice"><strike>Tk. {searchProduct.regularPrice}</strike>&nbsp; Tk. {searchProduct.salePrice}</div>
+                                            <div className="header__middleSearchResultCategory">{searchProduct.categorySlug}</div>
 
-                                <Link to="#" className="header__middleSearchResultProduct">
-                                    <div className="header__middleSearchResultImage mr-3">
-                                        <img className="img-thumbnail" style={{ width: 70, height: 70 }} src={riaz} alt="" />
-                                    </div>
-                                    <div className="header__middleSearchResultInfo">
-                                        <div className="header__middleSearchResultName">Apple Juice</div>
-                                        <div className="header__middleSearchResultPrice"><strike>Tk. 500</strike>&nbsp; Tk. 450</div>
-                                        <div className="header__middleSearchResultCategory">Fruits</div>
-
-                                    </div>
-                                </Link>
-                                <Link to="#" className="header__middleSearchResultProduct">
-                                    <div className="header__middleSearchResultImage mr-3">
-                                        <img className="img-thumbnail" style={{ width: 70, height: 70 }} src={riaz} alt="" />
-                                    </div>
-                                    <div className="header__middleSearchResultInfo">
-                                        <div className="header__middleSearchResultName">Apple Juice</div>
-                                        <div className="header__middleSearchResultPrice"><strike>Tk. 500</strike>&nbsp; Tk. 450</div>
-                                        <div className="header__middleSearchResultCategory">Fruits</div>
-                                    </div>
-                                </Link>
+                                        </div>
+                                    </Link>
+                                    })
+                                }
+                                
 
                             </div>
                         {/* //search results component  ends*/}
@@ -184,7 +180,7 @@ function Header(props) {
                             //have to fix the key value
                             <NavDropdown key={category._id} title={category.category} id="collasible-nav-dropdown">
                                 {category.subCategory.map((subC) => (
-                                    <NavDropdown.Item key={subC._id}><Link to={subC.subCategorySlug}>{subC.name}</Link></NavDropdown.Item>
+                                    <NavDropdown.Item onClick={e => setShowSideBar(!showSideBar)} key={subC._id}><Link to={`/subCategory/${subC.subCategorySlug}`}>{subC.name}</Link></NavDropdown.Item>
                                 ))}
                             </NavDropdown> :
                             <Link key={category._id} to={category.categorySlug}>{category.category}</Link>
