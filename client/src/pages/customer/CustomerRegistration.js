@@ -104,16 +104,14 @@ function CustomerRegistration() {
                                 </Form.Group>     
                             </div>
                             {/* has to fix some css registration__contentFormCheckBox */}
-                            <div className="registration__contentFormCheckBox">
-                                <div className="d-flex align-items-center">
-                                    <input onChange={e => setChecked(!checked)} type="checkbox" /> &nbsp;&nbsp;
-                                    <div style={{textDecorationLine: "underline"}}>I agree with the <Link to="#">privacy policy</Link></div>    
+                            <div className="registration__contentFormCheckBox"> 
+                                <div className="d-flex">
+                                    <input className="mt-2" onChange={e => setChecked(!checked)} type="checkbox" />&nbsp;&nbsp;
+                                    <Link to="#"><p>I agree with the privacy policy</p></Link>  
                                 </div>
-                                <Link to="/customerLogin">
-                                    <p>Already have an account? Login</p>
-                                </Link>
+                                <Link to="/customerLogin"><p>Already have an account? Login</p></Link>
                             </div>
-                            <Button className="registration__contentBtn" type="submit">REGISTRATION</Button>
+                            <Button className="btn-primary registration__contentBtn" type="submit">REGISTRATION</Button>
                         </Form>
                    
                 </div>

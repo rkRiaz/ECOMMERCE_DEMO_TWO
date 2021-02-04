@@ -38,7 +38,7 @@ function NavTab() {
     return (
         <div className="tab">
             <div className="tab__container">
-                <div class="tab__bar">
+                <div className="tab__bar">
                     <div className="tab__barBtn" onClick={openProductType('featured')} 
                         style={{
                             color: "#fff",

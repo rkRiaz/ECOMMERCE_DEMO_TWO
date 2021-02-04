@@ -1,14 +1,27 @@
 const {Schema, model} = require('mongoose')
+const mongoose_fuzzy_searching = require('mongoose-fuzzy-searching');
 
-const orderedSchema = new Schema({
+const orderSchema = new Schema({
     customerId: {
         type: String, 
-        required: true
     },
-    // customer: {
-    //     type: {},
-    //     required: true
-    // },
+    shippingInformation: {
+        name: {
+            type: String,
+            required: true
+        },
+        address: {
+            type: String,
+            required: true
+        },
+        phone: {
+            type: String,
+            required: true
+        },
+        email: {
+            type: String,
+        }
+    },
     cart_products: {
         type: [],
         required: true
@@ -17,24 +30,36 @@ const orderedSchema = new Schema({
         type: String,
         required: true
     },
-    paid: {
-        message: String,
-        createAt: Date,  
+    payment: {
+        method: {
+            type: String,
+            required: true
+        },
+        transactionId: {
+            type: String,
+        }
     },
-    picked: {
-        message: String,
-        createAt: Date,  
+    status: {
+        paid: {
+            message: String,
+            time: Date,
+        },
+        picked: {
+            message: String,
+            time: Date,  
+        },
+        shipped:{
+            message: String,
+            time: Date,  
+        },
+        delivered: {
+            message: String,
+            time: Date,  
+        },
     },
-    shipped:{
-        message: String,
-        createAt: Date,  
-    },
-    delivered: {
-        message: String,
-        createAt: Date,  
-    },
+
 }, {timestamps: true})
 
-const Order = model('Order', orderedSchema)
+const Order = model('Order', orderSchema)
 module.exports = Order
 

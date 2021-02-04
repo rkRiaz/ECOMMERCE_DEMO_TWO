@@ -1,10 +1,14 @@
 import React, {useState, useEffect} from 'react'
 import './ProductDetails.css'
 import {Link} from 'react-router-dom'
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux'
 import { addToBusket } from '../store/actions/busketActions'
+import {cartSideBar} from "../store/actions/sideBarAction"
+import {ButtonGroup, Button} from 'react-bootstrap'
 
+import {AiOutlineZoomIn, AiOutlineZoomOut} from 'react-icons/ai'
+import {MdZoomOutMap} from 'react-icons/md'
 import rightArrow from '../assets/icons/right-arrow.svg'
 import home from '../assets/icons/home.svg'
 // import products from '../dummy_db/products'
@@ -27,20 +31,46 @@ import axios from 'axios';
 //multi carousel 
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
+// product zoom react-zoom-pan-pinch
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+
+
 
 
 function ProductDetails(props) {
     const [product, setProduct] = useState('')
-    const[quantity, setQuantity] = useState(1)
-    const[largeImage, setLargeImage] = useState('')
+    const [quantity, setQuantity] = useState(1)
+    const [largeImage, setLargeImage] = useState('')
+    const [showAlert, setShowAlert] = useState(false)
 
     const { productId } = useParams();
+    const  history  = useHistory()
 
+
+    const addToCartAction = (quantity) => e => {
+        props.addToBusket(productId, quantity, history)
+        props.cartSideBar('open')  
+
+    }
+
+    const deleteProduct = e => {
+        e.preventDefault()
+        axios.delete(`http://localhost:8080/api/product/delete-product/${product._id}`)
+        .then(res => {
+            alert(res.data.message)
+            setShowAlert(!showAlert)
+            history.push('/')
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
 
     const changeImage = e => {
         let target = e.target.parentElement
         let imgSrc = target.dataset.image
         setLargeImage(imgSrc)
+        console.log(target)
     }
     const addHandler = e => {
         e.preventDefault()
@@ -115,14 +145,46 @@ function ProductDetails(props) {
             </div>
         {/* details__header ends */}
 
+        {/* delete close btn starts */}
+            {
+                showAlert ? 
+                    <div onClick={e => {setShowAlert(!showAlert)}} className="deleteAlertBoxCloseBtn"></div>
+                : 
+                ''
+            }
+        {/* delete close btn ends */}
+
        
             <div className="details__container">
                  {/* details__top starts */}
                 <div className="details_top">
                     <div className="details__topLeft">
-                        <div className="details__topLeftLargeImg">
-                            <img src={`/tempProductImages/${largeImage}`} alt=""/>
-                        </div>
+
+                    <div className="details__topLeftLargeImg">
+                            <TransformWrapper
+                                defaultScale={1}
+                                defaultPositionX={200}
+                                defaultPositionY={100}
+                            >
+                                {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
+                                <React.Fragment>
+                                    <TransformComponent>
+                                        
+                                        <img src={`http://localhost:8080/uploads/images/${largeImage}`} alt=""/>
+                                      
+                                    </TransformComponent>
+                                    <div className="details__topLeftTransformWrapperBtnGroup text-right">
+                                        <Button onClick={zoomIn} variant="info" className=""><AiOutlineZoomIn/></Button>
+                                        <Button onClick={zoomOut} variant="warning" className="ml-1"><AiOutlineZoomOut/></Button>
+                                        <Button onClick={resetTransform} variant="primary" className="ml-1"><MdZoomOutMap/></Button>
+                                    </div>
+                                </React.Fragment>
+                                )}
+                            </TransformWrapper>
+                            </div>
+             
+
+                    
                         <div className="details__topLeftSmallImgs">
                             <Carousel 
             
@@ -131,7 +193,7 @@ function ProductDetails(props) {
                                 { 
                                     product? product.productImages.map(image => (
                                     <div onClick={changeImage} data-image={image} className="details__topLeftSmallImg">
-                                        <img src={`/tempProductImages/${image}`} alt=""/>
+                                        <img src={`http://localhost:8080/uploads/images/${image}`} alt=""/>
                                     </div>
                                     )) : '' 
                                 }
@@ -176,7 +238,7 @@ function ProductDetails(props) {
                                 <div className="" style={{borderRight: ' 1px solid #dbdbdb', width: "100%"}}>{quantity}</div>
                                 <div onClick={addHandler} className="" style={{cursor: 'pointer'}}>+</div>
                             </div>
-                            <Link onClick={() => {props.addToBusket(product._id, quantity, props.history)}}to="#" className="product__actionBuy"><img src={shoppingCart} alt=""/> BUY NOW</Link>
+                            <Link onClick={addToCartAction(quantity)} to="#" className="product__actionBuy"><img src={shoppingCart} alt=""/> BUY NOW</Link>
                             <Link to="#" className="product__actionWish"><img src={heartWhite} alt=""/></Link>
                             <Link to="/cart" className="product__actionCart"><img src={shoppingCart} alt=""/></Link>
                         </div>
@@ -186,7 +248,19 @@ function ProductDetails(props) {
                                 ?
                                 <div className="product__admin d-flex mt-2">
                                     <Link to={`/admin/edit-product/${product ? product._id : ''}`} className="product__adminEdit btn btn-primary ml-1"> EDITT</Link>
-                                    <Link to="#" className="product__adminDelete btn btn-danger ml-1"> DELETE</Link>
+                                    <Link onClick={e => {setShowAlert(!showAlert)}} to="#" className="product__adminDelete btn btn-danger ml-1"> DELETE</Link>
+                                    {
+                                        showAlert ? 
+                                            <div className="deleteAlertBox">
+                                                <p style={{"width": "200px"}}>! You are going to delete this product. You can not find this product anymore after choosing yes.</p>
+                                                <div className="d-flex justify-content-between">
+                                                    <div onClick={deleteProduct} className="btn btn-danger">Yes</div>
+                                                    <div onClick={e => {setShowAlert(!showAlert)}} className="ml-2 btn btn-warning">No</div>
+                                                </div>
+                                            </div>
+                                        : 
+                                        ''
+                                    }
                                 </div> 
                                 :
                                 ""
@@ -203,6 +277,7 @@ function ProductDetails(props) {
                         </div>
                     </div>
                 </div>
+
                  {/* details__top ends */}
 
 
@@ -221,13 +296,11 @@ function ProductDetails(props) {
                                     everything you need right at your door-step and at no additional cost.
                                 </p>
                                 <div className="details__bottomLeftContentVideo">
-                                    {/* <video width="320" height="240" autoplay>
-                                        <source src={blogVideo} type="video/mp4" />
-                                    </video> */}
-                                    <img src={blogVideo} alt=""/>
-                                    <div className="details__bottomLeftContentIcon">
+                                    <iframe width="100%" height="500px" src={`https://www.youtube.com/embed/${product.productVideo ? product.productVideo : ''}`} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                    {/* <img src={blogVideo} alt=""/> */}
+                                    {/* <div className="details__bottomLeftContentIcon">
                                         <img src={youtube} alt=""/>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
 
@@ -294,10 +367,6 @@ function ProductDetails(props) {
             </div>
        
 
-
-
-
-
         </div>
     )
 }
@@ -307,4 +376,4 @@ const mapStateToProps = state => ({
     customer: state.customer,
     busket: state.busket
 })
-export default connect(mapStateToProps, { addToBusket })(ProductDetails)
+export default connect(mapStateToProps, { addToBusket, cartSideBar })(ProductDetails)

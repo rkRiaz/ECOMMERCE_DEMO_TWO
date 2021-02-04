@@ -15,7 +15,7 @@ function CategoryProductCard(props) {
     return (
         <div className="categoryProductCard">
             <Link to={`category/${category.categorySlug}`}>
-                <img className="categoryProductCardLargeImage" src={`/tempProductImages/${category.categoryImage}`} alt=""/> 
+                <img className="categoryProductCardLargeImage" src={`http://localhost:8080/uploads/images/${category.categoryImage}`} alt=""/> 
                 <div className="categoryProductCard__name px-3 mt-4">{category.category}</div>
             </Link>
         </div>

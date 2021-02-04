@@ -1,6 +1,5 @@
 .cart__sidebar{
     width: 100%;
-    background: none;
 }
 
 .cart__sidebar__content{
@@ -10,7 +9,7 @@
     height: 100%;
     width: 100%;
     transition: var(--mainTransition);
-    z-index: 1000;
+    z-index: 100000;
 }
 .bar__off {
     width: 0px !important;
@@ -33,38 +32,34 @@
     transition: var(--mainTransition);
     width: 300px;
     height: 100vh;
-    overflow-y: scroll !important;
 }
 
 .cart__sidebar__cart__table{
     overflow-y: scroll;
-    max-height: 600px;
+    height: auto;
+    padding-bottom: 70px;
 }
-.cart__sidebar__cart__details::-webkit-scrollbar{
-    display: none;
-}
-.cart__sidebar__cart__table::-webkit-scrollbar{
-    display: none;
-}
+
 .cart__content__closeBtn__icon{
     cursor: pointer;
-    position: fixed;
-    right: 20px;
-    top: 17px;
-    transform: rotate(-180deg);
     transition: all .2s ease;
     font-size: 25px;
 }
 .cart__content__closeBtn__icon:hover{
-    transform: rotate(180deg);
     color: #FE0000;
 }
 
-.checkOut{
+.cart__sidebarCheckOut{
+    width: 300px;
+    padding: 20px 0;
+    background-color: #fff;
+    position: fixed;
+    bottom: 0;
+    right: 0;
     line-height: 15px;
+    box-shadow: var(--darkShadow);
 }
 .cart__side__bar__productQuantityController{
-    
     background: rgb(135, 135, 135, 0.1);
     width: 80px;
     padding: 2px;

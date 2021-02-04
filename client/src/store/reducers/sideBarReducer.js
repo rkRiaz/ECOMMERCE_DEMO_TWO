@@ -4,7 +4,7 @@ const init = {
     cartSideBar: false,
     loginSideBar: false,
 }
-const sideBarsReducer = (state=init, action) => {
+const sideBarReducer = (state=init, action) => {
     switch(action.type) {
         case Types.SIDE_BARS: {
             return {
@@ -16,4 +16,4 @@ const sideBarsReducer = (state=init, action) => {
     }
 }
 
-export default sideBarsReducer
+export default sideBarReducer

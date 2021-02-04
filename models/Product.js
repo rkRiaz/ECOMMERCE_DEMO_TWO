@@ -48,6 +48,7 @@ const productSchema = new Schema(
         productImages: {
             type: [String]
         },
+        productVideo: String,
         shortDescription: {
             type: String
         },

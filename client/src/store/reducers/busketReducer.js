@@ -3,11 +3,20 @@ import * as Types from '../actions/types'
 const init = {
     busketNumbers: 0,
     cart_products: [],
-    ordered_products: {}
+    order: {}
 }
 
 const busketReducer = (state=init, action) => {
     switch (action.type) {
+        case Types.SET_BUSKET_FROM_DB: {
+            return {
+                ...state,
+                busketNumbers: action.payload.busketNumbers,
+                cart_products:  action.payload.cart_products,
+                // order: state.order.cart_products = state.cart_products
+            }
+        }
+
         case Types.ADD_TO_BUSKET: {
             let selectedProduct = action.payload.product       
             if(selectedProduct) {
@@ -21,17 +30,15 @@ const busketReducer = (state=init, action) => {
                     return{
                         ...state,
                         busketNumbers: totalQuantity + selectedProduct.quantity,
+                        subTotal: action.payload.subTotal,
                         cart_products: [...state.cart_products],
                     }
                 } else {
                     return {
                         ...state,           
                         busketNumbers: totalQuantity + selectedProduct.quantity,
+                        subTotal: action.payload.subTotal,
                         cart_products: [selectedProduct, ...state.cart_products],
-                        ordered_products: {
-                            ...state.ordered_products,
-                            cart_products: [selectedProduct, ...state.cart_products]
-                        }
                     }
                 }
             }
@@ -67,6 +74,8 @@ const busketReducer = (state=init, action) => {
                 }
             }
         }
+
+        
         case Types.INCREASE_QUANTITY: {
             let product = state.cart_products.find(p => p._id === action.payload.productId)
             product.quantity += 1
@@ -78,19 +87,13 @@ const busketReducer = (state=init, action) => {
             }
         }
 
-        case Types.ORDERED_PRODUCTS: {
+        case Types.ORDER: {
             return {
-                ...state = {
-                    busketNumbers: 0,
-                    cart_products: [],
-                    ordered_products: {
-                        cart_products: []
-                    }
-                },
-
+                ...state,
+                order: {...state.order, ...action.payload.order}
             }
-            
         }
+        
 
 
         default: return state
@@ -98,3 +101,4 @@ const busketReducer = (state=init, action) => {
 }
 
 export default busketReducer
+

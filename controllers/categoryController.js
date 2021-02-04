@@ -1,8 +1,6 @@
 const Category = require('../models/Category')
 const formidable = require('formidable');
 
-
-
 exports.allCategory = async (req, res, next) => {
     try{
         let allCategory = await Category.find()
@@ -15,9 +13,7 @@ exports.allCategory = async (req, res, next) => {
         next(err)
     }
 }
-
-
-exports.findSubCategoriesByCategorySlug = async (req, res, next) => {
+exports.findSubCategoriesByCategorySlug = async(req, res, next) => {
     let categorySlug = req.params.categorySlug
     try{
         let findCategory = await Category.findOne({categorySlug: categorySlug})
@@ -35,29 +31,23 @@ exports.findSubCategoriesByCategorySlug = async (req, res, next) => {
         next(err)
     }
 }
-
-
 exports.addCategoryOrPushSubCategoryIntoCategory = async (req, res, next) => {
-    // return console.log(req.files)
-    
     try{
         let categoryName = req.body.category
         let categorySlug = req.body.categorySlug
         let subCategoryName = req.body.subCategory
         let subCategorySlug = req.body.subCategorySlug
 
-
         let findCategory = await Category.findOne({categorySlug: categoryName})
         // return console.log(findCategory)
         if(findCategory) {
 
             let subCategory = {
-                    name: subCategoryName,
-                    subCategorySlug: subCategorySlug
-                }
-                subCategory.subCategoryImage = req.files[0] ? req.files[0].filename : ''
+                name: subCategoryName,
+                subCategorySlug: subCategorySlug
+            }
+            subCategory.subCategoryImage = req.files[0] ? req.files[0].filename : ''
            
-
             let updatedCategory =  await Category.findOneAndUpdate(
                 {categorySlug: categoryName},
                 {$push: {'subCategory': subCategory}},

@@ -10,7 +10,7 @@ module.exports = (req, res, next) => {
     const token = authHeader.split(' ')[1];
     let decodedToken;
     try {
-        decodedToken = jwt.verify(token, 'a_secret_key_of_mission_twentty_twentty_three_generate_by_md_iqbal_in_2019_at_dhaka');
+        decodedToken = jwt.verify(token, 'ADMIN_SECRET');
     } catch (err) {
         err.statusCode = 500;
         throw err;
@@ -20,6 +20,6 @@ module.exports = (req, res, next) => {
         error.statusCode = 401;
         throw error;
     }
-    req.adminId = decodedToken.adminId;
+    req.adminId = decodedToken._id;
     next();
 }

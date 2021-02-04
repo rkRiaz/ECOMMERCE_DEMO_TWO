@@ -23,6 +23,9 @@ const CustomerSchema = new Schema({
         type: String,
         require: true,
         trim: true
+    },
+    cart: {
+        type: [Object]
     }
  
 }, {timestamps: true})

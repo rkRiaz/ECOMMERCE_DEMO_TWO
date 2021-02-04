@@ -25,6 +25,19 @@ if(token) {
   })
 }
 
+let adminToken = localStorage.getItem('admin_auth_token')
+if(adminToken) {
+  let decodeToken = jwtDecode(adminToken)
+  setAuthToken(adminToken)
+  store.dispatch({
+      type: Types.SET_ADMIN,
+      payload: {
+          adminToken: adminToken,
+          adminInfo: decodeToken
+      },
+  })
+}
+
 
 ReactDOM.render(
   <React.StrictMode>

@@ -8,7 +8,6 @@ const checkAdminAuth = require('../middlewares/check-admin-auth')
 
 
 const {
-    allCustomers,
     registration,
     login,
     getLoginCustomerInfo,
@@ -17,7 +16,6 @@ const {
     dashboard
 } = require('../controllers/customerController')
 
-router.get('/', allCustomers) //http://localhost:8080/api/customer
 router.post('/registration', customerSignupValidator, registration) //http://localhost:8080/api/customer/registration
 router.put('/editInfo', customerEditInfoValidator, checkUserAuth, editInfo) //http://localhost:8080/api/customer/editInfo
 

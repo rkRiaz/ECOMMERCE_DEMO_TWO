@@ -5,6 +5,11 @@ import axios from 'axios'
 import {Link, useParams} from 'react-router-dom'
 import {Button, Form} from 'react-bootstrap'
 
+import Carousel from 'react-multi-carousel';
+import { FaTrash } from 'react-icons/fa'
+
+
+
 function EdirProduct() {
 
     //product section
@@ -13,6 +18,7 @@ function EdirProduct() {
     const [error, setError] = useState({})
     const [category, setCategory] = useState([])
     const [subCategories, setSubCategories] = useState([])
+    console.log(product)
 
 
     //category section
@@ -22,48 +28,77 @@ function EdirProduct() {
 
     const {productId} = useParams()
 
+    const responsive = {
+        superLargeDesktop: {
+            // the naming can be any, depends on you.
+            breakpoint: { max: 4000, min: 3000 },
+            items: 6,
+            slidesToSlide: 5
+
+        },
+        desktop: {
+            breakpoint: { max: 3000, min: 1024 },
+            items: 4,
+            slidesToSlide: 3
+        },
+        tablet: {
+            breakpoint: { max: 1024, min: 464 },
+            items: 4,
+            slidesToSlide: 3
+        },
+        mobile: {
+            breakpoint: { max: 464, min: 0 },
+            items: 3,
+            slidesToSlide: 2
+        }
+    };
+
 
     //products methods starts
     const change = name => event => {
+        if(name === 'productName') {
+            formData.set(name, event.target.value)
+            formData.set('slug', event.target.value.replace(/\s+/g, '-').toLowerCase())
+            setProduct({...product, [name]: event.target.value})
+            setProduct({...product, 'slug': event.target.value.replace(/\s+/g, '-').toLowerCase()})
+
+
+        } 
         if(name === 'categorySlug') {
             axios.get(`http://localhost:8080/api/category/find-sub-categories-by-category-slug/${event.target.value}`)
             .then(res => {
-                console.log(res.data.subCategories)
                 setSubCategories(res.data.subCategories)
             })
             .catch(err => {
                 console.log(err.response)
             })
-            formData.append(name, event.target.value)  
+            formData.set(name, event.target.value)  
             setProduct({...product, [name]: event.target.value})
-
         }
         if(name === 'files') {
             for(const key of Object.keys(event.target.files)) {
                 formData.append(name, event.target.files[key])
             }
 
-
         } else{
             formData.set( name, event.target.value )
+            formData.set( "_id", productId )
             setProduct({...product, [name]: event.target.value})
         }
     };
 
     const submit = event => {
         event.preventDefault()
-        alert('Working on this page')
-        // axios.post('http://localhost:8080/api/product/edit-product', formData)
-        // .then(res => {
-        //     console.log(res.data.message)
-        //     alert(res.data.message)
-        // })
-        // .catch(err => {
-        //     setError(err.response)
-        // })
+        axios.put('http://localhost:8080/api/product/edit-product', formData)
+        .then(res => {
+            alert(res.data.message)
+        })
+        .catch(err => {
+            console.log(err.response.data)
+            setError(err.response.data)
+        })
     }
     //products methods ends
-
 
     // categorty methods starts
     const changeCategory = name => event => {
@@ -113,11 +148,10 @@ function EdirProduct() {
         })
     }, [])
 
-    
+    const deleteSingleImage = e => {
+       alert('riaz')
+    }
 
-
-
-console.log(product)
 
         return (
            <AdminLayout>
@@ -127,95 +161,122 @@ console.log(product)
                         <Button onClick={e => setShowCategoryFrom(!showCategoryForm)} className="btn btn-primary m-2">Edit Category</Button>
                     </div>
                     <div className="editProduct__content">
-                        <Form onSubmit={submit} className="editProduct__contentForm" encType="multipart/form-data">
-                                <Form.Group className="editProduct__contentFormGroup">
-                                    <Form.Control onChange={change('productName')} isInvalid={error.productName ? true : false} className="editProduct__contentInput" type="text" value={product.productName}/>
-                                    <Form.Control.Feedback type="invalid" tooltip>
-                                        {error.productName ? error.productName : ""}
-                                    </Form.Control.Feedback>
-                                </Form.Group>
-                                <Form.Group controlId="formGroupSlug" className="editProduct__contentFormGroup">
-                                    <Form.Control onChange={change('slug')} className="editProduct__contentInput" type="text" value={product.slug}/>
-                                </Form.Group> 
-                                <Form.Group className="editProduct__contentFormGroup">
-                                    <Form.Control onChange={change('categorySlug')}
-                                        className="editProduct__contentFormGroup" 
-                                        type="text"
-                                        as="select"
-                                        id="inlineFormCustomSelectPref"
+                        <Form onSubmit={submit} className="" encType="multipart/form-data">
+                                <div className="editProduct__contentForm">
+                                    <div>
+                                        <Form.Group className="editProduct__contentFormGroup">
+                                            <Form.Label>Product Name</Form.Label>
+                                            <Form.Control onChange={change('productName')} isInvalid={error.productName ? true : false} className="editProduct__contentInput" type="text" value={product.productName}/>
+                                            <Form.Control.Feedback type="invalid" tooltip>
+                                                {error.productName ? error.productName : ""}
+                                            </Form.Control.Feedback>
+                                        </Form.Group>
+                                        <Form.Group className="editProduct__contentFormGroup">
+                                            <Form.Label>Category</Form.Label>
+                                            <Form.Control onChange={change('categorySlug')}
+                                                className="editProduct__contentInput" 
+                                                type="text"
+                                                as="select"
+                                                id="custom-file"
+                                                custom
+                                            >
+                                                <option value={product.categorySlug}>{product.categorySlug}</option>
+                                                {category.map(c => (
+                                                <option value={c.categorySlug}>{c.category}</option> 
+                                                ))}
+                                            </Form.Control> 
+                                        </Form.Group>
+                                        <Form.Group className="editProduct__contentFormGroup">
+                                            <Form.Label>Sub Category</Form.Label>
+                                            <Form.Control onChange={change('subCategorySlug')}
+                                                className="editProduct__contentInput" 
+                                                type="text"
+                                                as="select"
+                                                id="custom-file"
+                                                custom
+                                            >
+                                                <option value={product.sCbcategorySlug}>{product.subCategorySlug}</option>
+                                                {Array.isArray(subCategories) ? subCategories.map(s => (
+                                                <option value={s.subCategorySlug}>{s.name}</option> 
+                                                )):
+                                                <option value="">Choose sub category</option>
+                                                }
+                                            </Form.Control> 
+                                        </Form.Group>
+                                        <Form.Group className="editProduct__contentFormGroup">
+                                            <Form.Label>Regular Price</Form.Label>
+                                            <Form.Control onChange={change('regularPrice')} isInvalid={error.regularPrice ? true : false} className="editProduct__contentInput" type="number" value={product.regularPrice}/>
+                                            <Form.Control.Feedback type="invalid" tooltip>
+                                                {error.regularPrice ? error.regularPrice  : ""}
+                                            </Form.Control.Feedback>
+                                        </Form.Group>  
+                                        <Form.Group className="editProduct__contentFormGroup">
+                                            <Form.Label>Sale Price</Form.Label>
+                                            <Form.Control onChange={change('salePrice')} isInvalid={error.salePrice ? true : false} className="editProduct__contentInput" type="number" value={product.salePrice}/>
+                                            <Form.Control.Feedback type="invalid" tooltip>
+                                                {error.salePrice ? error.salePrice  : ""}
+                                            </Form.Control.Feedback>
+                                        </Form.Group> 
+                                        <Form.Group className="editProduct__contentFormGroup">
+                                            <Form.Label>Enter Product Code</Form.Label>
+                                            <Form.Control onChange={change('productCode')} isInvalid={error.productCode ? true : false} className="editProduct__contentInput" type="number" value={product.productCode} />
+                                            <Form.Control.Feedback type="invalid" tooltip>
+                                                {error.productCode ? error.productCode  : ""}
+                                            </Form.Control.Feedback>
+                                        </Form.Group>
+                                    </div>
+                                    <div>
+                                        <Form.Group className="editProduct__contentFormGroup">
+                                            <Form.Label>Enter Product Brand</Form.Label>
+                                            <Form.Control onChange={change('brand')} isInvalid={error.brand ? true : false} className="editProduct__contentInput" type="text" value={product.brand} />
+                                            <Form.Control.Feedback type="invalid" tooltip>
+                                                {error.brand ? error.brand  : ""}
+                                            </Form.Control.Feedback>
+                                        </Form.Group>   
+                                        <Form.Group className="editProduct__contentFormGroup">
+                                            <Form.Label>Enter Product Quantity</Form.Label>
+                                            <Form.Control onChange={change('quantity')} isInvalid={error.quantity ? true : false} className="editProduct__contentInput" type="number" value={product.quantity} />
+                                            <Form.Control.Feedback type="invalid" tooltip>
+                                                {error.quantity ? error.quantity  : ""}
+                                            </Form.Control.Feedback>
+                                        </Form.Group> 
+                                        <Form.Group  className="editProduct__contentFormGroup">
+                                            <Form.Label>Change Short Description</Form.Label>
+                                            <Form.Control  as="textarea" rows={3} onChange={change('shortDescription')}  type="text" value={product.shortDescription} />
+                                        </Form.Group> 
+                                        <Form.Group className="editProduct__contentFormGroup">
+                                            <Form.Label>Change Long Description</Form.Label>
+                                            <Form.Control as="textarea" rows={5} onChange={change('longDescription')} type="text" value={product.longDescription}/>
+                                        </Form.Group> 
+                                    </div>
+                                </div>
+                                <div className="">
+                                    <div className="editProduct__editImages">
+                                        <Carousel responsive={responsive}>
+                                            { 
+                                                product? product.productImages.map(image => (
+                                                <div  className="editProduct__editImage">
+                                                    <div onClick={deleteSingleImage} data-image={image} className="editProduct__editImageDelete"><FaTrash/></div>
+                                                    <img src={`/tempProductImages/${image}`} alt=""/>
+                                                </div>
+                                                )) : '' 
+                                            }
+                                        </Carousel>
+                                    </div>
+
+                                    <Form.File 
+                                        onChange={change('files')}
+                                        id="custom-file"
                                         custom
-                                    >
-                                        <option value={product.categorySlug}>{product.categorySlug}</option>
-                                        {category.map(c => (
-                                           <option value={c.categorySlug}>{c.category}</option> 
-                                        ))}
-                                      
-                                    
-                                    </Form.Control> 
-                                </Form.Group>
-                                <Form.Group className="editProduct__contentFormGroup">
-                                    <Form.Control onChange={change('subCategorySlug')}
-                                        className="editProduct__contentFormGroup" 
-                                        type="text"
-                                        as="select"
-                                        id="inlineFormCustomSelectPref"
-                                        custom
-                                    >
-                                        <option value={product.sCbcategorySlug}>{product.subCategorySlug}</option>
-                                        {Array.isArray(subCategories) ? subCategories.map(s => (
-                                           <option value={s.subCategorySlug}>{s.name}</option> 
-                                        )):
-                                        <option value="">Choose sub category</option>
-                                        }
-                                    </Form.Control> 
-                                </Form.Group>
-                                <Form.Group className="editProduct__contentFormGroup">
-                                    <Form.Control onChange={change('regularPrice')} isInvalid={error.regularPrice ? true : false} className="editProduct__contentInput" type="number" value={product.regularPrice}/>
-                                    <Form.Control.Feedback type="invalid" tooltip>
-                                        {error.regularPrice ? error.regularPrice  : ""}
-                                    </Form.Control.Feedback>
-                                </Form.Group>  
-                                <Form.Group className="editProduct__contentFormGroup">
-                                    <Form.Control onChange={change('salePrice')} isInvalid={error.salePrice ? true : false} className="editProduct__contentInput" type="number" value={product.salePrice}/>
-                                    <Form.Control.Feedback type="invalid" tooltip>
-                                        {error.salePrice ? error.salePrice  : ""}
-                                    </Form.Control.Feedback>
-                                </Form.Group> 
-                                <Form.Group className="editProduct__contentFormGroup">
-                                    <Form.Control onChange={change('brand')} isInvalid={error.brand ? true : false} className="editProduct__contentInput" type="text" value={product.brand} />
-                                    <Form.Control.Feedback type="invalid" tooltip>
-                                        {error.brand ? error.brand  : ""}
-                                    </Form.Control.Feedback>
-                                </Form.Group>   
-                                <Form.Group className="editProduct__contentFormGroup">
-                                    <Form.Control onChange={change('productCode')} isInvalid={error.productCode ? true : false} className="editProduct__contentInput" type="number" value={product.productCode} />
-                                    <Form.Control.Feedback type="invalid" tooltip>
-                                        {error.productCode ? error.productCode  : ""}
-                                    </Form.Control.Feedback>
-                                </Form.Group> 
-                                <Form.Group className="editProduct__contentFormGroup">
-                                    <Form.Control onChange={change('quantity')} isInvalid={error.quantity ? true : false} className="editProduct__contentInput" type="number" value={product.quantity} />
-                                    <Form.Control.Feedback type="invalid" tooltip>
-                                        {error.quantity ? error.quantity  : ""}
-                                    </Form.Control.Feedback>
-                                </Form.Group> 
-                                <Form.Group  className="editProduct__contentFormGroup">
-                                    <Form.Control  as="textarea" rows={3} onChange={change('shortDescription')}  type="text" value={product.shortDescription} />
-                                </Form.Group> 
-                                <Form.Group className="editProduct__contentFormGroup">
-                                    <Form.Control as="textarea" rows={5} onChange={change('longDescription')} className="editProduct__contentInput" type="text" value={product.longDescription}/>
-                                </Form.Group> 
-                                <Form.File 
-                                    disabled
-                                    onChange={change('files')}
-                                    id="custom-file-translate-scss"
-                                    label="Upload product images"
-                                    type="image"
-                                    lang="en"
-                                    multiple= 'true'
-                                    accept="image/*"
-                                />    
-                            <Button className="editProduct__contentBtn" type="submit">Edit Product</Button>
+                                        label="Upload product images"
+                                        type="image"
+                                        lang="en"
+                                        multiple= 'true'
+                                        accept="image/*"
+                                    />  
+                                </div>
+   
+                            <Button className="btn-primary editProduct__contentBtn" type="submit">Edit Product</Button>
                         </Form>
 
 
@@ -294,7 +355,6 @@ console.log(product)
                                     </Form.Group>
                                     </>
                                 }
-
 
 
 

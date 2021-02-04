@@ -10,7 +10,6 @@
     display: flex;
     align-items: center;
     margin-top: 15px;
-    margin-left: 50px;
 }
 .loginTop img{
     width: 26px;
@@ -27,31 +26,21 @@
     margin-left: 10px;
 }
 .login__headline{
-    font-size: 28px;
+    font-size: 21px;
     font-weight: 600;
     color: #5D5D5D;
     margin-top: 20px;
-    margin-left: 50px;
+    
 }
 .login__content{
-    margin-top: 20px;
+    margin-top: 10px;
     color: #2C2C2C;
-    border-left: 2px solid #e9e9e9;
-    border-right: 2px solid #e9e9e9;
 }
-.login__contentLeft{
-    border-right: 2px solid #e9e9e9;
-}
-.login__contentRight{
-    width: 100%;
-}
+
 .login__contentLeft h3,
 .login__contentRight h3{
     position: relative;
-    font-size: 26px;
-    font-weight: 600;
-    margin-left: 50px;
-    margin-top: 50px;
+    margin-top: 20px;
 }
 .login__contentLeft h3::before,
 .login__contentRight h3::before{
@@ -63,44 +52,28 @@
     width: 120px;
 }
 .login__contentLeft p{
-    margin-top: 70px;
-    margin-left: 50px;
-    margin-bottom: 70px;
-    font-size: 22px;
-    font-weight: 400;
-}
-.login__contentLeft a{
-    margin-left: 50px;
+    margin: 10px 0;
+    font-size: 16px;
 }
 .login__contentLeftBtn{
-    width: 300px;
-    height: 80px;
-    font-size: 24px !important;
-    border-radius: 10px !important;
-    background-color: #081621;
+    width: 280px;
+    height: 60px;
     border: none !important;
     box-shadow: var(--darkShadow);
-
 }
 .login__contentRightForm{
     display: flex;
     flex-direction: column;
-    align-items: center;
-    margin-top: 115px;
+    margin-top: 20px;
 }
-.login__contentRightForm h5{
+.login__contentRightForm p{
     text-align: right;
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 400;
     text-decoration: underline;
-   /* not working color for index files color */
-    color: #2164FF !important;
-    width: 60%;
-    /* margin-left: 120px; */
 }
 .login__contentRightInput{
-    width:555px !important;
-    height: 80px !important;
+    height: 60px !important;
     background: #fff !important;
 }
 .login__contentRightFormGroup{
@@ -114,26 +87,21 @@
     bottom: 35%;
     color: #5D5D5D
 }
-.login__contentRightInput[type=text],
-.login__contentRightInput[type=password]{
-    padding-left: 70px !important;
+.login__contentRightInput[type=text]{
+    padding-left: 20px !important;
 }
-
 .login__contentRightBtn{
-    width: 274px;
-    height: 82px;
+    width: 280px;
+    height: 60px;
     background-color: #FE0000 !important;
-    font-size: 24px !important;
-    margin-top: 50px;
-    border-radius: 10px !important;
+    margin-top: 10px;
     border: none !important;
     box-shadow: var(--darkShadow);
-
 }
-@media screen and (max-width: 1750px) {
+@media screen and (max-width: 1450px) {
     .login__container {
-        margin-left: 50px;
-        margin-right: 50px;
+        margin-left: 20px;
+        margin-right: 20px;
     }
 }
 @media screen and (max-width: 1200px) {
@@ -142,52 +110,30 @@
         font-weight: 400;
     }
     .login__contentRight{
-       margin-top: 100px;
+       margin-top: 20px;
     }
-    .login__contentLeft p{
-        margin-top: 20px;
-        margin-bottom: 20px;
-    }
+
     .login__contentRightForm{
 
-        margin-top: 50px;
-    }
-    .login__contentLeft h3,
-    .login__contentRight h3{
-        margin-top: 10px;
-    }
-    .login__contentLeftBtn{
-        width: 300px;
-        height: 60px;
-        font-size: 20px !important;
-    }
-    .login__contentRightBtn{
-        width: 274px;
-        height: 60px;
-        font-size: 20px !important;
         margin-top: 20px;
     }
+
 
 
 }
 @media screen and (max-width: 1024px) {
-    .login__container {
-        margin-left: 20px;
-        margin-right: 20px;
-    }
+
 
 }
 @media screen and (max-width: 768px) {
     .login__contentRightInput{
-        width:400px !important;
-        height: 60px !important;
-        background: #fff !important;
+
     }
 
 }
 @media screen and (max-width: 450px) {
     .login__contentRightInput{
-        width:300px !important
+       
     }
 
 }

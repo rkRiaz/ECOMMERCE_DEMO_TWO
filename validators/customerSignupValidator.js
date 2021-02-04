@@ -20,8 +20,6 @@ const customerSignupValidator = [
             .trim(),
           
 
-
-
         check('password')
         .not().isEmpty().withMessage('Please Enter Your Password')
         .isLength({ min: 5 }).withMessage('must be at least 5 chars long')

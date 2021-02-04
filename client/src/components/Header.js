@@ -57,7 +57,7 @@ function Header(props) {
     useEffect(() => {
         axios.get(`http://localhost:8080/api/category/get-all-category`)
         .then(res => {
-            setCategories(res.data.allCategory.splice(0, 10))
+            setCategories(res.data.allCategory)
         })
         .catch(err => {
             console.log(err.response)

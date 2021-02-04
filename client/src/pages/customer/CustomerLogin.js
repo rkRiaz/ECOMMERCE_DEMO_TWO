@@ -46,16 +46,16 @@ function CustomerLogin(props) {
 
                 {/* login__content starts */}
                 <div className="login__content row">
-                    <div className="login__contentLeft col-lg-12 col-xl-6">
+                    <div className="login__contentLeft col">
                         <h3>NEW CUSTOMER</h3>
                         <p> By creating an account you will be able to shop faster, be up to date on an 
                             order's status, and keep track of the orders you have previously made.
                         </p>
                         <Link to="/customerRegistration">
-                            <Button className="login__contentLeftBtn" variant="dark">Registration Now</Button>
+                            <Button className="btn-primary login__contentLeftBtn" variant="dark">Registration Now</Button>
                         </Link>
                     </div>
-                    <div className="login__contentRight col-lg-12 col-xl-6">
+                    <div className="login__contentRight col">
                         <h3>RETURNING CUSTOMER</h3>
                         <Form onSubmit={submit} className="login__contentRightForm">
                             <Form.Group controlId="formGroupEmail" className="login__contentRightFormGroup">
@@ -75,7 +75,7 @@ function CustomerLogin(props) {
                                 <Form.Control 
                                     onChange={e => setLoginPassword(e.target.value)} 
                                     className="login__contentRightInput" 
-                                    type="password" 
+                                    type="text" 
                                     placeholder="Password" 
                                     isInvalid={error.loginPassword || error.message ? true : false}
                                 />
@@ -84,7 +84,7 @@ function CustomerLogin(props) {
                                 </Form.Control.Feedback>
                                 <AiOutlineLock className="login__contentRightFormIcon"/>
                             </Form.Group>
-                            <h5><Link to="/forgetPassword">Forget Password ?</Link></h5>
+                            <p><Link to="/forgetPassword">Forget Password ?</Link></p>
                             <Button className="login__contentRightBtn" type="submit" variant="danger">Login</Button>
                         </Form>
                     </div>

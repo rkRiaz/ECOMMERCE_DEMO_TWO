@@ -1,7 +1,15 @@
 import * as Types from "./types"
 import axios from 'axios'
 
-
+export const setBusketFromDB = (cart_products, busketNumbers) => dispatch => {
+   dispatch({
+       type: Types.SET_BUSKET_FROM_DB,
+       payload: {
+            busketNumbers,
+            cart_products,
+       }
+   })
+}
 
 export const addToBusket = (productId, quantity, size, color, weight, history) => dispatch => {
             let product = {};
@@ -45,26 +53,29 @@ export const productQuantity = (action, productId) => dispatch => {
     })
 } 
 
-export const orderedProducts = (customerId, orderedProducts, history) => dispatch => {
+export const orderAction = (order) => dispatch => {
 
-if(customerId) {
+console.log(order)
     dispatch({
-        type: Types.ORDERED_PRODUCTS,
-    }) 
-
-    axios.post("/admin/ordered-products", orderedProducts)
-    .then(res => console.log(res.data))
-    .catch(e => {console.log(e)})
-    history.push("/customer/ordered")
-} else {
-    dispatch({
-        type: Types.SIDE_BARS,
+        type: Types.ORDER,
         payload: {
-            addProduct: '',
-            open: true,
+            order
         }
     }) 
-}
+
+    // axios.post("/admin/ordered-products", orderedProducts)
+    // .then(res => console.log(res.data))
+    // .catch(e => {console.log(e)})
+    // history.push("/customer/ordered")
+// } else {
+//     dispatch({
+//         type: Types.SIDE_BARS,
+//         payload: {
+//             addProduct: '',
+//             open: true,
+//         }
+//     }) 
+// }
 
 } 
 

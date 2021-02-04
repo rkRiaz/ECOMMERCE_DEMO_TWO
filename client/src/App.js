@@ -15,12 +15,20 @@ import CustomerRegistration from './pages/customer/CustomerRegistration'
 import CustomerEdit from './pages/customer/CustomerEdit'
 import CustomerChangePassword from './pages/customer/CustomerChangePassword'
 import CustomerDashboard from './pages/customer/CustomerDashboard'
+import ShippingPage from './pages/customer/ShippingPage'
+import PaymentPage from './pages/customer/PaymentPage'
+
+
 // import Ordered from './pages/customer/Ordered'
 // import OrderedDetails from './pages/customer/OrderedDetails'
 
 
 // admin Routes
 import AdminDashboard from './pages/admin/AdminDashboard'
+import AdminLogin from './pages/admin/AdminLogin'
+import AdminChangePassword from './pages/admin/AdminChangePassword'
+
+import Customers from './pages/admin/Customers';
 import AllProducts from './pages/admin/AllProducts'
 import AddProduct from './pages/admin/AddProduct'
 import EditProduct from './pages/admin/EditProduct'
@@ -31,16 +39,24 @@ import EditProduct from './pages/admin/EditProduct'
 
 
 import CartSideBar from './components/sidebars/CartSideBar'
+import LoginSideBar from './components/sidebars/LoginSideBar'
+
+import { connect } from 'react-redux';
+import ScrollToTop from './ScrollToTop';
 
 
 
 
 
-function App() {
+function App(props) {
   return (
     <div className="app">
       <div className="app__body">
           <Router>
+            <ScrollToTop/>
+            {/* login sidebar starts */}
+              <LoginSideBar/>
+            {/* login sidebar ends */}
             {/* cart sidebar starts */}
               <CartSideBar/>
             {/* cart sidebar ends */}
@@ -57,18 +73,30 @@ function App() {
               <Route exact path="/customerLogin"><Header/><CustomerLogin/><Footer/></Route>
               <Route exact path="/customerDashboard"><Header/><CustomerDashboard/><Footer/></Route>
               <Route exact path="/customerChangePassword"><Header/><CustomerChangePassword/><Footer/></Route>
+              <Route exact path="/shippingInformation"><Header/><ShippingPage/><Footer/></Route>
+              <Route exact path="/paymentInformation"><Header/><PaymentPage/><Footer/></Route>
 
+
+
+  
               {/* <Route exact path="/customer/ordered" component={Ordered} />
               <Route exact path="/customer/ordered/:orderId" component={OrderedDetails} /> */}
 
               {/* Admin Routes */}
-              <Route exact path="/adminDashboard"  component={AdminDashboard} />
-              {/* <Route exact path="/admin/customers"  component={Customers} />  */}
-              {/* <Route exact path="/admin/all-orders"  component={AllOrders} />  */}
-              <Route exact path="/admin/all-products"  component={AllProducts} /> 
-              <Route exact path="/admin/add-product" component={AddProduct} /> 
-              <Route exact path="/admin/edit-product/:productId" component={EditProduct} /> 
-
+              
+                
+              
+                <Route exact path="/adminDashboard"  component={props.admin.adminLoggedIn ? AdminDashboard : AdminLogin} />
+                <Route exact path="/adminChangePassword"  component={props.admin.adminLoggedIn ? AdminChangePassword : AdminLogin} />
+                <Route exact path="/adminCustomers"  component={props.admin.adminLoggedIn ? Customers : AdminLogin} /> 
+                {/* <Route exact path="/admin/all-orders"  component={AllOrders} />  */}
+                <Route exact path="/admin/all-products"  component={props.admin.adminLoggedIn ? AllProducts : AdminLogin} /> 
+                <Route exact path="/admin/add-product" component={props.admin.adminLoggedIn ? AddProduct : AdminLogin} /> 
+                <Route exact path="/admin/edit-product/:productId" component={props.admin.adminLoggedIn ? EditProduct : AdminLogin} /> 
+             
+                <Route exact path="/adminLogin"  component={props.admin.adminLoggedIn ? AdminDashboard : AdminLogin} />
+              
+ 
               {/* <Route exact path="/admin/edit-product/:productId" component={EditProduct} />  */}
 
               <Route exact path="/cart"><Header/><Cart/><Footer/></Route>
@@ -80,4 +108,8 @@ function App() {
   );
 }
 
-export default App;
+const mapStateToProps = state => ({
+  admin: state.admin
+})
+
+export default connect(mapStateToProps, {})(App);

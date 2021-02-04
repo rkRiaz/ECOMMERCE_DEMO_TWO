@@ -9,7 +9,6 @@
     padding: 20px;
     margin: 0 10px;
     overflow-x: scroll;
-}
-.customers__chart::-webkit-scrollbar{
-    display: none;
+    font-weight: bold;
+
 }

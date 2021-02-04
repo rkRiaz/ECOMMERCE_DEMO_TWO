@@ -4,9 +4,8 @@ const Schema = mongoose.Schema;
 const adminSchema = new Schema({
     email: {
         type: String,
-        required: false
     },
-    username: {
+    userName: {
         type: String,
         required: true
     },
@@ -14,25 +13,18 @@ const adminSchema = new Schema({
         type: String,
         required: true
     },
-    name: {
-        type: String,
-        required: true
-    },
-    phoneNo: {
+    phone: {
         type: String,
         required: true
     },
     profileImg: {
         type: String,
-        required: false
     },
     registrationAt: {
         type: Date,
-        required: true
     },
     role: {
         type: String,
-        required: true
     },
     status: {
         type: String

@@ -7,18 +7,9 @@ const Order = require('../models/Order')
 const jwt = require('jsonwebtoken')
 
 
-exports.allCustomers = async(req, res, next) => {
-   try{
-    let customers = await Customer.find()
-    res.status(200).json(customers.reverse())
-   }catch(e) {
-       next(e)
-   }
-}
-
 exports.registration = async (req, res, next) => {
     const { name, phone, email, address, password, confirmPassword } = req.body
-
+    
     let errors = validationResult(req).formatWith(errorFormatter)
     if(!errors.isEmpty()) {
         return res.status(422).json(errors.mapped())
@@ -72,7 +63,6 @@ exports.login = async (req, res, next) => {
                 token: token,
                 expiresIn: 86400 
             })
-  
         }
     }
 
@@ -105,29 +95,32 @@ exports.getLoginCustomerInfo = async(req, res, next) => {
 }
 
 exports.editInfo = async (req, res, next) => {
-    const loginCustomerId = req.userData.userId;
-    // const { name, phone, address } = req.body
-    const { name, address } = req.body
-    let errors = validationResult(req).formatWith(errorFormatter)
-    if(!errors.isEmpty()) {
-        return res.status(422).json(errors.mapped())
-    }
-    //using passport js login customer accessed globally
-    // let customer = customer._id   
     try{
-        const updateInfo = {
-            name,
-            // phone,
-            address  
+        const loginCustomerId = req.userData.userId;
+        const { name, phone, address } = req.body
+        const cart = req.body
+       
+        if(!Array.isArray(cart)) {
+            let errors = validationResult(req).formatWith(errorFormatter)
+            if(!errors.isEmpty()) {
+                return res.status(422).json(errors.mapped())
+            }
         }
+        //using passport js login customer accessed globally
         let findCustomer = await Customer.findOne({_id: loginCustomerId})
-        // let findCustomer = await Customer.findOne({_id: customer._id})
-
-
-      
-        if(findCustomer) {
+        if(Array.isArray(cart)) {
+            await Customer.findOneAndUpdate(
+                {_id: loginCustomerId},
+                {$set: {cart}},
+                {new: true}
+            )
+        } else {
+            const updateInfo = {
+                name,
+                phone,
+                address
+            }
             let updatedCustomer = await Customer.findOneAndUpdate(
-                // {_id: customer._id},
                 {_id: loginCustomerId},
                 {$set: updateInfo},
                 {new: true}
@@ -136,10 +129,8 @@ exports.editInfo = async (req, res, next) => {
                 message: "Information updated successfully",
                 updatedCustomer: updatedCustomer
             })
-        } else{
-            return res.status(200).json("You are not registered customer")
         }
-         
+ 
     } catch (e) {
         next(e)
     }
@@ -150,9 +141,7 @@ exports.editInfo = async (req, res, next) => {
 
 exports.changepassword = async(req, res, next) => {
     let{ oldPassword, newPassword, confirmPassword } = req.body
-    console.log(req.body)
     const loginCustomerId = req.userData.userId;
-
     try {
         let findCustomer = await Customer.findOne({_id: loginCustomerId})
         if(findCustomer) {
@@ -187,22 +176,21 @@ exports.changepassword = async(req, res, next) => {
     }catch(e) {
         next(e)
     }
-
 }
 
+
 exports.dashboard = async(req, res, next) => {
-    let customerId = req.customer._id
-    let customer = req.customer
-    let orderedProducts = await Order.find({customerId})
+    const loginCustomerId = req.userData.userId;
+    let orderedProducts = await Order.find({loginCustomerId})
     try{
-        if(customer) {
+    
              res.status(200).json({
                 customer,
                 orderedProducts: orderedProducts.reverse()
             })
-        } else {
+     
          res.status(400).json("error")
-        }
+       
     }catch(e) {
         next(e)
     }

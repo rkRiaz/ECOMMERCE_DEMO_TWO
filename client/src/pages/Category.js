@@ -2,7 +2,8 @@ import React, {useState, useEffect} from 'react'
 import './Category.css'
 import {Link, useParams} from 'react-router-dom'
 import SubCategoryProductCard from '../components/SubCategoryProductCard'
-
+import {HiMenu} from 'react-icons/hi'
+import {HiChevronDown} from 'react-icons/hi'
 import home from '../assets/icons/home.svg'
 import rightArrow from '../assets/icons/right-arrow.svg'
 import plus from '../assets/icons/plus.svg'
@@ -14,7 +15,7 @@ import axios from 'axios'
 function Category() {
     const [categories, setCategories] = useState([])
     const[subCategories, setSubCategories] =useState([])
-
+    const[showExploreLeft, setShowExploreLeft] = useState(false)
 
     const {categorySlug} = useParams()
 
@@ -42,68 +43,56 @@ function Category() {
 
     return (
         <div className="category">
-            {/* category__header starts */}
-            <div className="category__header">
-                <img src={home} alt=""/>
-                <Link to="/">Home</Link>
-                <img className="category__headerArrowIcon" src={rightArrow} alt=""/>
-                <Link to="#">{categorySlug}</Link>
-            </div>
-            {/* category__header ends */}
             <div className="category__content">
+                {/* category__header starts */}
+                <div className="category__header">
+                        <img src={home} alt=""/>
+                        <Link to="/">Home</Link>
+                        <img className="category__headerArrowIcon" src={rightArrow} alt=""/>
+                        <Link to="#">{categorySlug}</Link>
+                </div>
+                {/* category__header ends */}
+           
             
                 <div className="category__explore">
                     {/* category__exploreLeft starts */}
-                    <div className="category__exploreLeft">
-                        
-                        {/* <div className="category__exploreLeftRangeSlider">
-                            <label>Min: </label>
-                            <input type="number" value={minPrice} onChange={e => {setMinPrice(e.target.value)}} />
-                            <br />
-                            <label>Max: </label>
-                            <input type="number" value={maxPrice} onChange={e => {setMaxPrice(e.target.value)}} />
-                            <br />
-                            <br />
-                            <Range
-                                defaultValue={[0, 100]}
-                                min={minPrice}
-                                max={maxPrice}
-                                onChange={onSliderChange}
-                            />
-                        </div> */}
-                         {/* <RangeSlider/> */}
+                    <div className={showExploreLeft ? "category__exploreLeft category__exploreLeftShow" : "category__exploreLeft"}>
                         <div className="category__exploreLeftDrawer">
-                            <h5>Price Range</h5>
                             <div to="#" className="category__exploreLeftItem">
-                                <p>Brand</p>
-                                <img src={plus} alt=""/>
+                                <span>Price </span>
+                                <HiChevronDown/>
                             </div>
                             <div to="#" className="category__exploreLeftItem">
-                                <p>Weight</p>
-                                <img src={plus} alt=""/>
+                                <span>Brand</span>
+                                <HiChevronDown/>
                             </div>
                             <div to="#" className="category__exploreLeftItem">
-                                <p>Quantity</p>
-                                <img src={plus} alt=""/>
+                                <span>Weight</span>
+                                <HiChevronDown/>
                             </div>
                             <div to="#" className="category__exploreLeftItem">
-                                <p>Type</p>
-                                <img src={plus} alt=""/>
+                                <span>Quantity</span>
+                                <HiChevronDown/>
                             </div>
                             <div to="#" className="category__exploreLeftItem">
-                                <p>Variable</p>
-                                <img src={plus} alt=""/>
+                                <span>Type</span>
+                                <HiChevronDown/>
                             </div>
                             <div to="#" className="category__exploreLeftItem">
-                                <p>features</p>
-                                <img src={plus} alt=""/>
+                                <span>Variable</span>
+                                <HiChevronDown/>
                             </div>
                             <div to="#" className="category__exploreLeftItem">
-                                <p>others</p>
-                                <img src={plus} alt=""/>
+                                <span>features</span>
+                                <HiChevronDown/>
                             </div>
-
+                            <div to="#" className="category__exploreLeftItem">
+                                <span>others</span>
+                                <HiChevronDown/>
+                            </div>
+                
                         </div>
+                        <div onClick={e => {setShowExploreLeft(!showExploreLeft)}} className="category__exploreLeftClose"></div>
 
                     </div>
                     {/* category__exploreLeft ends */}
@@ -122,12 +111,11 @@ function Category() {
                     
                         </div>
                         <div className="category__exploreRightSort">
+                            <div onClick={e => setShowExploreLeft(!showExploreLeft)} className="category__exploreRightSortMenuIcon"><HiMenu/></div>
                             <div className="category__exploreRightSortDropDown">
                                 <select onChange={e => console.log(e.target.value)}>
                                     <option value="default">sort by default</option> 
-                                    <option value="meat">Meat</option>    
-                                    <option value="fish">Fish</option>    
-                                    <option value="vegitable">Vegitable</option>    
+                                    <option value="meat">Alphabetically</option>     
                                 </select>
                             </div>
                             <div className="category__exploreRightSortDropDown">

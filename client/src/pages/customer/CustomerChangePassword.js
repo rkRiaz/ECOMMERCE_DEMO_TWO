@@ -28,7 +28,6 @@ const CustomerChangePassword = (props) => {
             }
         })
             .then(res => {
-                console.log(res.data.message)
                 setWarning(res.data.message)
                 if(res.data.message === "Successfully changed password") {
                     props.logout()

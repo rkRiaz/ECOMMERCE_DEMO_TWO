@@ -77,16 +77,11 @@ function Home() {
                 {/* make this font product sans */}
                 <h2>Categories</h2> 
                 
-                    <Carousel 
-                        infinite={true} 
-                        responsive={responsive}
-                
-                    >
+                    <Carousel responsive={responsive}>
                     {
                         categories ? categories.map(category => (
                             <CategoryProductCard key={categories._id} category={category}/> 
                         )) : 'loading' 
-                        
                     }
                     </Carousel>
                 

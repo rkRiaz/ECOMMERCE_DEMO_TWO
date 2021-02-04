@@ -58,14 +58,17 @@
     background-color: #fff;
     box-shadow: var(--darkShadow);
 }
+.details__topLeftTransformWrapperBtnGroup{
+    margin-top: 30px;
+}
 .details__topLeftLargeImg img{
-    max-width: 480px;
+    width: 480px;
     max-height: 380px;
     object-fit: contain;
 }
 .details__topLeftSmallImgs{
     max-width: 500px;
-    margin-top: 20px;
+    margin-top: 55px;
 }
 .details__topLeftSmallImg {
     max-width: 100px;
@@ -200,6 +203,14 @@
 .product__admin a{
     color: #fff !important;
 }
+.deleteAlertBoxCloseBtn{
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 100000;
+}
 .productSocial{
     margin-top: 50px;
 }
@@ -307,11 +318,8 @@
 .details__bottomLeftContentVideo{
     max-width: 700px;
     max-height: 700px;
-    position: relative;
-    display: grid;
-    place-items: center;
     margin: 0 auto;
-    padding: 60px 0 20px 0;
+    margin-top: 30px;
 }
 .details__bottomLeftContentVideo img{
     max-width: 100%;

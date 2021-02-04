@@ -7,10 +7,10 @@ const formidable = require('formidable');
 
 
 
-
 exports.allProducts = async (req, res, next) => {
     try {
         let allProducts = await Product.find()
+                              
         if (allProducts.length !== 0) {
             res.status(200).json({
                 allProducts,
@@ -19,6 +19,40 @@ exports.allProducts = async (req, res, next) => {
         } else {
             res.status(200).json({ message: "No products are in the database" })
         }
+    } catch (e) {
+        next(e)
+    }
+}
+
+exports.allProductsByMegaSearch = async (req, res, next) => {
+    try {
+        let currentPage = parseInt(req.query.page) || 1
+        let searchTerm = req.query.searchTerm
+        let lowerPrice = req.query.lowerPrice || 0
+        let higherPrice = req.query.higherPrice || Infinity
+        let categorySlug = 'chocolate'
+        let subCategory = req.query.subCategory
+
+        let itemPerPage = 40
+        let allProducts = await Product
+                                .find(
+                                    {
+                                        salePrice: { $gte: lowerPrice, $lte: higherPrice},
+                                        categorySlug
+                                        
+                                    }
+                                )
+                                .skip((itemPerPage * currentPage) - itemPerPage)
+                                .limit(itemPerPage)
+        let totalProducts = await Product.countDocuments()
+        let totalPage = totalProducts / itemPerPage
+       
+        res.status(200).json({
+            totalPage: Math.ceil(totalPage),
+            allProducts,
+            message: "Fetched all products successfully!"
+        })
+   
     } catch (e) {
         next(e)
     }
@@ -70,10 +104,18 @@ exports.getProductsByCategory = async (req, res, next) => {
 }
 
 exports.getProductsBySubCategory = async (req, res, next) => {
-    const subCategorySlug = req.params.slug;
+    const subCategorySlug = req.query.subCategorySlug;
     try {
-        let products = await Product.find({ subCategorySlug })
+        let currentPage = parseInt(req.query.page) || 1
+        let itemPerPage = parseInt(req.query.itemPerPage) || 8
+        let products = await Product
+            .find({ subCategorySlug })
+            .skip((itemPerPage * currentPage) - itemPerPage)
+            .limit(itemPerPage)
+        let totalProducts = await Product.find({ subCategorySlug }).countDocuments()
+        let totalPage = totalProducts / itemPerPage
         res.status(200).json({
+            totalPage: Math.ceil(totalPage),
             products: products,
             message: 'Products by sub category fetch Successfully!'
         });
@@ -90,9 +132,10 @@ exports.getSearchProductByText = async (req, res) => {
 
     try {
         const query = req.query.q;
-        // return console.log(query)
+        
+        //  console.log(query)
         const results = await Product.fuzzySearch({ query: query, prefixOnly: false, minSize: 1 })
-        // return console.log(results)
+        //  console.log(results)
         res.status(200).json({
             searchProducts: results
         });
@@ -105,13 +148,12 @@ exports.getSearchProductByText = async (req, res) => {
 
 
 exports.addProduct = async (req, res, next) => {
+    // return console.log( JSON.parse(JSON.stringify(req.body)))
+    let errors = validationResult(req).formatWith(errorFormatter)
 
-    // return console.log(req.files)
-    // let errors = validationResult(req).formatWith(errorFormatter)
-
-    // if (!errors.isEmpty()) {
-    //     return res.status(400).json(errors.mapped())
-    // }
+    if (!errors.isEmpty()) {
+        return res.status(400).json(errors.mapped())
+    }
     
     
     try{
@@ -120,11 +162,9 @@ exports.addProduct = async (req, res, next) => {
         product.available = true,
         product.productImages = productImages
 
-        console.log(product)
-
         let addProduct = await product.save()
         return res.status(200).json({
-            message: `Successfully added ${addProduct.productName} as category(${addProduct.category}) and sub category(${addProduct.subCategory})`
+            message: `Successfully added ${addProduct.productName} as category(${addProduct.categorySlug}) and sub category(${addProduct.subCategorySlug})`
         })
     }
     catch(err) {
@@ -134,8 +174,6 @@ exports.addProduct = async (req, res, next) => {
 
 
 
-
-    
         // const form = formidable({ multiples: true });
         // form.keepExtensions = true;
         // form.parse(req, async (err, fields, files) => {
@@ -222,6 +260,7 @@ exports.addProduct = async (req, res, next) => {
 }
 
 exports.editProduct = async (req, res, next) => {
+    // return console.log(req.body)
     let errors = validationResult(req).formatWith(errorFormatter)
     if (!errors.isEmpty()) {
         return res.status(400).json(errors.mapped())
@@ -233,11 +272,9 @@ exports.editProduct = async (req, res, next) => {
     const push = { $set: updatedData }
 
     try {
-
         const updatedProduct = await Product.findOneAndUpdate(query, push, {new: true})
         return res.status(200).json({
             message: 'Product Successfully Updated',
-            updatedProduct
         })
         
     } catch (e) {
@@ -249,11 +286,14 @@ exports.deleteProduct = async (req, res, next) => {
     try {
         let { productId } = req.params
         let deletedProduct = await Product.findByIdAndDelete(productId)
-        let filter = deletedProduct.productImgs.filter(p => p !== 'no-image.jpg')
+        let filter = deletedProduct.productImages.filter(p => p !== 'no-image.jpg')
         filter.map(p => {
-            fs.unlink(`client/public/images/${p}`, err => {
+            fs.unlink(`public/uploads/images/${p}`, err => {
                 console.log(err)
             })
+        })
+        res.status(200).json({
+            message: `deleted ${deletedProduct.productName} successfully`
         })
     } catch (e) {
         next(e)

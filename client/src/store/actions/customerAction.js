@@ -6,6 +6,7 @@ import setAuthToken from '../../utils/setAuthToken'
 
 
 export const login = (loginInfo, history) => dispatch => {
+    console.log(loginInfo)
     axios.put('http://localhost:8080/api/customer/login', loginInfo)
         .then(res => {
             let token = res.data.token
@@ -29,8 +30,8 @@ export const login = (loginInfo, history) => dispatch => {
             //     }
             // })
             
-            history.location.pathname === "/customer/cart" ? 
-            history.push("/customer/cart") :
+            history.location.pathname === "/cart" ? 
+            history.push("/shippingInformation") :
             history.push("/customerDashboard")
         })
         .catch(error => {

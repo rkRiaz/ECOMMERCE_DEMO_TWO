@@ -92,7 +92,7 @@ function CustomerEdit(props) {
                                 <AiOutlineUser className="edit__contentFormIcon"/>
                             </Form.Group>
                             <Form.Group controlId="formGroupPassword" className="edit__contentFormGroup">
-                                <Form.Control onChange={change('phone')} disabled isInvalid={ values.error.phone ? true : false} className="edit__contentInput" type="number" value={values.phone ? values.phone : ''} />
+                                <Form.Control onChange={change('phone')} isInvalid={ values.error.phone ? true : false} className="edit__contentInput" type="number" value={values.phone ? values.phone : ''} />
                                 <Form.Control.Feedback type="invalid" tooltip>
                                     {values.error.phone ? values.error.phone : ""}
                                 </Form.Control.Feedback>

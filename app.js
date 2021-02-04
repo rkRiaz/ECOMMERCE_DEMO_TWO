@@ -5,6 +5,7 @@ require('dotenv').config();
 const path = require('path')
 const adminRoute = require('./routes/adminRoute')
 const productRoute = require('./routes/productRoute')
+const orderRoute = require('./routes/orderRoute')
 const customerRoute = require('./routes/customerRoute')
 const categoryRoute = require('./routes/categoryRoute')
 
@@ -36,6 +37,8 @@ app.use('/api/admin', adminRoute)
 app.use('/api/product', productRoute)
 app.use('/api/customer', customerRoute)
 app.use('/api/category', categoryRoute)
+app.use('/api/order', orderRoute)
+
 
 
 //Error Handelar..

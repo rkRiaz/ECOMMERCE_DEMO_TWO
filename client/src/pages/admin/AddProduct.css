@@ -3,36 +3,33 @@
     padding: 10px;
 }
 .addProduct__headline{
-    font-size: 28px;
+    font-size: 21px;
     font-weight: 600;
     color: #5D5D5D;
     margin-bottom: 20px;
 }
 .addProduct__content{
-    margin: 0 auto;
     background-color: #fff;
     padding: 30px;
     background: var(--mainWhite);
     box-shadow: var(--darkShadow);
 }
 .addProduct__contentForm{
-    width: 100%;
-    display: grid !important;
-    grid-template-columns: 1fr;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 20px;
 }
 
 .addProduct__contentInput{
-    /* height: 80px !important; */
+
+    height: 60px !important;
     background: #fff !important;
 }
 
 .addProduct__contentBtn{
-    width: 300px;
-    height: 80px;
-    font-size: 24px !important;
-    border-radius: 10px !important;
-    background-color: #081621 !important;
-    margin-top: 30px;
+    width: 280px;
+    height: 60px;
+    margin-top: 20px;
     border: none !important;
 }
 
@@ -47,7 +44,7 @@
 
 }
 @media screen and (max-width: 768px) {
-    .addProduct__contentInput[type=text],
+    /* .addProduct__contentInput[type=text],
     .addProduct__contentInput[type=email],
     .addProduct__contentInput[type=number],
     .addProduct__contentInput[type=password]{
@@ -58,6 +55,13 @@
         height: 60px;
         font-size: 20px !important;
         margin-top: 10px;
+    } */
+    .addProduct__content{
+        padding: 5px;
+    }
+    .addProduct__contentForm{
+        grid-template-columns: 1fr;
+        row-gap: 10px;
     }
 }
 
@@ -66,7 +70,23 @@
 }
 
 
+
+/* adding category section starts */
 .addCategory__contentForm{
+    position: fixed;
+    background-color: rgb(255, 255, 255);
+    padding: 10px;
+    height: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.addCategory__contentFormCloseBtn{
     position: fixed;
     background-color: black;
     opacity: .8;
@@ -74,20 +94,18 @@
     height: 100vh;
     top: 0;
     right: 0;
-    z-index: 10000;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
+    z-index: 1000;;
+}
+.hideAddCategory__contentFormCloseBtn{
+    display: none;
 }
 .hideAddCategory__contentForm{
     display: none;
-}
 
+}
 .addCategory__contentInput{
-    /* height: 100px !important; */
-    width: 300px !important;
+    height: 60px !important;
+    width: 250px !important;
     background-color: #fff !important;
 }
 

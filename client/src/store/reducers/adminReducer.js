@@ -1,7 +1,7 @@
 import * as Types from '../actions/types'
 
 const init = {
-    adminLoggedIn: true,
+    adminLoggedIn: false,
     adminInfo: {},
     adminToken: '',
     error: {},

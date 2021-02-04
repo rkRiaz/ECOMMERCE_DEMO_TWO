@@ -50,17 +50,18 @@ const AdminLayout = (props) => {
             <div className={isOpen ? "leftBar showLeftBar" : "leftBar"} id="leftBarId">
                 <Link to="/admin/dashboard">
                 <div className="p-4 text-center">
-                    <div className="profilePic"><img src={riaz} style={{width: 80, height: 80, borderRadius: "50%", background: "blue"}} alt=""/></div>
-                    <div className="profileName h5 mt-2">Admin</div>
+                    <div className="profilePic"><img src={riaz} style={{width: 80, height: 80, borderRadius: "50%"}} alt=""/></div>
+                    <div className="profileName h5 mt-2">{props.admin.adminInfo.userName}</div>
                 </div>
                 </Link>
                 <div className="d-flex flex-column p-4">
                     <Link to="/" className="h5"><GoHome/>&nbsp;&nbsp;&nbsp;Go Back To Shop</Link> 
-                    <Link to="/admin/dashboard" className="h5 mt-4"><GoHome/>&nbsp;&nbsp;&nbsp;Dashboard</Link> 
+                    <Link to="/adminDashboard" className="h5 mt-4"><GoHome/>&nbsp;&nbsp;&nbsp;Dashboard</Link> 
                     <Link to="/admin/all-orders" className="h5 mt-4"><RiShoppingCartLine/>&nbsp;&nbsp;&nbsp;Orders</Link> 
-                    <Link to="/admin/customers" className="h5 mt-4"><FiUsers/>&nbsp;&nbsp;&nbsp;Customers</Link> 
+                    <Link to="/adminCustomers" className="h5 mt-4"><FiUsers/>&nbsp;&nbsp;&nbsp;Customers</Link> 
                     <Link to="/admin/all-products" className="h5 mt-4"><FiUsers/>&nbsp;&nbsp;&nbsp;All Products</Link> 
                     <Link to="/admin/add-product" className="h5 mt-4"><BiAddToQueue/>&nbsp;&nbsp;&nbsp;Add Product</Link> 
+                    <Link to="/adminChangePassword" className="h5 mt-4"><BiAddToQueue/>&nbsp;&nbsp;&nbsp;Change Password</Link> 
                     <Link to="" onClick={() => props.adminLogout(props.history)} className="h5 mt-4"><BiLogOutCircle/>&nbsp;&nbsp;&nbsp;LogOut</Link>
                 </div>
             </div>
@@ -74,6 +75,8 @@ const AdminLayout = (props) => {
     );
 }
 
+const mapStateToProps = state => ({
+    admin: state.admin
+})
 
-
-export default connect(null, {adminLogout})(withRouter(AdminLayout));
+export default connect(mapStateToProps, {adminLogout})(withRouter(AdminLayout));

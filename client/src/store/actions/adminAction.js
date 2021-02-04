@@ -7,24 +7,24 @@ import setAuthToken from '../../utils/setAuthToken'
 
 
 export const adminLogin = (loginInfo, history) => dispatch => {
-    axios.put('http://localhost:8080/api/admin/login', loginInfo)
+    axios.put('http://localhost:8080/api/admin/admin-login', loginInfo)
         .then(res => {
-            let token = res.data.token
-            localStorage.setItem('admin_auth_token', token)
-            setAuthToken(token)
-            let decodeToken = jwtDecode(token)
+            let adminToken = res.data.adminToken
+            localStorage.setItem('admin_auth_token', adminToken)
+            setAuthToken(adminToken)
+            let decodeToken = jwtDecode(adminToken)
 
             dispatch({
                 type: Types.SET_ADMIN,
                 payload: {
-                    adminToken: token,
+                    adminToken: adminToken,
                     adminInfo: decodeToken
                 }
             })
             
             // history.location.pathname === "/admin/cart" ? 
             // history.push("/admin/cart") :
-            // history.push("/adminDashboard")
+            history.push("/adminDashboard")
         })
         .catch(error => {
             dispatch({
@@ -44,15 +44,20 @@ export const adminLogin = (loginInfo, history) => dispatch => {
         })
 }
 
-export const adminLogout = () => dispatch => {
+export const adminLogout = (history) => dispatch => {
     localStorage.removeItem('admin_auth_token')
     dispatch({
         type: Types.SET_ADMIN,
         payload: {
             adminLoggedIn: false,
-            adminInfo: {}
+            adminInfo: {},
+            adminToken: ''
         }
     })
+    history.location.pathname === "/adminChangePassword" ? 
+    history.push("/adminLogin") :
+    history.push("/")
+
 }
 
 

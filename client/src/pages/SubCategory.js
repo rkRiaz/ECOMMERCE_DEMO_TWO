@@ -8,27 +8,41 @@ import rightArrow from '../assets/icons/right-arrow.svg'
 import plus from '../assets/icons/plus.svg'
 import axios from 'axios'
 
+import Loading from '../components/Loading'
+import { Pagination } from 'react-bootstrap'
+import { HiChevronDown, HiMenu } from 'react-icons/hi'
+
+
 
 // import RangeSlider from '../components/RangeSlider'
 
 function SubCategory() {
     const[products, setProducts] =useState('')
+    const[showExploreLeft, setShowExploreLeft] = useState(false)
+
+
+    const [itemPerPage, setItemPerPage] = useState(8)
+    const [pageNumber, setPageNumber] = useState(1)
+    const [totalPage, setTotalPage] = useState('')
 
 
     const {subCategorySlug} = useParams()
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/api/product/get-product-list-by-sub-category/${subCategorySlug}`)
+        axios.get(`http://localhost:8080/api/product/get-product-list-by-sub-category?subCategorySlug=${subCategorySlug}&&page=${pageNumber}&&itemPerPage=${itemPerPage}`)
         .then(res => {
+            setTotalPage(res.data.totalPage)
             setProducts(res.data.products)
         })
         .catch(err => {
             console.log(err.response)
         })
-    }, [products])
+    }, [itemPerPage, pageNumber, subCategorySlug])
 
-
-    
+    let changePage = pageNumber => e => {
+        e.preventDefault()
+        setPageNumber(pageNumber)
+    }
 
     return (
         <div className="subCategory">
@@ -50,66 +64,63 @@ function SubCategory() {
             
                 <div className="subCategory__explore">
                     {/* subCategory__exploreLeft starts */}
-                    <div className="subCategory__exploreLeft">
-                        
-                        {/* <div className="subCategory__exploreLeftRangeSlider">
-                        </div> */}
-                         {/* <RangeSlider/> */}
+                    <div className={showExploreLeft ? "subCategory__exploreLeft subCategory__exploreLeftShow" : "subCategory__exploreLeft"}>
                         <div className="subCategory__exploreLeftDrawer">
-                            <h5>Price Range</h5>
                             <div to="#" className="subCategory__exploreLeftItem">
-                                <p>Brand</p>
-                                <img src={plus} alt=""/>
+                                <span>Price </span>
+                                <HiChevronDown/>
                             </div>
                             <div to="#" className="subCategory__exploreLeftItem">
-                                <p>Weight</p>
-                                <img src={plus} alt=""/>
+                                <span>Brand</span>
+                                <HiChevronDown/>
                             </div>
                             <div to="#" className="subCategory__exploreLeftItem">
-                                <p>Quantity</p>
-                                <img src={plus} alt=""/>
+                                <span>Weight</span>
+                                <HiChevronDown/>
                             </div>
                             <div to="#" className="subCategory__exploreLeftItem">
-                                <p>Type</p>
-                                <img src={plus} alt=""/>
+                                <span>Quantity</span>
+                                <HiChevronDown/>
                             </div>
                             <div to="#" className="subCategory__exploreLeftItem">
-                                <p>Variable</p>
-                                <img src={plus} alt=""/>
+                                <span>Type</span>
+                                <HiChevronDown/>
                             </div>
                             <div to="#" className="subCategory__exploreLeftItem">
-                                <p>features</p>
-                                <img src={plus} alt=""/>
+                                <span>Variable</span>
+                                <HiChevronDown/>
                             </div>
                             <div to="#" className="subCategory__exploreLeftItem">
-                                <p>others</p>
-                                <img src={plus} alt=""/>
+                                <span>features</span>
+                                <HiChevronDown/>
                             </div>
-
+                            <div to="#" className="subCategory__exploreLeftItem">
+                                <span>others</span>
+                                <HiChevronDown/>
+                            </div>
+                
                         </div>
+                        <div onClick={e => {setShowExploreLeft(!showExploreLeft)}} className="subCategory__exploreLeftClose"></div>
 
                     </div>
                     {/* subCategory__exploreLeft ends */}
-
 
                     {/* subCategory__exploreRight starts */}
                     
                     <div className="subCategory__exploreRight">
                         <div className="subCategory__exploreRightSort">
+                        <div onClick={e => setShowExploreLeft(!showExploreLeft)} className="subCategory__exploreRightSortMenuIcon"><HiMenu/></div>
                         <div className="subCategory__exploreRightSortDropDown">
                                 <select onChange={e => console.log(e.target.value)}>
                                     <option value="default">sort by default</option> 
-                                    <option value="meat">Meat</option>    
-                                    <option value="fish">Fish</option>    
-                                    <option value="vegitable">Vegitable</option>    
+                                    <option value="meat">Alphabetically</option>       
                                 </select>
                             </div>
                             <div className="subCategory__exploreRightSortDropDown">
-                                <select onChange={e => console.log(e.target.value)}>
-                                    <option value="show">show</option> 
-                                    <option value="2">2</option>    
-                                    <option value="3">3</option>    
-                                    <option value="4">4</option>    
+                                <select onChange={e => setItemPerPage(e.target.value)}>  
+                                    <option value="8">show 8</option>    
+                                    <option value="12">show 12</option>    
+                                    <option value="24">show 24</option>  
                                 </select>
                             </div>
                    
@@ -119,18 +130,34 @@ function SubCategory() {
                         <div className="subCategory__exploreRightProductssubCategory">
                             {
                                products ? 
-                                products.length === 0 
-                                ?
-                                <p>NO products found</p>
-                                :
-                                products.map(product => (
-                                    <ProductCard key={product._id} product={product}/> 
-                                ))
-                                :
-                                <p>Loading</p>
+                                    products.length === 0 ?
+                                        <div className="display-4">Sorry! No products found!</div>
+                                    :
+                                    products.map(product => (
+                                        <ProductCard key={product._id} product={product}/> 
+                                    ))
+                                    :
+                                        <div className="subCategory__exploreRightProductssubCategoryLoading">
+                                            <Loading/>
+                                        </div>
                             }
-                        </div>
 
+
+                        </div>
+                            {
+                                totalPage ? 
+                                <div className="allProducts__pagination">
+                                <Pagination>
+                                        {
+                                            Array(totalPage).fill().map((_, i) => (
+                                                <Pagination.Item onClick={changePage(i+1)}>{i+1}</Pagination.Item>
+                                            ))
+                                        }
+                                </Pagination>
+                                </div>
+                                :
+                                ""
+                            }
 
                     </div>
                     {/* subCategory__exploreRight ends */}
