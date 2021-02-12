@@ -6,31 +6,28 @@ import {HiMenu} from 'react-icons/hi'
 import {HiChevronDown} from 'react-icons/hi'
 import home from '../assets/icons/home.svg'
 import rightArrow from '../assets/icons/right-arrow.svg'
-import plus from '../assets/icons/plus.svg'
 import axios from 'axios'
-
-
-// import RangeSlider from '../components/RangeSlider'
+import Loading from '../components/Loading'
 
 function Category() {
     const [categories, setCategories] = useState([])
-    const[subCategories, setSubCategories] =useState([])
+    const[subCategories, setSubCategories] =useState('')
     const[showExploreLeft, setShowExploreLeft] = useState(false)
 
     const {categorySlug} = useParams()
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/api/category/find-sub-categories-by-category-slug/${categorySlug}`)
+        axios.get(`/api/category/find-sub-categories-by-category-slug/${categorySlug}`)
         .then(res => {
             setSubCategories(res.data.subCategories)
         })
         .catch(err => {
             console.log(err.response)
         })
-    }, [subCategories])
+    }, [categorySlug])
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/api/category/get-all-category`)
+        axios.get(`/api/category/get-all-category`)
         .then(res => {
             setCategories(res.data.allCategory)
         })
@@ -39,8 +36,6 @@ function Category() {
         })
     }, [categorySlug])
     
-
-
     return (
         <div className="category">
             <div className="category__content">
@@ -103,9 +98,9 @@ function Category() {
                     <div className="category__exploreRight">
                         <div className="category__exploreRightCategory">
                             {
+                                
                                 categories.map(category => (
-                                    <Link to={`${category.categorySlug}`}>{category.category}</Link>
-
+                                    <Link key={category._id} to={`${category.categorySlug}`}>{category.category}</Link>
                                 ))
                             }
                     
@@ -131,9 +126,18 @@ function Category() {
 
                         <div className="category__exploreRightProductsCategory">
                             {
-                                subCategories.map(subCategory => (
-                                    <SubCategoryProductCard key={subCategory._id} subCategory={subCategory}/> 
-                                ))
+                                subCategories ?
+                                    subCategories.length === 0 ?
+                                    <div className="display-4">Sorry! No sub-category found!</div>
+                                    :
+        
+                                    subCategories.map(subCategory => (
+                                        <SubCategoryProductCard key={subCategory._id} subCategory={subCategory}/> 
+                                    )) 
+                                :
+                                <div className="loading">
+                                    <Loading/>
+                                </div>
                             }
                         </div>
 

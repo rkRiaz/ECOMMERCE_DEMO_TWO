@@ -3,8 +3,6 @@ import './Header.css'
 import {connect} from 'react-redux'
 import {Link, useHistory} from 'react-router-dom'
 import {NavDropdown} from 'react-bootstrap'
-// import menu from '../dummy_db/menu'
-
 import logo from '../assets/icons/logo.svg'
 import phone from '../assets/icons/phone.svg'
 import user from '../assets/icons/user.svg'
@@ -12,37 +10,38 @@ import shoppingCart from '../assets/icons/shoppingCart.svg'
 import menuHeart from '../assets/icons/menuHeart.svg'
 import menuUser from '../assets/icons/menuUser.svg'
 import menuPhone from '../assets/icons/menuPhone.svg'
-
-
 import {FaRegUser} from 'react-icons/fa'
 import {HiMenu} from 'react-icons/hi'
-
-
 import searchIcon from '../assets/icons/search.svg'
 import axios from 'axios';
 
-
-import riaz from '../assets/images/banana.svg'
 
 function Header(props) {
     const[categories, setCategories] = useState([])
     const[showSideBar, setShowSideBar] = useState(false)
     const[searchProducts, setSearchProducts] = useState('')
+    const[searchTabHide, setSearchTabHide] = useState(false)
 
-
+    
 
     const history = useHistory()
 
     const search = e => {
-        axios.get(`http://localhost:8080/api/product/get-products-by-text-search?q=${e.target.value}`)
+        axios.get(`/api/product/get-products-by-text-search?q=${e.target.value}`)
         .then(res => {
-             console.log(res.data.searchProducts)
             setSearchProducts(res.data.searchProducts)
+            setSearchTabHide(!searchTabHide)
         })
         .catch(err => {
             console.log(err.response)
         })
     }
+
+    const hideSearchTab = productId => e => {
+        e.preventDefault()
+        setSearchProducts('')
+        history.push(`/product/${productId}`)
+    } 
 
     const action = name => e => {
         e.preventDefault()
@@ -55,7 +54,7 @@ function Header(props) {
     }
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/api/category/get-all-category`)
+        axios.get(`/api/category/get-all-category`)
         .then(res => {
             setCategories(res.data.allCategory)
         })
@@ -97,25 +96,20 @@ function Header(props) {
                         <img src={logo} alt=""/>
                     </Link>
                     <form className="header__middleSearch">
-                        {/* <div className="header__middleSearchCategoryDropDown">
-                            <select onChange={e => console.log(e.target.value)}>
-                                <option value="categories">Categories</option> 
-                                <option value="b">Meat</option>    
-                                <option value="c">Fish</option>    
-                                <option value="d">Vegitable</option>    
-                            </select>
-                        </div> */}
                         <input type="text" placeholder="Search" onChange={search}/>
                         <div className="header__middleSearchIcon"><img src={searchIcon} alt=""/></div>
+            
                         {/* //search results component  starts*/}
                             <div className={searchProducts ? "header__middleSearchResult header__middleSearchResult__show" : "header__middleSearchResult"}>
                                 {
+                                searchProducts === '' ? 
+                                <p className="h6 p-3">Loading</p> :
                                 searchProducts.length === 0 ? 
-                                <p className="h5 p-3">No Product Found</p> :
-                                    searchProducts.map(searchProduct => {
-                                    <Link to="#" className="header__middleSearchResultProduct">
+                                <p className="h6 p-3">No Product Found</p> :
+                                    searchProducts.map(searchProduct => (
+                                    <Link onClick={hideSearchTab(searchProduct._id)} key={searchProduct._id} className="header__middleSearchResultProduct">
                                         <div className="header__middleSearchResultImage mr-3">
-                                            <img className="img-thumbnail" style={{ width: 70, height: 70 }} src={`/tempProductImages/${searchProduct.productImages[0]}`} alt="" />
+                                            <img className="img-thumbnail" style={{ width: 70, height: 70 }} src={`/uploads/images/${searchProduct.productImages[0]}`} alt="" />
                                         </div>
                                         <div className="header__middleSearchResultInfo">
                                             <div className="header__middleSearchResultName">{searchProduct.productName}</div>
@@ -124,7 +118,7 @@ function Header(props) {
 
                                         </div>
                                     </Link>
-                                    })
+                                    ))
                                 }
                                 
 

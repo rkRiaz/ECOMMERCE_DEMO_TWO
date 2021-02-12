@@ -5,13 +5,8 @@ import {Link} from 'react-router-dom'
 import {Button, Form} from 'react-bootstrap'
 import home from '../../assets/icons/home.svg'
 import rightArrow from '../../assets/icons/right-arrow.svg'
-// import userFill from '../../assets/icons/userFill.svg'
-// import lock from '../../assets/icons/lock.svg'
 import {AiOutlineUser, AiOutlinePhone, AiOutlineLock} from 'react-icons/ai'
 import {GoLocation} from 'react-icons/go'
-
-
-
 
 function CustomerRegistration() {
     const[values, setValues] = useState({
@@ -32,7 +27,7 @@ function CustomerRegistration() {
     const submit = e => {
         e.preventDefault()
         checked === false ? alert("You must agree with the privacy policy") : 
-        axios.post("http://localhost:8080/api/customer/registration", values)
+        axios.post("/api/customer/registration", values)
         .then(res => {
             console.log(res.data)
             alert(res.data.message)

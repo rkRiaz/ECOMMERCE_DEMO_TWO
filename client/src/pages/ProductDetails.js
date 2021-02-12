@@ -5,29 +5,20 @@ import { useParams, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux'
 import { addToBusket } from '../store/actions/busketActions'
 import {cartSideBar} from "../store/actions/sideBarAction"
-import {ButtonGroup, Button} from 'react-bootstrap'
-
+import { Button} from 'react-bootstrap'
 import {AiOutlineZoomIn, AiOutlineZoomOut} from 'react-icons/ai'
 import {MdZoomOutMap} from 'react-icons/md'
 import rightArrow from '../assets/icons/right-arrow.svg'
 import home from '../assets/icons/home.svg'
-// import products from '../dummy_db/products'
-
 import starYellow from '../assets/icons/starYellow.svg'
 import starDark from '../assets/icons/starDark.svg'
 import shoppingCart from '../assets/icons/shoppingCart.svg'
 import heartWhite from '../assets/icons/heartWhite.svg'
-
 import facebook from '../assets/icons/facebook.svg'
 import twitter from '../assets/icons/twitter.svg'
 import instagram from '../assets/icons/instagram-t.svg'
 import linkedin from '../assets/icons/linkedin.svg'
-import youtube from '../assets/icons/YouTube-Emblem.svg'
-import blogVideo from '../assets/images/Blog-Banner-03.svg'
-
-import jelly from '../assets/images/jelly.svg'
 import axios from 'axios';
-
 //multi carousel 
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
@@ -36,9 +27,11 @@ import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 
 
-
 function ProductDetails(props) {
     const [product, setProduct] = useState('')
+    const [relatedProducts, setRelatedProducts] = useState([])
+
+    
     const [quantity, setQuantity] = useState(1)
     const [largeImage, setLargeImage] = useState('')
     const [showAlert, setShowAlert] = useState(false)
@@ -55,7 +48,7 @@ function ProductDetails(props) {
 
     const deleteProduct = e => {
         e.preventDefault()
-        axios.delete(`http://localhost:8080/api/product/delete-product/${product._id}`)
+        axios.delete(`/api/product/delete-product/${product._id}`)
         .then(res => {
             alert(res.data.message)
             setShowAlert(!showAlert)
@@ -66,12 +59,6 @@ function ProductDetails(props) {
         })
     }
 
-    const changeImage = e => {
-        let target = e.target.parentElement
-        let imgSrc = target.dataset.image
-        setLargeImage(imgSrc)
-        console.log(target)
-    }
     const addHandler = e => {
         e.preventDefault()
         setQuantity(quantity+1)
@@ -82,6 +69,7 @@ function ProductDetails(props) {
             setQuantity(quantity-1)
         }
     }
+
     const navigate = type => e => {
         e.preventDefault()
         var x = document.getElementsByClassName("navClass");
@@ -96,13 +84,23 @@ function ProductDetails(props) {
 
     useEffect(() => {
       const fetchData = async() => {
-        let {data} =  await axios.get(`http://localhost:8080/api/product/get-single-product-by-id/${productId}`)
+        let {data} =  await axios.get(`/api/product/get-single-product-by-id/${productId}`)
         setLargeImage(data.product.productImages[0])
         setProduct(data.product)
+
+        axios.get(`/api/product/get-product-list-by-sub-category?subCategorySlug=${data.product.subCategorySlug}`)
+        .then(res => {
+            setRelatedProducts(res.data.products.reverse().splice(0, 4))
+        })
+        .catch(err => {
+            console.log(err.response)
+        })
         // console.log(fetchProduct)
       }
       fetchData()
-    }, [])
+    }, [productId])
+
+    
 
     const responsive = {
         superLargeDesktop: {
@@ -170,7 +168,7 @@ function ProductDetails(props) {
                                 <React.Fragment>
                                     <TransformComponent>
                                         
-                                        <img src={`http://localhost:8080/uploads/images/${largeImage}`} alt=""/>
+                                        <img src={`/uploads/images/${largeImage}`} alt=""/>
                                       
                                     </TransformComponent>
                                     <div className="details__topLeftTransformWrapperBtnGroup text-right">
@@ -191,9 +189,9 @@ function ProductDetails(props) {
                                 responsive={responsive}
                             >
                                 { 
-                                    product? product.productImages.map(image => (
-                                    <div onClick={changeImage} data-image={image} className="details__topLeftSmallImg">
-                                        <img src={`http://localhost:8080/uploads/images/${image}`} alt=""/>
+                                    product? product.productImages.map((image, i) => (
+                                    <div key={i}onClick={e => {setLargeImage(image)}} className="details__topLeftSmallImg">
+                                        <img src={`/uploads/images/${image}`} alt=""/>
                                     </div>
                                     )) : '' 
                                 }
@@ -296,11 +294,8 @@ function ProductDetails(props) {
                                     everything you need right at your door-step and at no additional cost.
                                 </p>
                                 <div className="details__bottomLeftContentVideo">
-                                    <iframe width="100%" height="500px" src={`https://www.youtube.com/embed/${product.productVideo ? product.productVideo : ''}`} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                                    {/* <img src={blogVideo} alt=""/> */}
-                                    {/* <div className="details__bottomLeftContentIcon">
-                                        <img src={youtube} alt=""/>
-                                    </div> */}
+                                    <iframe width="100%" height="500px" src={`https://www.youtube.com/embed/${product.productVideo ? product.productVideo : ''}`} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                                  
                                 </div>
                             </div>
 
@@ -334,31 +329,25 @@ function ProductDetails(props) {
 
 
                     <div className="details__bottomRight">
+                
                         <div className="details__bottomRightList">
                             <div className="details__bottomRightListItemHeader">
                                 Related Product
                             </div>
-                            <Link to="" className="details__bottomRightListItem">
-                                <img src={jelly} alt=""/>
-                                <div className="details__bottomRightListItemInfo">
-                                    <div className="details__bottomRightListItemName">Frosty Fruits</div>
-                                    <div className="details__bottomRightListItemPrice">500&#2547;</div>
-                                </div>
-                            </Link>
-                            <Link to="" className="details__bottomRightListItem">
-                                <img src={jelly} alt=""/>
-                                <div className="details__bottomRightListItemInfo">
-                                    <div className="details__bottomRightListItemName">Frosty Fruits</div>
-                                    <div className="details__bottomRightListItemPrice">500&#2547;</div>
-                                </div>
-                            </Link>
-                            <Link to="" className="details__bottomRightListItem">
-                                <img src={jelly} alt=""/>
-                                <div className="details__bottomRightListItemInfo">
-                                    <div className="details__bottomRightListItemName">Frosty Fruits</div>
-                                    <div className="details__bottomRightListItemPrice">500&#2547;</div>
-                                </div>
-                            </Link>
+                            {
+                                relatedProducts.length === 0 ? "" :
+                                relatedProducts.map(r => (
+                                    <Link to={`/product/${r._id}`} key={r._id} className="details__bottomRightListItem">
+                                        <img src={`/uploads/images/${r.productImages[0]}`} alt=""/>
+                                        <div className="details__bottomRightListItemInfo">
+                                            <div className="details__bottomRightListItemName">{r.productName}</div>
+                                            <div className="details__bottomRightListItemPrice">{r.salePrice}&#2547;</div>
+                                        </div>
+                                    </Link>
+                                ))
+                                
+                            }
+                         
                         </div>
                     </div>
                 </div>

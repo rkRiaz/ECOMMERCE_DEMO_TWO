@@ -1,11 +1,9 @@
-
 const bcrypt = require('bcrypt') 
 const { validationResult } = require('express-validator')
 const {errorFormatter} = require('../utils/errorFormatter')
 const Customer = require('../models/Customer')
 const Order = require('../models/Order')
 const jwt = require('jsonwebtoken')
-
 
 exports.registration = async (req, res, next) => {
     const { name, phone, email, address, password, confirmPassword } = req.body

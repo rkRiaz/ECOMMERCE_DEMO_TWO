@@ -40,59 +40,15 @@ const CartSideBar = (props) => {
         // if(!props.customer.customerLoggedIn) {
             fetchData()
         // }
-        props.orderAction({subTotal})
+        props.orderAction(
+            {
+                customerId:props.customer.customerLoggedIn ? props.customer.customerInfo._id : '',
+                cart_products, 
+                subTotal
+            }
+        )
     }, [props.busket.busketNumbers, subTotal])
 
-
-
-        // fetch cart from customer database
-        // useEffect(() => {
-        //     if(props.customer.customerLoggedIn) {
-        //         let cartProducts = []
-
-        //         axios.get(`http://localhost:8080/api/customer/loginCustomerInfo`, {
-        //             headers: {
-        //                 Authorization: `Bearer ${props.customer.customerToken}`
-        //             }
-        //         }) 
-        //         .then(res => {
-        //             if(res.data.customerInfo.cart.length !== 0) {
-        //                 // return console.log(res.data.customerInfo)
-        //                 // setCart_products (res.data.customerInfo.cart)
-        //                 let quantity = res.data.customerInfo.cart.map(p => {return p.quantity})   
-        //                 let busketNumbers = quantity.reduce((a, b) => a + b, 0)
-        //                 props.setBusketFromDB(res.data.customerInfo.cart, busketNumbers)
-        //             }
-        //         })
-        //         .catch(e => console.log(e))
-
-
-        //         const fetchData = async() => {
-        //             for(let i = 0; i < props.busket.cart_products.length; i++ ) {
-        //                 let {data} = await axios.get(`http://localhost:8080/api/product/get-single-product-by-id/${props.busket.cart_products[i]._id}`)
-        //                 cartProducts.push({
-        //                     _id: data.product._id,
-        //                     productName: data.product.productName,
-        //                     salePrice: data.product.salePrice,
-        //                     quantity: props.busket.cart_products[i].quantity,
-        //                     productImage: data.product.productImages[0],
-        //                 })
-        //             }
-        //             setCart_products(cartProducts)
-        //             if(cartProducts.length > 0) {
-        //                 let total = cartProducts.map(p => { return p.salePrice * p.quantity })
-        //                 setSubTotal(total.reduce((a, b) => a + b, 0))
-        //             }
-        //         }
-        //         fetchData()
-
-        //         axios.put(`http://localhost:8080/api/customer/editInfo`, props.busket.cart_products, {
-        //             headers: {
-        //                 'Authorization': `Bearer ${props.customer.customerToken}` 
-        //             }
-        //         })
-        //     }
-        // },[props.busket.busketNumbers])
 
 
 

@@ -16,18 +16,6 @@ const adminSchema = new Schema({
     phone: {
         type: String,
         required: true
-    },
-    profileImg: {
-        type: String,
-    },
-    registrationAt: {
-        type: Date,
-    },
-    role: {
-        type: String,
-    },
-    status: {
-        type: String
     }
 });
 

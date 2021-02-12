@@ -7,7 +7,7 @@ import setAuthToken from '../../utils/setAuthToken'
 
 
 export const adminLogin = (loginInfo, history) => dispatch => {
-    axios.put('http://localhost:8080/api/admin/admin-login', loginInfo)
+    axios.put('/api/admin/admin-login', loginInfo)
         .then(res => {
             let adminToken = res.data.adminToken
             localStorage.setItem('admin_auth_token', adminToken)
@@ -21,9 +21,6 @@ export const adminLogin = (loginInfo, history) => dispatch => {
                     adminInfo: decodeToken
                 }
             })
-            
-            // history.location.pathname === "/admin/cart" ? 
-            // history.push("/admin/cart") :
             history.push("/adminDashboard")
         })
         .catch(error => {
@@ -33,13 +30,6 @@ export const adminLogin = (loginInfo, history) => dispatch => {
                     error: error.response.data
                 },
             })
-            // dispatch({
-            //     type: Types.SIDE_BARS,
-            //     payload: {
-            //         addProduct: '',
-            //         open: history.location.pathname === "/admin/signup-login" ? false : true,
-            //     }
-            // })
             console.log(error)
         })
 }

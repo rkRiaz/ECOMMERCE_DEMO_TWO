@@ -2,20 +2,14 @@ import React, {useState, useEffect} from 'react';
 import './Cart.css'
 import { connect } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
-
 import { productQuantity, removeFromBusket, orderAction, setBusketFromDB } from '../store/actions/busketActions'
 import {loginSideBar} from '../store/actions/sideBarAction'
-
+import emptycart from '../assets/images/emptycart.png'
 import { FaTrash } from 'react-icons/fa'
-
 import { Table } from 'react-bootstrap'
 import axios from 'axios'
-
 import Loading from '../components/Loading'
 
-
-// import {cartSideBar__off} from '../store/actions/sideBarAction'
-// import axios from 'axios';
 
 const Cart = (props) => {
     const [cart_products, setCart_products] = useState('')
@@ -23,11 +17,10 @@ const Cart = (props) => {
 
     const history = useHistory()
 
-
     const fetchData = async () => {
         let cartProducts = []
         for(let i = 0; i < props.busket.cart_products.length; i++ ) {
-            let {data} = await axios.get(`http://localhost:8080/api/product/get-single-product-by-id/${props.busket.cart_products[i]._id}`)
+            let {data} = await axios.get(`/api/product/get-single-product-by-id/${props.busket.cart_products[i]._id}`)
             cartProducts.push({
                 _id: data.product._id,
                 productName: data.product.productName,
@@ -43,133 +36,24 @@ const Cart = (props) => {
         }
     }
 
-
     useEffect(() => {
-        // if(!props.customer.customerLoggedIn) {
-            fetchData()
-        // }
-        props.orderAction({subTotal})
+ 
+        fetchData()
+        props.orderAction(
+                {
+                    cart_products, 
+                    subTotal
+                }
+            )
+    }, [props.busket.busketNumbers, subTotal, cart_products])
 
-    }, [props.busket.busketNumbers, subTotal])
-
-
-
-
-
-        // fetch cart from customer database
-        // useEffect(() => {
-        //     if(props.customer.customerLoggedIn) {
-        //         let cartProducts = []
-
-        //         axios.get(`http://localhost:8080/api/customer/loginCustomerInfo`, {
-        //             headers: {
-        //                 Authorization: `Bearer ${props.customer.customerToken}`
-        //             }
-        //         }) 
-        //         .then(res => {
-        //             if(res.data.customerInfo.cart.length !== 0) {
-        //                 // return console.log(res.data.customerInfo)
-        //                 // setCart_products (res.data.customerInfo.cart)
-        //                 let quantity = res.data.customerInfo.cart.map(p => {return p.quantity})   
-        //                 let busketNumbers = quantity.reduce((a, b) => a + b, 0)
-        //                 props.setBusketFromDB(res.data.customerInfo.cart, busketNumbers)
-        //             }
-        //         })
-        //         .catch(e => console.log(e))
-
-
-        //         const fetchData = async() => {
-        //             for(let i = 0; i < props.busket.cart_products.length; i++ ) {
-        //                 let {data} = await axios.get(`http://localhost:8080/api/product/get-single-product-by-id/${props.busket.cart_products[i]._id}`)
-        //                 cartProducts.push({
-        //                     _id: data.product._id,
-        //                     productName: data.product.productName,
-        //                     salePrice: data.product.salePrice,
-        //                     quantity: props.busket.cart_products[i].quantity,
-        //                     productImage: data.product.productImages[0],
-        //                 })
-        //             }
-        //             setCart_products(cartProducts)
-        //             if(cartProducts.length > 0) {
-        //                 let total = cartProducts.map(p => { return p.salePrice * p.quantity })
-        //                 setSubTotal(total.reduce((a, b) => a + b, 0))
-        //             }
-        //         }
-        //         fetchData()
-
-        //         axios.put(`http://localhost:8080/api/customer/editInfo`, props.busket.cart_products, {
-        //             headers: {
-        //                 'Authorization': `Bearer ${props.customer.customerToken}` 
-        //             }
-        //         })
-
-
-        //     }
-        // },[props.busket.busketNumbers])
-
-
-
-
-    // let fetchData = async() => {
-    //     props.busket.cart_products.map(async busket_product => {  
-    //         let {data} =  await axios.get(`http://localhost:8080/api/product/get-single-product-by-id/${busket_product._id}`)
-    //         busket_product.productName = data.product.productName
-    //         busket_product.salePrice = data.product.salePrice
-    //         busket_product.productImage = data.product.productImages[0]
-    //    })
-      
-    // }
-
-    // fetchData()
-
-    // useEffect(() => {
-        
-    //     // console.log(props.busket.cart_products) 
-    //     let fetchProducts = []
-
-    //      for(let i=0; i<props.busket.cart_products.length; i++) {
-    //          axios.get(`http://localhost:8080/api/product/get-single-product-by-id/${props.busket.cart_products[i]._id}`)
-    //          .then(res => {
-    //             let product = res.data
-    //             product.quantity = props.busket.cart_products[i].quantity ? props.busket.cart_products[i].quantity : 1 
-    //             product.size  = props.busket.cart_products[i].size ? props.busket.cart_products[i].size : ''
-    //             product.color = props.busket.cart_products[i].color ? props.busket.cart_products[i].color: ''
-    //             product.weight = props.busket.cart_products[i].weight ? props.busket.cart_products[i].weight: 1
-    //             fetchProducts.push(product)
-    //             setLoading(false)
-    //          })
-    //      }
-
-    //     setCart_products(fetchProducts)
-        
-         
-    //     //  console.log(fetchProducts)
-       
-    // }, [props.busket.busketNumbers])
-
-
-    // let { cart_products } = props.busket
-    // let customerId = props.customer.customerInfo._id
-    // let customer = props.customer.customer
-
-    // let total = cart_products.length !== 0 && cart_products !== '' ? cart_products.map(p => { return p.salePrice * p.quantity }) : ''
-    // let subTotal = total.reduce((a, b) => a + b, 0)
-    
-    // let orderedProducts = props.busket.ordered_products
-
-    // orderedProducts.subTotal = subTotal
-    // orderedProducts.customer= customer ? customer : ''
-    // orderedProducts.customerId = customerId ? customerId : ''
-    // console.log(orderedProducts)
 
     let checkOut = (e) => {
         e.preventDefault()
- 
         props.customer.customerLoggedIn ?
         history.push('/shippingInformation')
         :
         props.loginSideBar('open')
-        // props.orderedProducts(customerId, orderedProducts, props.history)
     }
 
     if(cart_products === '') {
@@ -182,7 +66,10 @@ const Cart = (props) => {
 
     if(cart_products.length === 0) {
         return(
-            <div className="display-4 text-center">Your Cart is Empty<br /> <Link className="text-success" to="/">Go to shop</Link></div>
+            <div className="h1 text-center">
+                <Link className="text-success font-weight-bold" to="/">Go to shop</Link><br />
+                <img src={emptycart} alt=""/>
+             </div>
         )
     }
 
@@ -235,16 +122,6 @@ const Cart = (props) => {
                         <p>Taxes, shipping and discounts codes calculated at checkout</p>
                         <button onClick={checkOut} className="btn btn-primary mt-2" style={{width: 300}}>CHECK OUT</button>
                     </div>
-                    {/* warning alert starts */}
-                    {/* { warning === null ? "" : 
-                    <div style={{position: "fixed", bottom: 0, left: 0, width: "100%", zIndex: 1000}} className="alert alert-warning alert-dismissible fade show text-center" role="alert">
-                        <MdReportProblem className="mb-1"/><strong>&nbsp;&nbsp;&nbsp;{warning}</strong>
-                        <button onClick={e => setWarning(null)} type="button" className="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    } */}
-                    {/* warning alert ends */}
                 </div>
         </div>
     </div>

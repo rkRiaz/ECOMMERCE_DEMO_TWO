@@ -8,14 +8,10 @@ function CategoryProductCard(props) {
 
     const [category, setCategory] = useState(props.category)
 
-    // useEffect(() => {
-    //     setProduct(props.product)
-    // }, [])
-
     return (
         <div className="categoryProductCard">
             <Link to={`category/${category.categorySlug}`}>
-                <img className="categoryProductCardLargeImage" src={`http://localhost:8080/uploads/images/${category.categoryImage}`} alt=""/> 
+                <img className="categoryProductCardLargeImage" src={`/uploads/images/${category.categoryImage}`} alt=""/> 
                 <div className="categoryProductCard__name px-3 mt-4">{category.category}</div>
             </Link>
         </div>

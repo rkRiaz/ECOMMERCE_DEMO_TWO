@@ -1,22 +1,16 @@
 import React, {useState, useEffect} from 'react'
 import './AdminProductCard.css'
 import {Link} from 'react-router-dom'
-
-
 import {AiOutlineEdit} from 'react-icons/ai'
 import {RiDeleteBin3Line} from 'react-icons/ri'
 import axios from 'axios'
-
-
-
-
 
 function AdminProductCard({product}) {
     const [showAlert, setShowAlert] = useState(false)
 
     const deleteProduct = e => {
         e.preventDefault()
-        axios.delete(`http://localhost:8080/api/product/delete-product/${product._id}`)
+        axios.delete(`/api/product/delete-product/${product._id}`)
         .then(res => {
             setShowAlert(!showAlert)
         })
@@ -26,12 +20,11 @@ function AdminProductCard({product}) {
         
     }
 
-
     return (
         <div className="adminProductCard">
             <Link to={`/product/${product._id}`}>
                 <div className="adminProductCardLargeImage">
-                    <img src={`http://localhost:8080/uploads/images/${product.productImages[0]}`} alt=""/> 
+                    <img src={`/uploads/images/${product.productImages[0]}`} alt=""/> 
                 </div>
                 <div className="adminProductCard__name px-3 mt-1">{product.productName}</div>
                 <div className="adminProductCard__name px-3  text-danger">{product.salePrice} TK</div>

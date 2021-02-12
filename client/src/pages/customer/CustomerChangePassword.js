@@ -10,7 +10,6 @@ import rightArrow from '../../assets/icons/right-arrow.svg'
 import {AiOutlineLock} from 'react-icons/ai'
 
 
-
 const CustomerChangePassword = (props) => {
     const[oldPassword, setOldPassword] = useState('')
     const[newPassword, setNewPassword] = useState('')
@@ -22,7 +21,7 @@ const CustomerChangePassword = (props) => {
 
      let submit = e => {
         e.preventDefault()
-        axios.put("http://localhost:8080/api/customer/changePassword", {oldPassword, newPassword, confirmPassword}, {
+        axios.put("/api/customer/changePassword", {oldPassword, newPassword, confirmPassword}, {
             headers: {
                 'Authorization': `Bearer ${props.customer.customerToken}` 
             }

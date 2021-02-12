@@ -3,21 +3,17 @@ import './CustomerDashboard.css'
 import {Link, useHistory} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {logout} from '../../store/actions/customerAction'
-
 import home from '../../assets/icons/home.svg'
 import rightArrow from '../../assets/icons/right-arrow.svg'
 import edit from '../../assets/icons/edit.svg'
 import password from '../../assets/icons/password.svg'
 import location from '../../assets/icons/location.svg'
 import wishlist from '../../assets/icons/wishlist.svg'
-
 import cloudComputing from '../../assets/icons/cloud-computing.svg'
 import taskList from '../../assets/icons/task-list.svg'
 import future from '../../assets/icons/future.svg'
 import returnArrow from '../../assets/icons/returnArrow.svg'
 import transaction from '../../assets/icons/transaction.svg'
-
-
 
 function CustomerDashboard(props) {
 
@@ -71,7 +67,7 @@ function CustomerDashboard(props) {
                     </div>
                     <h3>MY ORDERS</h3>
                     <div className="dashboard__leftBottom">
-                        <Link to="#" className="dashboard__leftItem">
+                        <Link to="/customerOrder" className="dashboard__leftItem">
                             <img src={taskList} alt=""/>
                             <p>View your order history</p>
                         </Link>
@@ -96,10 +92,10 @@ function CustomerDashboard(props) {
                 <div className="dashboard__right">
                     <h3>ACCOUNT MENU</h3>
                     <div className="dashboard__rightList">
-                        <Link to ="#"> <img src={rightArrow} alt=""/> MY ACCOUNT</Link>
+                        <Link to ="/customerDashboard"> <img src={rightArrow} alt=""/> MY ACCOUNT</Link>
                         <Link to ="#"> <img src={rightArrow} alt=""/> ADDRESS BOOK</Link>
                         <Link to ="#"> <img src={rightArrow} alt=""/> WISHLIST</Link>
-                        <Link to ="#"> <img src={rightArrow} alt=""/> ORDER HISTORY</Link>
+                        <Link to ="/customerOrder"> <img src={rightArrow} alt=""/> ORDER HISTORY</Link>
                         <Link to ="#"> <img src={rightArrow} alt=""/> RETURNS</Link>
                         <Link to ="#"> <img src={rightArrow} alt=""/> TRANSACTIONS</Link>
                         <Link to ="#"> <img src={rightArrow} alt=""/> NEWSLETTER</Link>

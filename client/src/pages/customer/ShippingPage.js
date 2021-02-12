@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import './ShippingPage.css'
 import { } from 'react-redux'
-
-import { Link, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { Button, Form, Alert } from 'react-bootstrap'
 import { GoLocation } from 'react-icons/go'
 import { AiOutlineUser, AiOutlinePhone, AiOutlineMail } from 'react-icons/ai'
 import axios from 'axios'
 import {connect} from 'react-redux'
-
 import {loginSideBar} from '../../store/actions/sideBarAction'
 import { orderAction } from '../../store/actions/busketActions'
 
@@ -27,7 +25,7 @@ function ShippingPage(props) {
     useEffect(() => {
         props.loginSideBar()
         setSubTotal(props.busket.order.subTotal)
-        axios.get(`http://localhost:8080/api/customer/loginCustomerInfo`, {
+        axios.get(`/api/customer/loginCustomerInfo`, {
             headers: {
                 Authorization: `Bearer ${props.customer.customerToken}`
             }
@@ -46,7 +44,14 @@ function ShippingPage(props) {
     }, [])
 
     useEffect(() => {
-        props.orderAction({cart_products: props.busket.cart_products, shippingInforamtion: values})
+        props.orderAction({
+            customerId: props.customer.customerLoggedIn ? props.customer.customerInfo._id : '',
+            shippingInformation: {
+                name: values.name,
+                phone: values.phone,
+                address: values.address,
+                email: values.email,
+            }})
     }, [values])
 
 

@@ -2,17 +2,12 @@ import React, {useState, useEffect} from 'react'
 import './CustomerEdit.css'
 import axios from 'axios'
 import {connect} from 'react-redux'
- 
 import {Link} from 'react-router-dom'
 import {Button, Form} from 'react-bootstrap'
 import home from '../../assets/icons/home.svg'
 import rightArrow from '../../assets/icons/right-arrow.svg'
-// import userFill from '../../assets/icons/userFill.svg'
 import {GoLocation} from 'react-icons/go'
 import {AiOutlineUser, AiOutlinePhone} from 'react-icons/ai'
-
-
-
 
 function CustomerEdit(props) {
     const[values, setValues] = useState({
@@ -49,7 +44,7 @@ function CustomerEdit(props) {
 
     const submit = e => {
         e.preventDefault() 
-        axios.put(`http://localhost:8080/api/customer/editInfo`, values, {
+        axios.put(`/api/customer/editInfo`, values, {
             headers: {
                 'Authorization': `Bearer ${props.customer.customerToken}` 
             }

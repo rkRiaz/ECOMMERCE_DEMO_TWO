@@ -24,14 +24,7 @@ export const addToBusket = (productId, quantity, size, color, weight, history) =
                payload: {
                    product,
                }
-           })
-        //    dispatch({
-        //         type: Types.SIDE_BARS,
-        //         payload: {
-        //             addProduct: res.data,
-        //         }
-        //     })
-        //    history.push(`/cart`)    
+           })  
     
 }
 
@@ -54,8 +47,6 @@ export const productQuantity = (action, productId) => dispatch => {
 } 
 
 export const orderAction = (order) => dispatch => {
-
-console.log(order)
     dispatch({
         type: Types.ORDER,
         payload: {
@@ -63,19 +54,22 @@ console.log(order)
         }
     }) 
 
-    // axios.post("/admin/ordered-products", orderedProducts)
-    // .then(res => console.log(res.data))
-    // .catch(e => {console.log(e)})
-    // history.push("/customer/ordered")
-// } else {
-//     dispatch({
-//         type: Types.SIDE_BARS,
-//         payload: {
-//             addProduct: '',
-//             open: true,
-//         }
-//     }) 
-// }
+} 
 
+export const orderCreateAction = (order, history, customerLoggedIn) => dispatch => {
+    axios.post(`/api/order/create-order`, order)
+    .then(res => {
+        console.log(res.data)
+        alert(res.data.message)
+        dispatch({
+            type: Types.ORDER_SUCCESS,
+        }) 
+        customerLoggedIn ?
+        history.push('/customerOrder') :
+        history.push('/')
+    })
+    .catch(err => {
+        console.log(err)
+    })  
 } 
 

@@ -1,6 +1,5 @@
 const { Schema, model } = require('mongoose')
 
-
 const categorytSchema = new Schema(
     {
         category: {

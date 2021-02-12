@@ -1,7 +1,6 @@
 
 const Admin = require('../models/Admin')
 const Customer = require('../models/Customer')
-
 const { validationResult } = require('express-validator')
 const {errorFormatter} = require('../utils/errorFormatter')
 const jwt = require('jsonwebtoken')
@@ -35,13 +34,11 @@ exports.registration = async (req, res, next) => {
     }catch (e) {
         next(e)
     }
-
 }
 
 
 exports.loginController = async (req, res, next) => {
-    console.log(req.body)
-    let {loginPhone, loginPassword} = req.body
+    let {loginName, loginPassword} = req.body
     
     let errors = validationResult(req).formatWith(errorFormatter)
     if(!errors.isEmpty()) {
@@ -49,8 +46,7 @@ exports.loginController = async (req, res, next) => {
     }
     
     try{
-        let findAdmin = await Admin.findOne({phone: loginPhone})
-        console.log(findAdmin)
+        let findAdmin = await Admin.findOne({userName: loginName})
         let match = await bcrypt.compare(loginPassword, findAdmin.password)
         if(findAdmin) {
             if(!match) {
@@ -69,7 +65,7 @@ exports.loginController = async (req, res, next) => {
       
             }
         } else {
-            return res.status(401).json({message: 'Phone number is not correct'})
+            return res.status(401).json({message: 'user name is not correct'})
         }
     }catch(e) {
         next(e)
@@ -78,7 +74,6 @@ exports.loginController = async (req, res, next) => {
 }
 
 exports.allCustomers = async (req, res, next) => {
-    console.log('riaz')
     try{
         let allCustomers = await Customer.find()
         res.status(200).json({

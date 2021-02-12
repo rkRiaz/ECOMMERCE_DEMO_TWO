@@ -1,19 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import './PaymentPage.css'
-import { } from 'react-redux'
-
-import { Link, useHistory } from 'react-router-dom'
-
+import { useHistory } from 'react-router-dom'
 import { BiCreditCard } from 'react-icons/bi'
 import { FaMoneyBillWave } from 'react-icons/fa'
 import bkashLogo from '../../assets/images/bkash.svg'
-
-import { AiOutlineUser, AiOutlinePhone, AiOutlineMail } from 'react-icons/ai'
 import axios from 'axios'
 import {connect} from 'react-redux'
-
 import {loginSideBar} from '../../store/actions/sideBarAction'
-import {orderAction } from '../../store/actions/busketActions'
+import {orderAction, orderCreateAction } from '../../store/actions/busketActions'
 
 function PaymentPage(props) {
     const [subTotal, setSubTotal] = useState('')
@@ -22,20 +16,22 @@ function PaymentPage(props) {
 
     useEffect(() => {
         setSubTotal(props.busket.order.subTotal)
+        props.orderAction({payment: {method: "cash", transactionId: ''}})
     }, [])
 
 
-    const paymentGateWay = e => {
-        alert('payment Information Submitted')
+    const paymentGateWay = type => e => {
+        e.preventDefault()
         console.log(props.busket.order)
+        props.orderCreateAction(props.busket.order, history, props.customer.customerLoggedIn)
     }
 
 
     const openPaymentType = paymentType => e => {
+        props.orderAction({payment: {method: paymentType, transactionId: ''}})
         var x = document.getElementsByClassName("payment__contentMethodsDetailsContent");
         var y = document.getElementsByClassName("payment__contentMethodsMethod");
      
-
         for (let i = 0; i < x.length; i++) {
           x[i].style.display = "none";
           y[i].style.color = "#000"
@@ -43,7 +39,6 @@ function PaymentPage(props) {
         }
         e.target.style.backgroundColor = "rgb(0, 115, 192)"
         e.target.style.color = "#fff"
-
 
         document.getElementById(paymentType).style.display = "block";
     }
@@ -87,7 +82,7 @@ function PaymentPage(props) {
                                 <p>1. Rules about cash on delivery</p>
                                 <p>1. Rules about cash on delivery</p>
                             </div>
-                            <button onClick={paymentGateWay} className="btn btn-success">CONFIRM</button>
+                            <button onClick={paymentGateWay('cash')} className="btn btn-success">CONFIRM</button>
                         </div>
                         <div id="bkash" className="payment__contentMethodsDetailsContent">
                         <h5>Mobile Banking</h5>
@@ -100,7 +95,7 @@ function PaymentPage(props) {
                                 <p>1. Rules about mobile banking</p>
                                 <p>1. Rules about mobile banking</p>
                             </div>
-                            <button onClick={paymentGateWay} className="btn btn-success">CONFIRM</button>
+                            <button onClick={paymentGateWay('mobile')} className="btn btn-success">CONFIRM</button>
                         </div>
                         <div id="creditCard" className="payment__contentMethodsDetailsContent">
                         <h5>Payment with Credit/Debit card</h5>
@@ -113,7 +108,7 @@ function PaymentPage(props) {
                                 <p>1. Rules about Credit/Debit card</p>
                                 <p>1. Rules about Credit/Debit card</p>
                             </div>
-                            <button onClick={paymentGateWay} className="btn btn-success">CONFIRM</button>
+                            <button onClick={paymentGateWay('card')} className="btn btn-success">CONFIRM</button>
                         </div>
                     </div>
                 </div>
@@ -145,5 +140,5 @@ const mapStateToProps = state => ({
     busket: state.busket
 })
 
-export default connect(mapStateToProps, {loginSideBar, orderAction})(PaymentPage)
+export default connect(mapStateToProps, {loginSideBar, orderAction, orderCreateAction})(PaymentPage)
 

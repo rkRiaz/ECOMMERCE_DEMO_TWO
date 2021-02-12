@@ -3,7 +3,7 @@ import './AdminChangePassword.css'
 import {connect} from 'react-redux'
 import {adminLogout} from '../../store/actions/adminAction'
 import {Button, Form} from 'react-bootstrap'
-import {Link, useHistory} from 'react-router-dom'
+import { useHistory} from 'react-router-dom'
 import axios from 'axios'
 import {AiOutlineLock} from 'react-icons/ai'
 import AdminLayout from './AdminLayout'
@@ -21,7 +21,7 @@ const AdminChangePassword = (props) => {
     
      let submit = e => {
         e.preventDefault()
-        axios.put("http://localhost:8080/api/admin/change-password", {oldPassword, newPassword, confirmPassword}, {
+        axios.put("/api/admin/change-password", {oldPassword, newPassword, confirmPassword}, {
             headers: {
                 'Administrator': `Bearer ${props.admin.adminToken}` 
             }

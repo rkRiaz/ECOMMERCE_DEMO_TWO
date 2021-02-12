@@ -3,11 +3,9 @@ import * as Types from './types'
 import jwtDecode from 'jwt-decode'
 import setAuthToken from '../../utils/setAuthToken'
 
-
-
 export const login = (loginInfo, history) => dispatch => {
     console.log(loginInfo)
-    axios.put('http://localhost:8080/api/customer/login', loginInfo)
+    axios.put('/api/customer/login', loginInfo)
         .then(res => {
             let token = res.data.token
             localStorage.setItem('customer_auth_token', token)
@@ -22,14 +20,6 @@ export const login = (loginInfo, history) => dispatch => {
                 }
             })
             
-            // dispatch({
-            //     type: Types.SIDE_BARS,
-            //     payload: {
-            //         addProduct: '',
-            //         open: false,
-            //     }
-            // })
-            
             history.location.pathname === "/cart" ? 
             history.push("/shippingInformation") :
             history.push("/customerDashboard")
@@ -41,13 +31,6 @@ export const login = (loginInfo, history) => dispatch => {
                     error: error.response.data
                 },
             })
-            // dispatch({
-            //     type: Types.SIDE_BARS,
-            //     payload: {
-            //         addProduct: '',
-            //         open: history.location.pathname === "/customer/signup-login" ? false : true,
-            //     }
-            // })
             console.log(error)
         })
 }

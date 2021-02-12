@@ -2,34 +2,25 @@ import React, {useState, useEffect} from 'react'
 import './SubCategory.css'
 import {Link, useParams} from 'react-router-dom'
 import ProductCard from '../components/ProductCard'
-
 import home from '../assets/icons/home.svg'
 import rightArrow from '../assets/icons/right-arrow.svg'
-import plus from '../assets/icons/plus.svg'
+import noProduct from '../assets/images/noProduct.jpg'
 import axios from 'axios'
-
 import Loading from '../components/Loading'
 import { Pagination } from 'react-bootstrap'
 import { HiChevronDown, HiMenu } from 'react-icons/hi'
 
 
-
-// import RangeSlider from '../components/RangeSlider'
-
 function SubCategory() {
     const[products, setProducts] =useState('')
     const[showExploreLeft, setShowExploreLeft] = useState(false)
-
-
     const [itemPerPage, setItemPerPage] = useState(8)
     const [pageNumber, setPageNumber] = useState(1)
     const [totalPage, setTotalPage] = useState('')
-
-
     const {subCategorySlug} = useParams()
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/api/product/get-product-list-by-sub-category?subCategorySlug=${subCategorySlug}&&page=${pageNumber}&&itemPerPage=${itemPerPage}`)
+        axios.get(`/api/product/get-product-list-by-sub-category?subCategorySlug=${subCategorySlug}&&page=${pageNumber}&&itemPerPage=${itemPerPage}`)
         .then(res => {
             setTotalPage(res.data.totalPage)
             setProducts(res.data.products)
@@ -131,15 +122,17 @@ function SubCategory() {
                             {
                                products ? 
                                     products.length === 0 ?
-                                        <div className="display-4">Sorry! No products found!</div>
+                                        <div>
+                                            <img src={noProduct} alt=""/>
+                                        </div>
                                     :
                                     products.map(product => (
                                         <ProductCard key={product._id} product={product}/> 
                                     ))
                                     :
-                                        <div className="subCategory__exploreRightProductssubCategoryLoading">
-                                            <Loading/>
-                                        </div>
+                                    <div className="loading">
+                                        <Loading/>
+                                    </div>
                             }
 
 
@@ -150,7 +143,7 @@ function SubCategory() {
                                 <Pagination>
                                         {
                                             Array(totalPage).fill().map((_, i) => (
-                                                <Pagination.Item onClick={changePage(i+1)}>{i+1}</Pagination.Item>
+                                                <Pagination.Item key={i} onClick={changePage(i+1)}>{i+1}</Pagination.Item>
                                             ))
                                         }
                                 </Pagination>

@@ -93,9 +93,23 @@ const busketReducer = (state=init, action) => {
                 order: {...state.order, ...action.payload.order}
             }
         }
+
+        case Types.ORDER_SUCCESS: {
+            return {
+                    busketNumbers: 0,
+                    cart_products: [],
+                    order: {
+                        cart_products: [],
+                        customerId: "",
+                        subTotal: '',
+                        payment: {
+                            method: "",
+                            transactionId: ""
+                        }
+                    }
+            }
+        }
         
-
-
         default: return state
     }
 }

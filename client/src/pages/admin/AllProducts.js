@@ -5,10 +5,7 @@ import AdminProductCard from './AdminProductCard'
 import axios from 'axios'
 import { FiSearch } from 'react-icons/fi'
 import { Pagination } from 'react-bootstrap'
-// import axios from 'axios'
-// import {FaStarOfLife} from 'react-icons/fa'
-
-
+import Loading from '../../components/Loading'
 
 const AllProducts = (props) => {
     const [products, setProducts] = useState('')
@@ -19,7 +16,8 @@ const AllProducts = (props) => {
 
 console.log(totalPage)
     useEffect(() => {
-        axios.get(`http://localhost:8080/api/product/get-all-products-list-by-mega-search?page=${pageNumber}`)
+        axios.get(`/api/product/get-all-products-list-by-mega-search?page=${pageNumber}`)
+    
         .then(res => {
             setProducts(res.data.allProducts.reverse())
             setTotalPage(res.data.totalPage)
@@ -30,7 +28,8 @@ console.log(totalPage)
     }, [pageNumber])
 
     const search = e => {
-        axios.get(`http://localhost:8080/api/product/get-products-by-text-search?q=${e.target.value}`)
+        axios.get(`/api/product/get-products-by-text-search?q=${e.target.value}`)
+
         .then(res => {
              setSearchProducts(res.data.searchProducts)
         })
@@ -61,7 +60,9 @@ console.log(totalPage)
                         
                         products ? products.map(product => (
                             <AdminProductCard key={product._id} product={product}/> 
-                        )) : 'loading'          
+                        )) : <div className="loading">
+                                <Loading/>
+                            </div>        
                     }
                 </div>
                     {

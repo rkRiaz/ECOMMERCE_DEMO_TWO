@@ -15,8 +15,12 @@ import CustomerRegistration from './pages/customer/CustomerRegistration'
 import CustomerEdit from './pages/customer/CustomerEdit'
 import CustomerChangePassword from './pages/customer/CustomerChangePassword'
 import CustomerDashboard from './pages/customer/CustomerDashboard'
+import CustomerOrder from './pages/customer/CustomerOrder'
+
 import ShippingPage from './pages/customer/ShippingPage'
 import PaymentPage from './pages/customer/PaymentPage'
+
+import NotFound from './pages/NotFound'
 
 
 // import Ordered from './pages/customer/Ordered'
@@ -32,19 +36,20 @@ import Customers from './pages/admin/Customers';
 import AllProducts from './pages/admin/AllProducts'
 import AddProduct from './pages/admin/AddProduct'
 import EditProduct from './pages/admin/EditProduct'
+import AllOrders from './pages/admin/AllOrders'
+
 
 // import EditProduct from './pages/admin/EditProduct'
 // import Customers from './pages/admin/Customers'
 // import AllOrders from './pages/admin/AllOrders'
 
-
 import CartSideBar from './components/sidebars/CartSideBar'
 import LoginSideBar from './components/sidebars/LoginSideBar'
 
+import PrivateRoute from './components/PrivateRoute'
+
 import { connect } from 'react-redux';
 import ScrollToTop from './ScrollToTop';
-
-
 
 
 
@@ -53,7 +58,7 @@ function App(props) {
     <div className="app">
       <div className="app__body">
           <Router>
-            <ScrollToTop/>
+              <ScrollToTop/>
             {/* login sidebar starts */}
               <LoginSideBar/>
             {/* login sidebar ends */}
@@ -69,10 +74,11 @@ function App(props) {
 
               {/* customer Routes */}
               <Route exact path="/customerRegistration"><Header/><CustomerRegistration/><Footer/></Route>
-              <Route exact path="/customerEdit"><Header/><CustomerEdit/><Footer/></Route>
+              <PrivateRoute exact path="/customerEdit"><Header/><CustomerEdit/><Footer/></PrivateRoute>
               <Route exact path="/customerLogin"><Header/><CustomerLogin/><Footer/></Route>
-              <Route exact path="/customerDashboard"><Header/><CustomerDashboard/><Footer/></Route>
-              <Route exact path="/customerChangePassword"><Header/><CustomerChangePassword/><Footer/></Route>
+              <PrivateRoute exact path="/customerDashboard"><Header/><CustomerDashboard/><Footer/></PrivateRoute>
+              <PrivateRoute exact path="/customerOrder"><Header/><CustomerOrder/><Footer/></PrivateRoute>
+              <PrivateRoute exact path="/customerChangePassword"><Header/><CustomerChangePassword/><Footer/></PrivateRoute>
               <Route exact path="/shippingInformation"><Header/><ShippingPage/><Footer/></Route>
               <Route exact path="/paymentInformation"><Header/><PaymentPage/><Footer/></Route>
 
@@ -89,7 +95,7 @@ function App(props) {
                 <Route exact path="/adminDashboard"  component={props.admin.adminLoggedIn ? AdminDashboard : AdminLogin} />
                 <Route exact path="/adminChangePassword"  component={props.admin.adminLoggedIn ? AdminChangePassword : AdminLogin} />
                 <Route exact path="/adminCustomers"  component={props.admin.adminLoggedIn ? Customers : AdminLogin} /> 
-                {/* <Route exact path="/admin/all-orders"  component={AllOrders} />  */}
+                <Route exact path="/admin/all-orders"  component={AllOrders} /> 
                 <Route exact path="/admin/all-products"  component={props.admin.adminLoggedIn ? AllProducts : AdminLogin} /> 
                 <Route exact path="/admin/add-product" component={props.admin.adminLoggedIn ? AddProduct : AdminLogin} /> 
                 <Route exact path="/admin/edit-product/:productId" component={props.admin.adminLoggedIn ? EditProduct : AdminLogin} /> 
@@ -100,6 +106,7 @@ function App(props) {
               {/* <Route exact path="/admin/edit-product/:productId" component={EditProduct} />  */}
 
               <Route exact path="/cart"><Header/><Cart/><Footer/></Route>
+              <Route path="*"><NotFound/></Route>
             </Switch>
             
         </Router>

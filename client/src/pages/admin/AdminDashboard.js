@@ -1,13 +1,8 @@
 import React from 'react'
 import './AdminDashboard.css'
 import AdminLayout from './AdminLayout'
-// import axios from 'axios'
-// import {FaStarOfLife} from 'react-icons/fa'
-
-
 
 const AdminDashboard = (props) => {
-
 
     return (
         <AdminLayout>

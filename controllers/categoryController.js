@@ -9,7 +9,6 @@ exports.allCategory = async (req, res, next) => {
         })
     }
     catch(err) {
-        console.log(err)
         next(err)
     }
 }
@@ -27,7 +26,6 @@ exports.findSubCategoriesByCategorySlug = async(req, res, next) => {
             })
         }
     } catch(err) {
-        console.log(err)
         next(err)
     }
 }
@@ -80,7 +78,6 @@ exports.addCategoryOrPushSubCategoryIntoCategory = async (req, res, next) => {
         }
     }
     catch(err) {
-        console.log(err)
         next(err)
     }
 }

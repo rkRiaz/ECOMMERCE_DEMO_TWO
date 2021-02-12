@@ -1,161 +1,205 @@
 import React, { useState, useEffect } from 'react'
+import './AllOrders.css'
+import AdminLayout from './AdminLayout'
 import axios from 'axios'
 import "./AllOrders.css"
-import Layout from './Layout'
-import {Link} from "react-router-dom"
 import Moment from 'react-moment';
-import TextField from '@material-ui/core/TextField';
-import CircularProgress from '@material-ui/core/CircularProgress';
-
-
-
+import Loading from '../../components/Loading';
+import {connect} from 'react-redux'
 
 
 const AllOrders = (props) => {
-    const [order, setOrders] = useState(null)
+    const [orders, setOrders] = useState('')
     const [message, setMessage] = useState('')
-    const [createAt] = useState(new Date().toJSON())
-    const [update, setUpdate] = useState({})
+
 
     useEffect(() => {
-        async function fetchData() {
-            axios.get("/admin/ordered-products")
-                .then(res => {
-                    setOrders(res.data)
-                })
-                .catch(e => console.log(e))
+        axios.get("/api/order/all-orders", {
+            headers: {
+                'Administrator': `Bearer ${props.admin.adminToken}` 
+            }
+        })
+        .then(res => {
+            console.log(res.data.orders)
+            setOrders(res.data.orders)
+        })
+        .catch(e => console.log(e))
+}, [message, props.admin.adminToken])
+
+    const updateStatus = (orderId, type) => e => {
+        e.preventDefault()
+        if(type == 'paid') {
+            axios.put(`/api/order/update-order/${orderId}`, {
+                paid: {
+                    message: 'payment complete',
+                    time: new Date()
+                }
+            })
+            .then(res => {
+                console.log(res.data.message)
+                setMessage(res.data.message)
+                alert(res.data.message)
+            })
+        } 
+        if(type == 'delivered') {
+            axios.put(`/api/order/update-order/${orderId}`, {
+                delivered: {
+                    message: 'Delivered',
+                    time: new Date()
+                }
+            })
+            .then(res => {
+                console.log(res.data.message)
+                setMessage(res.data.message)
+                alert(res.data.message)
+            })
         }
-        fetchData()
-    }, [update])
-
-
-    let pickedHandler = (e) => {
-        let picked = {message, createAt}
-        let orderUpdate = {picked}
-        axios.put(`/admin/ordered-products/${e.target.dataset.id}`, orderUpdate)
-            .then(res => {
-                console.log(res.data)
-                setUpdate(res.data)
-            })
-            .catch(e => {
-                alert(e)
-            })
-    }
-    let shippedHandler = (e) => {
-        let shipped = {message, createAt}
-        let orderUpdate = {shipped}
-
-        axios.put(`/admin/ordered-products/${e.target.dataset.id}`, orderUpdate)
-            .then(res => {
-                console.log(res.data)
-
-                setUpdate(res.data)
-            })
-            .catch(e => {
-                alert(e)
-            })
     }
 
-    let deliveredHandler = (e) => {
-        let delivered = {message, createAt}
-        let orderUpdate = {delivered}
-    
-        axios.put(`/admin/ordered-products/${e.target.dataset.id}`, orderUpdate)
-            .then(res => {
-                console.log(res.data)
-
-                setUpdate(res.data)
-            })
-            .catch(e => {
-                alert(e)
-            })
+    const removeOrder = orderId => e => {
+        e.preventDefault()
+        axios.delete(`/api/order/delete-order/${orderId}`)
+        .then(res => {
+            setMessage(res.data.message)
+            alert(res.data.message)
+        })
     }
+
 
     return (
-        <Layout>
-            <div className="allOrders">
-                <div className="allOrders__content">
+        <AdminLayout>
+             <div className="allOrders">
                     {
-                    order === null ? <div className="noOrder text-center "><CircularProgress/></div>
-                    :
-                    order.length === 0 ? <div className="noOrder display-4 text-center ">No Orders</div>:
-                    order.map(order => (
-                        <div key={order._id} className={`allOrders__orderedBox ${order.delivered.message !== "false" && "completeDelivery"}`}>
-                            <div className="d-flex justify-content-between">
-                                <div className="h5 mr-2">{order._id}</div>
-                                {order.paid.message === "false" ? 
-                                    <div className="btn-sm btn-warning ml-2" >Unpaid</div>
-                                    :
-                                    <div className="ml-3 btn-sm btn-success ml-2">Paid</div>
-                                }
-                            </div>
-                            <hr/>
-                            <div className="allOrders__customer__info h5 text-danger justify-content-between">
-                                <div className="">{order.customer.name}</div>
-                                <div className="my-2">Phone: {order.customer.phone}</div>
-                                <div className="">{order.customer.address}</div>
-
-                            </div>
-                            <hr/>
-                            <div className="d-flex justify-content-between align-items-center">
-                                <div className="text-danger h3">&#2547; {order.subTotal}</div>
-                                <div className="text-dark h6"><Moment format="D MMMM, h:mm A" date={order.createdAt}/></div>
-                            </div>
-                            <hr/>
-
-                            <div className="allOrders__details">
-                                <table className="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Product</th>
-                                            <th scope="col">Price</th>
-                                            <th scope="col">Quantity</th>
-                                            <th scope="col">Total</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {order.cart_products.map((p) => (
-                                            <tr className="allOrders__tableRow" key={p._id}>                                   
-                                                <td><Link to={`/products/${p._id}`}><img style={{ width: 70, height: 50 }} className="img-thumbnail mr-3" src={`/images/${p.productImgs[0]}`} alt="" />{p.name}</Link></td>                                       
-                                                <td>{p.price}</td>
-                                                <td>
-                                                    <div className="mx-3">{p.quantity}</div>      
-                                                </td>
-                                                <td>{p.price * p.quantity}</td>                                 
-                                            </tr>                  
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <div className="allOrders__subTotal h3 text-right mt-2">SubTotal Amount: <strong className="text-danger">&#2547; {order.subTotal}</strong></div>
-                        
-                            <div className="timeLineController text-right mb-2">
-                                <div><TextField style={{width: "300px"}}className="my-3" onChange={e => setMessage(e.target.value)}  label="Enter Message To Your Customer" /></div>
-                                <button  onClick={pickedHandler} data-id={order._id} disabled={order.picked.message === "false" ? "" : "disabled" } className="btn btn-primary">Picked</button>
-                                <button  onClick={shippedHandler} data-id={order._id} disabled={order.shipped.message === "false" ? "" : "disabled" } className="btn btn-warning mx-2">Shipped</button>
-                                <button  onClick={deliveredHandler} data-id={order._id} disabled={order.delivered.message === "false" ? "" : "disabled" } className="btn btn-success">Delivered</button>
-                            </div>
-
-
+                        !orders ?  
+                        <div className="loading">
+                            <Loading/>
                         </div>
-                    ))}
-                </div>
-            </div>
+                        :
+                        orders.length === 0 ?
+                        <div className="">Sorry! No orders yet</div> :
+                     
+                       orders.map(order => (
+                                <div key={order._id} className="allOrders__Items my-2">
+                                    <div className={`${order.status.delivered.message ? 'bg-success': 'bg-info'} my-3 text-light p-4 d-flex justify-content-between h5`}>
+                                        <div className="">{order._id}</div>
+                                        <div className=""><Moment format="D MMMM, h:mm A" date={order.createdAt}/></div>
+                                    </div>
+                                    <div className="my-2 allOrders__Item">
+                                        <div className="allOrders__ItemLeft">
+                                            <div className="d-flex ">
+                                                <div className="allOrders__customerInfo">
+                                                    <div className="font-weight-bold h6 text-info mb-2">Customer Information</div>
+                                                    <div className="">{order.customer.name}</div>
+                                                    <div className="">{order.customer.phone}</div>
+                                                    <div className="">{order.customer.address}</div>
+                                                </div>
+                                                <div className="allOrders__shippingInfo ml-5">
+                                                    <div className="font-weight-bold h6 text-info mb-2">Shipping Information</div>
+                                                    <div className="">{order.shippingInformation.name}</div>
+                                                    <div className="">{order.shippingInformation.phone}</div>
+                                                    <div className="">{order.shippingInformation.address}</div>
+                                                </div>
+                                            </div>
+                                            <div className="allOrders__contentOrderSummery mt-5">
+                                                <div className="font-weight-bold text-info">Order Summary</div>
+                                                <div className="text-danger">Total &#2547;{order.subTotal}</div>
+                                                <div className="">Payment method: {order.payment.method}</div>
+                                            </div>
+                                        </div>
 
-        </Layout>
+                                    <div className="allOrders__ItemLRight pl-3">
+                                        <div className="font-weight-bold h6 text-info">Products</div>
+                                        {
+                                        order.cart_products.map((cart_product, i) => (
+                                            <div key={i}className="allOrders__product">
+                                                <div className="allOrders__leftProductInfo">
+                                                    <div className="mr-3">
+                                                        <img width="70px" height="70px" src={`/uploads/images/${cart_product.productImage}`} alt="" />
+                                                    </div>
+                                                    <div className="">
+                                                        <div className="">{cart_product.productName}</div>
+                                                        <div className="" style={{ width: "100%" }}>{cart_product.quantity} * {cart_product.salePrice}</div>
+                                                        <div className="">&#2547;{cart_product.salePrice * cart_product.quantity}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                        
+                                        ))
+                                        }
+                                    </div>
+
+                                    <div className="allOrders__ItemLRight">
+                                        <div className="timeline p-3">
+                                                <div className="timeline__aglance">
+                                                    <ul className="timeline__aglance__bar">
+                                                        <li className={!order.status.paid.message  ? "li" : "li complete"}>
+                                                            <div className="status">
+                                                            <h4> Paid </h4>
+                                                            </div>
+                                                        </li>
+                                                
+
+                                                        <li className={!order.status.delivered.message  ? "li" : "li complete"}>
+                                                            <div className="status">
+                                                            <h4> Delivered </h4>
+                                                            </div>
+                                                        </li>
+                                                    </ul>   
+                                                </div>
+
+                                        <div className="timeline__details">
+                                            <div className="font-weight-bold h6 text-info">Order Timeline Details</div>
+                                            {
+                                                !order.status.delivered.message ? "" :
+                                                <div className="box">
+                                                    <div className="box-content">
+                                                        <div className="title text-success">Delivered</div>
+                                                        <div><Moment format="D MMMM, h:mm A" date={order.status.delivered.time}/></div>
+                                                        <div className="message">{order.status.delivered.message ? order.status.delivered.message : "Product is delivered"}. If any issues conatct 017141xxxxx</div>
+                                                    </div>
+                                                </div>
+                                                
+                                            }
+                                            {
+                                                !order.status.paid.message ? "" :
+                                                <div className="box">
+                                                    <div className="box-content">
+                                                        <div className="title text-success">Paid</div>
+                                                        <div><Moment format="D MMMM, h:mm A" date={order.status.paid.time}/></div>
+                                                        <div className="message">Payment Confirmed. Thank you for your order</div>
+                                                    </div>
+                                                </div> 
+                                            }
+                                        </div>
+                                        
+                                        <div className="updateStatus mt-3">
+                                            <button onClick={updateStatus(order._id, 'paid')} className="btn btn-primary" disabled={order.status.paid.message ? 'false': ''} >Paid</button>
+                                            <button onClick={updateStatus(order._id, 'delivered')} className="btn btn-primary mx-2" disabled={order.status.delivered.message ? 'false': ''}>Delivered</button>
+                                            <button onClick={removeOrder(order._id)} className="btn btn-danger" disabled={order.status.delivered.message ? 'false': ''}>Remove Order</button>
+
+
+                                        </div>
+
+                                    </div>
+                                         
+                                    </div>
+                        
+                                </div>
+                                </div>
+                    
+                       ))
+                           
+                            
+                        
+                    }
+                </div>
+        </AdminLayout>
     )
 }
-export default AllOrders
 
-
-
-
-
-
-
-
-
-
-
+const mapStateToProps = state => ({
+    admin: state.admin,
+})
+export default connect(mapStateToProps)(AllOrders)
 

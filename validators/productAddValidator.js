@@ -1,12 +1,4 @@
-const Product = require('../models/Product')
 const { body } = require('express-validator')
-
-// const form = formidable({ multiples: true });
-// form.keepExtensions = true;
-// //Parses an incoming node.js request containing form data
-// form.parse(req, async (err, fields, files) => {
-
-// })
 
 
 const productAddValidator = [
@@ -27,8 +19,6 @@ const productAddValidator = [
     .not().isEmpty().withMessage('Product Code Required'),
     body('quantity')
     .not().isEmpty().withMessage('Please Enter Product Quantity'),
-
-
 
 ]
 

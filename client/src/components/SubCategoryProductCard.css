@@ -2,13 +2,13 @@
     width: 100%;
     max-height: 554px;
     min-height: 100px;
-    box-shadow: var(--darkShadow);
     background-color: #fff;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
 }
 .subCategoryProductCard a:hover{
+    box-shadow: var(--darkShadow);
     color: #5D5D5D !important;
 }
 .subCategoryProductCardLargeImage{

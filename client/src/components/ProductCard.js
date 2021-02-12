@@ -34,7 +34,7 @@ function ProductCard(props) {
                 <Link to={`/product/${product?._id}`}>
                     <div className="productCardLargeImage">
                     {/* <iframe width="100%" height="100%" src="https://www.youtube.com/embed/5RluSnRPRbI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> */}
-                        <img src={`http://localhost:8080/uploads/images/${product?.productImages[0]}`} alt=""/> 
+                        <img src={`/uploads/images/${product?.productImages[0]}`} alt=""/> 
                     </div>
                     <div className="productCard__name px-3 mt-4">{product?.productName}</div>
                     <div className="productCard__price px-3 my-2">

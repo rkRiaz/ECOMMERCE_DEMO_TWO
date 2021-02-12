@@ -1,20 +1,12 @@
-import React, {useState} from 'react'
+import React from 'react'
 import './NavTab.css'
 import {Link} from 'react-router-dom'
-
-
 import tabImage1 from '../assets/images/tabImage1.jpg'
 import tabImage2 from '../assets/images/tabImage2.png'
 import tabImage3 from '../assets/images/tabImage3.png'
 import tabImage4 from '../assets/images/tabImage4.svg'
 import tabImage5 from '../assets/images/tabImage5.jpg'
 import tabImage6 from '../assets/images/tabImage6.jpg'
-import riaz from '../assets/images/riaz.jpg'
-
-
-
-
-
 
 function NavTab() {
 

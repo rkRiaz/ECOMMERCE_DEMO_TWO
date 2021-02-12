@@ -1,33 +1,19 @@
 const {Schema, model} = require('mongoose')
-const mongoose_fuzzy_searching = require('mongoose-fuzzy-searching');
 
 const orderSchema = new Schema({
-    customerId: {
-        type: String, 
+    customer: {
+        type: Schema.Types.ObjectId,
+        ref: 'Customer',
     },
     shippingInformation: {
-        name: {
-            type: String,
-            required: true
-        },
-        address: {
-            type: String,
-            required: true
-        },
-        phone: {
-            type: String,
-            required: true
-        },
-        email: {
-            type: String,
-        }
+        type: Object,
     },
     cart_products: {
-        type: [],
+        type: [Object],
         required: true
     },
     subTotal: {
-        type: String,
+        type: Number,
         required: true
     },
     payment: {
@@ -42,19 +28,11 @@ const orderSchema = new Schema({
     status: {
         paid: {
             message: String,
-            time: Date,
-        },
-        picked: {
-            message: String,
-            time: Date,  
-        },
-        shipped:{
-            message: String,
-            time: Date,  
+            time: String,
         },
         delivered: {
             message: String,
-            time: Date,  
+            time: String,  
         },
     },
 

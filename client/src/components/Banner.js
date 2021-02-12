@@ -1,13 +1,11 @@
 import React from 'react'
 import './Banner.css'
 import {Carousel} from 'react-bootstrap'
-
 import bannerColumnOneImageOne from '../assets/images/bannerColumnOneImageOne.svg'
 import bannerColumnOneImageTwo from '../assets/images/bannerColumnOneImageTwo.svg'
 import silderImgOne from '../assets/images/silderImgOne.svg'
 import bannerColumnTwoImageOne from '../assets/images/bannerColumnTwoImageOne.svg'
 import bannerColumnTwoImageTwo from '../assets/images/bannerColumnTwoImageTwo.svg'
-
 import tabImage6 from '../assets/images/tabImage6.jpg'
 
 

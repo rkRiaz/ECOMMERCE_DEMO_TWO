@@ -1,5 +1,4 @@
 const { Schema, model } = require('mongoose')
-const mongoose_fuzzy_searching = require('mongoose-fuzzy-searching');
 
 const productSchema = new Schema(
     {
@@ -67,6 +66,6 @@ const productSchema = new Schema(
     }
 );
 
-productSchema.plugin(mongoose_fuzzy_searching, { fields: ['productName', 'slug'] });
+
 const Product = model('Product', productSchema);
 module.exports = Product;

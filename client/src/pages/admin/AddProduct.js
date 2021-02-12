@@ -2,11 +2,7 @@ import React, {useState, useEffect} from 'react'
 import "./AddProduct.css"
 import AdminLayout from './AdminLayout'
 import axios from 'axios'
-import {Link} from 'react-router-dom'
 import {Button, Form} from 'react-bootstrap'
-import Carousel from 'react-multi-carousel';
-
-
 
 function AddProductPage() {
     const[values, setValues] = useState({
@@ -42,14 +38,16 @@ function AddProductPage() {
 
 
     const change = name => event => {
-         if(autoGenerateSlug === true) {
-            if(name === 'productName') {
-                formData.set(name, event.target.value)
-                formData.set('slug', event.target.value.replace(/\s+/g, '-').toLowerCase())
-            } 
-        }
+        
+        // if(autoGenerateSlug === true) {
+        //     if(name === 'productName') {
+        //         formData.set(name, event.target.value)
+        //         formData.set('slug', event.target.value.replace(/\s+/g, '-').toLowerCase())
+        //         console.log(event.target.value.replace(/\s+/g, '-').toLowerCase())
+        //     } 
+        // }
         if(name === 'categorySlug') {
-            axios.get(`http://localhost:8080/api/category/find-sub-categories-by-category-slug/${event.target.value}`)
+            axios.get(`/api/category/find-sub-categories-by-category-slug/${event.target.value}`)
             .then(res => {
                 console.log(res.data.subCategories)
                 setSubCategories(res.data.subCategories)
@@ -65,7 +63,6 @@ function AddProductPage() {
                 formData.append(name, event.target.files[key])
             }
             setValues({ ...values, 'productImages': event.target.files })
-
         }
 
         else{
@@ -76,7 +73,7 @@ function AddProductPage() {
 
     const submit = event => {
         event.preventDefault()
-        axios.post('http://localhost:8080/api/product/add-product', formData)
+        axios.post('/api/product/add-product', formData)
         .then(res => {
             alert(res.data.message)
             setValues({})
@@ -112,7 +109,7 @@ function AddProductPage() {
     };
     const submitCategory = e => {
         e.preventDefault()
-        axios.put('http://localhost:8080/api/category/add-category-or-push-sub-category-into-category', categoryFormData)
+        axios.put('/api/category/add-category-or-push-sub-category-into-category', categoryFormData)
         .then(res=> {
             console.log(res.data)
             alert(res.data.message)
@@ -124,14 +121,14 @@ function AddProductPage() {
     }
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/api/category/get-all-category`)
+        axios.get(`/api/category/get-all-category`)
         .then(res => {
             setCategory(res.data.allCategory)
         })
         .catch(err => {
             console.log(err.response)
         })
-    }, [categoryFormData])
+    }, [category])
 
     
 
@@ -148,7 +145,7 @@ function AddProductPage() {
                     <div className="d-flex justify-content-between">
                         <div className="addProduct__headline">Product Adding Page</div>
                         
-                            <p><input className="mt-2" onChange={e => setAutoGenerateSlug(!autoGenerateSlug)} type="checkbox" />&nbsp;&nbsp;Checked For Auto Generated Slug</p>
+                            {/* <p><input className="mt-2" onChange={e => setAutoGenerateSlug(!autoGenerateSlug)} type="checkbox" />&nbsp;&nbsp;Checked For Auto Generated Slug</p> */}
                             
                       
                         <Button onClick={e => setShowCategoryFrom(!showCategoryForm)} className="btn btn-primary m-2">Add Category</Button>

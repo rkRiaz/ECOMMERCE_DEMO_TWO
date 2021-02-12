@@ -5,8 +5,6 @@ const fs = require('fs')
 const formidable = require('formidable');
 
 
-
-
 exports.allProducts = async (req, res, next) => {
     try {
         let allProducts = await Product.find()
@@ -24,26 +22,50 @@ exports.allProducts = async (req, res, next) => {
     }
 }
 
+//   Text SEARCH
+exports.getSearchProductByText = async (req, res) => {
+
+    try {
+        const query = req.query.q.replace(/ /g, '-');
+        // const results = await Product.fuzzySearch({ query: query, prefixOnly: false, minSize: 1 })
+        if(query) {
+            const results = await Product.find({
+                $or: [
+                    { 
+                        productName:  {$regex: new RegExp(query)},
+                    },
+                    { 
+                        slug: {$regex: new RegExp(query)}
+                    }
+                ]
+            })
+            res.status(200).json({
+                searchProducts: results
+            });
+        } else {
+            res.status(200).json({
+                searchProducts: ''
+            });
+        }
+
+    } catch (e) {
+        next(e)
+    }
+}
 exports.allProductsByMegaSearch = async (req, res, next) => {
     try {
         let currentPage = parseInt(req.query.page) || 1
-        let searchTerm = req.query.searchTerm
-        let lowerPrice = req.query.lowerPrice || 0
-        let higherPrice = req.query.higherPrice || Infinity
-        let categorySlug = 'chocolate'
-        let subCategory = req.query.subCategory
+        // let searchTerm = req.query.searchTerm.replace(/ /g, '-')
+        // let lowerPrice = req.query.lowerPrice || 0
+        // let higherPrice = req.query.higherPrice || Infinity
+        // let categorySlug = req.query.categorySlug
+        // let subCategorySlug = req.query.subCategorySlug
 
         let itemPerPage = 40
         let allProducts = await Product
-                                .find(
-                                    {
-                                        salePrice: { $gte: lowerPrice, $lte: higherPrice},
-                                        categorySlug
-                                        
-                                    }
-                                )
-                                .skip((itemPerPage * currentPage) - itemPerPage)
-                                .limit(itemPerPage)
+                    .find()
+                    .skip((itemPerPage * currentPage) - itemPerPage)
+                    .limit(itemPerPage)
         let totalProducts = await Product.countDocuments()
         let totalPage = totalProducts / itemPerPage
        
@@ -127,23 +149,7 @@ exports.getProductsBySubCategory = async (req, res, next) => {
     }
 }
 
-//   Text SEARCH
-exports.getSearchProductByText = async (req, res) => {
 
-    try {
-        const query = req.query.q;
-        
-        //  console.log(query)
-        const results = await Product.fuzzySearch({ query: query, prefixOnly: false, minSize: 1 })
-        //  console.log(results)
-        res.status(200).json({
-            searchProducts: results
-        });
-    } catch (e) {
-        console.log(e);
-        next(e)
-    }
-}
 
 
 
@@ -168,7 +174,6 @@ exports.addProduct = async (req, res, next) => {
         })
     }
     catch(err) {
-        console.log(err)
         next(err)
     }
 

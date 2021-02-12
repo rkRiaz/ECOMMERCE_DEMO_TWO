@@ -15,7 +15,7 @@ function SubCategoryProductCard(props) {
         <div className="subCategoryProductCard">
             <Link to={`/subCategory/${props.subCategory.subCategorySlug}`}>
                 <div className="subCategoryProductCardLargeImage">
-                    <img src={`http://localhost:8080/uploads/images/${props.subCategory.subCategoryImage}`} alt=""/> 
+                    <img src={`/uploads/images/${props.subCategory.subCategoryImage}`} alt=""/> 
                 </div>
                 <div className="subCategoryProductCard__name px-3 mt-4">{props.subCategory.name}</div>
             </Link>

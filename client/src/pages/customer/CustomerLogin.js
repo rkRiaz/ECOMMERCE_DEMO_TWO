@@ -6,10 +6,7 @@ import {Link, useHistory} from 'react-router-dom'
 import {Button, Form} from 'react-bootstrap'
 import home from '../../assets/icons/home.svg'
 import rightArrow from '../../assets/icons/right-arrow.svg'
-// import userFill from '../../assets/icons/userFill.svg'
-// import lock from '../../assets/icons/lock.svg'
 import {AiOutlineUser, AiOutlineLock} from 'react-icons/ai'
-
 
 function CustomerLogin(props) {
     const[loginPhone, setLoginPhone] = useState('')

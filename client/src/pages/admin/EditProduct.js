@@ -2,12 +2,10 @@ import React, {useState, useEffect} from 'react'
 import "./EditProduct.css"
 import AdminLayout from './AdminLayout'
 import axios from 'axios'
-import {Link, useParams} from 'react-router-dom'
+import {useParams} from 'react-router-dom'
 import {Button, Form} from 'react-bootstrap'
-
 import Carousel from 'react-multi-carousel';
 import { FaTrash } from 'react-icons/fa'
-
 
 
 function EdirProduct() {
@@ -118,7 +116,7 @@ function EdirProduct() {
     };
     const submitCategory = e => {
         e.preventDefault()
-        axios.put('http://localhost:8080/api/category/add-category-or-push-sub-category-into-category', categoryFormData)
+        axios.put('/api/category/add-category-or-push-sub-category-into-category', categoryFormData)
         .then(res=> {
             console.log(res.data)
             alert(res.data.message)
@@ -131,7 +129,7 @@ function EdirProduct() {
     // categorty methods ends
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/api/category/get-all-category`)
+        axios.get(`/api/category/get-all-category`)
         .then(res => {
             setCategory(res.data.allCategory)
         })
@@ -139,7 +137,7 @@ function EdirProduct() {
             console.log(err.response)
         })
 
-        axios.get(`http://localhost:8080/api/product/get-single-product-by-id/${productId}`)
+        axios.get(`/api/product/get-single-product-by-id/${productId}`)
         .then(res => {
             setProduct(res.data.product)
         })
@@ -158,7 +156,7 @@ function EdirProduct() {
                 <div className="editProduct">
                     <div className="d-flex justify-content-between">
                         <div className="editProduct__headline">Edit Product</div>
-                        <Button onClick={e => setShowCategoryFrom(!showCategoryForm)} className="btn btn-primary m-2">Edit Category</Button>
+                        <Button disabled onClick={e => setShowCategoryFrom(!showCategoryForm)} className="btn btn-primary m-2">Edit Category</Button>
                     </div>
                     <div className="editProduct__content">
                         <Form onSubmit={submit} className="" encType="multipart/form-data">
@@ -248,6 +246,10 @@ function EdirProduct() {
                                             <Form.Label>Change Long Description</Form.Label>
                                             <Form.Control as="textarea" rows={5} onChange={change('longDescription')} type="text" value={product.longDescription}/>
                                         </Form.Group> 
+                                        <Form.Group className="addProduct__contentFormGroup">
+                                            <Form.Label>Youtube Video Code</Form.Label>
+                                            <Form.Control as="textarea" onChange={change('productVideo')} type="text" value={product.productVideo} />
+                                        </Form.Group> 
                                     </div>
                                 </div>
                                 <div className="">
@@ -257,7 +259,7 @@ function EdirProduct() {
                                                 product? product.productImages.map(image => (
                                                 <div  className="editProduct__editImage">
                                                     <div onClick={deleteSingleImage} data-image={image} className="editProduct__editImageDelete"><FaTrash/></div>
-                                                    <img src={`/tempProductImages/${image}`} alt=""/>
+                                                    <img src={`/uploads/images/${image}`} alt=""/>
                                                 </div>
                                                 )) : '' 
                                             }

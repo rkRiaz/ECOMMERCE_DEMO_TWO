@@ -4,15 +4,12 @@ import Banner from '../components/Banner';
 import NavTab from '../components/NavTab';
 import ProductCard from '../components/ProductCard'
 import CategoryProductCard from '../components/CategoryProductCard'
-
-// import products from '../dummy_db/products'
+import SubCategoryProductCard from '../components/SubCategoryProductCard'
 import axios from 'axios';
-
 //multi carousel 
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
-
-
+import Loading from '../components/Loading'
 
 
 function Home() {
@@ -21,7 +18,7 @@ function Home() {
     const [categories, setCategories] = useState('')
 
     useEffect(() => {
-        axios(`http://localhost:8080/api/product/get-all-products-list`)
+        axios(`/api/product/get-all-products-list`)
         .then(res => {
             setProducts(res.data.allProducts.reverse().splice(0, 8))
         })
@@ -31,7 +28,7 @@ function Home() {
     }, [])
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/api/category/get-all-category`)
+        axios.get(`/api/category/get-all-category`)
         .then(res => {
             setCategories(res.data.allCategory)
         })
@@ -73,32 +70,70 @@ function Home() {
             <div className="home__tab">
                 <NavTab />
             </div>
+
+
+
             <div className="home__category">
                 {/* make this font product sans */}
-                <h2>Categories</h2> 
+                <div className="home__headline">Categories</div> 
                 
                     <Carousel responsive={responsive}>
                     {
                         categories ? categories.map(category => (
-                            <CategoryProductCard key={categories._id} category={category}/> 
-                        )) : 'loading' 
+                            <CategoryProductCard key={category._id} category={category}/> 
+                        )) : <div className="loading">
+                                <Loading/>
+                            </div>
                     }
                     </Carousel>
                 
             </div>
 
+            
+            
             <div className="home__collection ">
                 {/* make this font product sans */}
-                <h2>In Collections</h2> 
+                <div className="home__headline">In Collections</div> 
                 <div className="home__collectionList">
                     {
                         products ? products.map(product => (
                             <ProductCard key={product._id} product={product}/> 
-                        )) : 'loading' 
+                        )) : <div className="loading">
+                                <Loading/>
+                            </div>
                         
                     }
                 </div>
             </div>
+
+
+
+            <div className="home__allCategories">
+                    {
+                          categories ? categories.map(category => (
+                            <div key={category._id} className="mt-5">
+                                <div className="home__headline">{category.category}</div>
+                                <div className="home__allCategoriesList ">
+                                {
+                                    category.subCategory ? category.subCategory.map(s => (
+                                        < SubCategoryProductCard key={s._id} subCategory={s}/> 
+                                    )) : <div className="loading">
+                                            <Loading/>
+                                        </div>
+                                }
+                                </div>
+                            </div>
+                            
+                        )) : 
+                            <div className="loading">
+                                <Loading/>
+                            </div>
+                            
+                            
+                    }
+            </div>
+
+   
         </div>
     )
 }
