@@ -8,17 +8,9 @@
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/rkRiaz/First-E-Commerce-website-from-png.git"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/rkRiaz/First-E-Commerce-website-from-png/issues"
-  },
-  "homepage": "https://github.com/rkRiaz/First-E-Commerce-website-from-png#readme",
   "dependencies": {
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
