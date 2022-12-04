@@ -79,7 +79,7 @@ exports.getLoginCustomerInfo = async(req, res, next) => {
         if(findCustomer) {
             res.status(200).json({
                 customerInfo: findCustomer,
-                message: 'Succesfully Get Customer info.'
+                message: 'Successfully Get Customer info.'
             })
         } else {
             res.status(200).json({

@@ -10,6 +10,7 @@ import axios from 'axios'
 import Loading from '../components/Loading'
 
 function Category() {
+
     const [categories, setCategories] = useState([])
     const[subCategories, setSubCategories] =useState('')
     const[showExploreLeft, setShowExploreLeft] = useState(false)
@@ -17,9 +18,13 @@ function Category() {
     const {categorySlug} = useParams()
 
     useEffect(() => {
+        setSubCategories('')
         axios.get(`/api/category/find-sub-categories-by-category-slug/${categorySlug}`)
         .then(res => {
-            setSubCategories(res.data.subCategories)
+            setTimeout(() => {
+                setSubCategories(res.data.subCategories)
+            }, 3000)
+            
         })
         .catch(err => {
             console.log(err.response)

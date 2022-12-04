@@ -20,7 +20,7 @@ function Home() {
     useEffect(() => {
         axios(`/api/product/get-all-products-list`)
         .then(res => {
-            setProducts(res.data.allProducts.reverse().splice(0, 8))
+            setProducts(res.data.allProducts.reverse().slice(0, 8))
         })
         .catch(err => {
             console.log(err)
@@ -36,6 +36,7 @@ function Home() {
             console.log(err.response)
         })
     }, [])
+
 
     const responsive = {
         superLargeDesktop: {
@@ -96,9 +97,15 @@ function Home() {
                 <div className="home__headline">In Collections</div> 
                 <div className="home__collectionList">
                     {
-                        products ? products.map(product => (
+                        products ? 
+                        products.map(product => (
                             <ProductCard key={product._id} product={product}/> 
-                        )) : <div className="loading">
+                        )) 
+                        :
+                        products.lengths === 0 ?
+                        <div className=""><h1>No products available</h1></div>
+                        :
+                        <div className="loading">
                                 <Loading/>
                             </div>
                         

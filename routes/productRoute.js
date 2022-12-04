@@ -4,7 +4,7 @@ const productEditValidator = require('../validators/productEditValidator')
 const upload = require('../middlewares/multer')
 
 const { allProducts,
-        allProductsByMegaSearch,
+        productsByMegaSearch,
         getProductById,
         getProductBySlug,
         addProduct,
@@ -16,9 +16,9 @@ const { allProducts,
     } = require('../controllers/productController')
 
 router.get('/get-all-products-list', allProducts) // http://localhost:8080/api/product/get-all-products-list
-router.get('/get-all-products-list-by-mega-search', allProductsByMegaSearch) // http://localhost:8080/api/product/get-all-products-list-by-mega-search?page=pageNumber&&searchTerm=mango&&lowerPrice=lowerPrice&&higherPrice=higherPrice&&category=category&&subCategory=subCategory
+router.get('/get-all-products-list-by-mega-search', productsByMegaSearch) // http://localhost:8080/api/product/get-all-products-list-by-mega-search?page=pageNumber&&searchTerm=mango&&lowerPrice=lowerPrice&&higherPrice=higherPrice&&category=category&&subCategory=subCategory
 router.get('/get-single-product-by-id/:productId', getProductById) // http://localhost:8080/api/product/get-single-product-by-id/:productId
-router.get('/get-single-product-by-slug/:slug', getProductBySlug); // http://localhost:8080/api/product/get-product-by-slug/:slug
+router.get('/get-single-product-by-slug/:slug', getProductBySlug); // http://localhost:8080/api/product/get-single-product-by-slug/:slug
 router.get('/get-product-list-by-category/:slug', getProductsByCategory) // http://localhost:8080/api/product/get-product-list-by-category/:slug
 router.get('/get-product-list-by-sub-category', getProductsBySubCategory) // http://localhost:8080/api/product/get-product-list-by-sub-category?subCategorySlug=subCategorySlug&&page=pageNumber&&itemPerPage=itemPerPage
 // Search

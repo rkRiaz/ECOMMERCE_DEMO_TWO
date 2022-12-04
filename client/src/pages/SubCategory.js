@@ -20,6 +20,7 @@ function SubCategory() {
     const {subCategorySlug} = useParams()
 
     useEffect(() => {
+        setProducts('')
         axios.get(`/api/product/get-product-list-by-sub-category?subCategorySlug=${subCategorySlug}&&page=${pageNumber}&&itemPerPage=${itemPerPage}`)
         .then(res => {
             setTotalPage(res.data.totalPage)

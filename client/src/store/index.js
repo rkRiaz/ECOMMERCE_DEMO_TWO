@@ -10,7 +10,7 @@ const persistedState = loadState();
 
 const store = createStore(rootReducer, persistedState, compose(
     applyMiddleware(...middlewares),
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 ))
 
 store.subscribe(() => {

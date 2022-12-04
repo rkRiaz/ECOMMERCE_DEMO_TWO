@@ -1,3 +1,5 @@
+
+
 1. At first you have to register for admin.
 
 url: http://localhost:8080/api/admin/registration    (post request)

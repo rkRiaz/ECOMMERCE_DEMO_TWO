@@ -1,5 +1,4 @@
 const express = require('express')
-const chalk = require('chalk')
 const mongoose = require('mongoose')
 require('dotenv').config();
 const adminRoute = require('./routes/adminRoute')
@@ -7,7 +6,7 @@ const productRoute = require('./routes/productRoute')
 const orderRoute = require('./routes/orderRoute')
 const customerRoute = require('./routes/customerRoute')
 const categoryRoute = require('./routes/categoryRoute')
-
+const path = require('path')
 
 // Cross Unblocker File..
 const crossUnblocker = require('./middlewares/cros-unblocker');
@@ -42,27 +41,36 @@ app.use(errorHandler.extra);
 // if(app.get('env') === 'development') {
 //     app.use('dev')
 // }
+app.use(express.static(path.join(__dirname, "./client/build")));
+app.get("*", function (_, res) {
+  res.sendFile(
+    path.join(__dirname, "./client/build/index.html"),
+    function (err) {
+      res.status(500).send(err);
+    }
+  );
+});
 
 app.get('/', (req, res) => {
     res.send('<h1>Welcome To Halal Dokan</h1>')
 })
 
 const PORT = process.env.PORT || 8080
-const MONGODB_URI = `mongodb://localhost:27017/ecommerce_halalDokan`
+const MONGODB_URI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0-p4dm8.mongodb.net/ecommerce_two?retryWrites=true&w=majority`
+// const MONGODB_URI = `mongodb://localhost:27017/ecommerce_halalDokan`
 
-mongoose.connect(MONGODB_URI, 
-    {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useFindAndModify: false,
-        useCreateIndex: true,
+mongoose.connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true,
+})
+.then(() => {
+    console.log(`Database Connected`)
+    app.listen(PORT, () => {
+        console.log(`Listening PORT: ${PORT}`)
     })
-    .then(() => {
-        console.log(chalk.red(`Database Connected`))
-        app.listen(PORT, () => {
-            console.log(chalk.blue(`Listening PORT: ${PORT}`))
-        })
-    })
-    .catch(e => {
-        console.log(e)
-    })
+})
+.catch(e => {
+    console.log(e)
+})

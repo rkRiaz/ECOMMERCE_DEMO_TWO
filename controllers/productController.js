@@ -8,43 +8,56 @@ const formidable = require('formidable');
 exports.allProducts = async (req, res, next) => {
     try {
         let allProducts = await Product.find()
-                              
-        if (allProducts.length !== 0) {
-            res.status(200).json({
-                allProducts,
-                message: "Fetched all products successfully!"
-            })
-        } else {
-            res.status(200).json({ message: "No products are in the database" })
-        }
+        res.status(200).json({
+            allProducts,
+            message: "Fetched all products successfully!"
+        })
+      
     } catch (e) {
         next(e)
     }
 }
 
 //   Text SEARCH
-exports.getSearchProductByText = async (req, res) => {
+exports.getSearchProductByText = async (req, res, next) => {
 
     try {
         const query = req.query.q.replace(/ /g, '-');
         // const results = await Product.fuzzySearch({ query: query, prefixOnly: false, minSize: 1 })
         if(query) {
             const results = await Product.find({
-                $or: [
-                    { 
-                        productName:  {$regex: new RegExp(query)},
-                    },
-                    { 
-                        slug: {$regex: new RegExp(query)}
-                    }
-                ]
+            $text: {
+                $search: query
+            }
+                // $or: [
+                //     { 
+                //         productName:  {$regex: new RegExp(query)},
+                //     },
+                //     { 
+                //         slug: {$regex: new RegExp(query)}
+                //     }
+                // ]
             })
+            // $text: {
+            //     $search: query
+            // }
+            // const resultss = await Product.find({salePrice:  244508764.13})
+
+            // const resultss = await Product.find({$text: {
+            //     $search: query
+            // }}).explain()
+
+            // const resultss = await Product.find({productName: query}).explain()
+
+            // res.send(results)
+
             res.status(200).json({
                 searchProducts: results
             });
         } else {
+            const results = await Product.find()
             res.status(200).json({
-                searchProducts: ''
+                searchProducts: results
             });
         }
 
@@ -52,30 +65,202 @@ exports.getSearchProductByText = async (req, res) => {
         next(e)
     }
 }
-exports.allProductsByMegaSearch = async (req, res, next) => {
+
+exports.productsByMegaSearch = async (req, res, next) => {
     try {
         let currentPage = parseInt(req.query.page) || 1
-        // let searchTerm = req.query.searchTerm.replace(/ /g, '-')
-        // let lowerPrice = req.query.lowerPrice || 0
-        // let higherPrice = req.query.higherPrice || Infinity
-        // let categorySlug = req.query.categorySlug
-        // let subCategorySlug = req.query.subCategorySlug
+        let searchTerm = req.query.searchTerm.replace(/ /g, '-')
+        let lowerPrice = parseInt(req.query.lowerPrice) || 0
+        let higherPrice = parseInt(req.query.higherPrice) || Infinity
+        let category = req.query.category
+        let subCategory = req.query.subCategory
+        let itemPerPage = parseInt(req.query.itemPerPage)
 
-        let itemPerPage = 40
-        let allProducts = await Product
-                    .find()
-                    .skip((itemPerPage * currentPage) - itemPerPage)
-                    .limit(itemPerPage)
-        let totalProducts = await Product.countDocuments()
-        let totalPage = totalProducts / itemPerPage
+        console.log(searchTerm, lowerPrice, higherPrice, category, subCategory, itemPerPage)
+        
+        if(searchTerm && !category && !subCategory) {
+            let allProducts = await Product
+                .find({
+                    $or: [
+                        { 
+                            productName:  {$regex: new RegExp(searchTerm)},
+                        },
+                        { 
+                            slug: {$regex: new RegExp(searchTerm)}
+                        }
+                    ],
+                    $and: [
+                        { 
+                            salePrice:  {$gte: lowerPrice},
+                        },
+                        { 
+                            salePrice:  {$lte: higherPrice},
+                        }
+                    ]
+                })
+                .skip((itemPerPage * currentPage) - itemPerPage)
+                .limit(itemPerPage)
+                let totalProducts = await Product.find({
+                    $or: [
+                        { 
+                            productName:  {$regex: new RegExp(searchTerm)},
+                        },
+                        { 
+                            slug: {$regex: new RegExp(searchTerm)}
+                        }
+                    ],
+                    $and: [
+                        { 
+                            salePrice:  {$gte: lowerPrice},
+                        },
+                        { 
+                            salePrice:  {$lte: higherPrice},
+                        }
+                    ],
+                
+                }).countDocuments()
+                console.log(totalProducts)
+                let totalPage = totalProducts / itemPerPage
        
-        res.status(200).json({
-            totalPage: Math.ceil(totalPage),
-            allProducts,
-            message: "Fetched all products successfully!"
-        })
+                res.status(200).json({
+                totalPage: Math.ceil(totalPage),
+                allProducts,
+                message: "Fetched all products successfully!"
+            })
+        }
+
+        else if(category) {
+            let allProducts = await Product
+                .find({
+                    categorySlug:  category,
+                    $or: [
+                        { 
+                            productName:  {$regex: new RegExp(searchTerm)},
+                        },
+                        { 
+                            slug: {$regex: new RegExp(searchTerm)}
+                        }
+                    ],
+                    $and: [
+                        { 
+                            salePrice:  {$gte: lowerPrice},
+                        },
+                        { 
+                            salePrice:  {$lte: higherPrice},
+                        }
+                    ],
+                
+                })
+                .skip((itemPerPage * currentPage) - itemPerPage)
+                .limit(itemPerPage)
+                let totalProducts = await Product.find({
+                    categorySlug:  category,
+                    $or: [
+                        { 
+                            productName:  {$regex: new RegExp(searchTerm)},
+                        },
+                        { 
+                            slug: {$regex: new RegExp(searchTerm)}
+                        }
+                    ],
+                    $and: [
+                        { 
+                            salePrice:  {$gte: lowerPrice},
+                        },
+                        { 
+                            salePrice:  {$lte: higherPrice},
+                        }
+                    ],
+                
+                }).countDocuments()
+                let totalPage = totalProducts / itemPerPage
+       
+                res.status(200).json({
+                totalPage: Math.ceil(totalPage),
+                allProducts,
+                message: "Fetched all products successfully!"
+            })
+        }
+
+        else if(subCategory) {
+            let allProducts = await Product
+            .find({
+                subCategorySlug:  subCategory,
+                $or: [
+                    { 
+                        productName:  {$regex: new RegExp(searchTerm)},
+                    },
+                    { 
+                        slug: {$regex: new RegExp(searchTerm)}
+                    }
+                ],
+                $and: [
+                    { 
+                        salePrice:  {$gte: lowerPrice},
+                    },
+                    { 
+                        salePrice:  {$lte: higherPrice},
+                    }
+                ]
+            })
+            .skip((itemPerPage * currentPage) - itemPerPage)
+            .limit(itemPerPage)
+            let totalProducts = await Product.find({
+                subCategorySlug:  subCategory,
+                $or: [
+                    { 
+                        productName:  {$regex: new RegExp(searchTerm)},
+                    },
+                    { 
+                        slug: {$regex: new RegExp(searchTerm)}
+                    }
+                ],
+                $and: [
+                    { 
+                        salePrice:  {$gte: lowerPrice},
+                    },
+                    { 
+                        salePrice:  {$lte: higherPrice},
+                    }
+                ]
+            }).countDocuments()
+            let totalPage = totalProducts / itemPerPage
+
+            res.status(200).json({
+                totalPage: Math.ceil(totalPage),
+                allProducts,
+                message: "Fetched all products successfully!"
+            })
+        }
+        else {
+            let allProducts = await Product
+            .find({
+                $and: [
+                    { 
+                        salePrice:  {$gte: lowerPrice},
+                    },
+                    { 
+                        salePrice:  {$lte: higherPrice},
+                    }
+                ]
+            })
+            .skip((itemPerPage * currentPage) - itemPerPage)
+            .limit(itemPerPage)
+            let totalProducts = await Product.countDocuments()
+            let totalPage = totalProducts / itemPerPage
+
+            res.status(200).json({
+                totalPage: Math.ceil(totalPage),
+                allProducts,
+                message: "Fetched all products successfully!"
+            })
+        }
+
+
+
    
     } catch (e) {
+        console.log(e)
         next(e)
     }
 }
@@ -96,7 +281,7 @@ exports.getProductById = async (req, res, next) => {
 exports.getProductBySlug = async (req, res, next) => {
     const slug = req.params.slug;
     try {
-        let products = await Product.find({ slug })
+        let products = await Product.findOne({ slug })
         res.status(200).json({
             products: products,
             message: 'Single Product fetch Successfully!'

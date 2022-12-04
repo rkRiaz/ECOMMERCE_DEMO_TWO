@@ -176,7 +176,7 @@ const AllOrders = (props) => {
                                         <div className="updateStatus mt-3">
                                             <button onClick={updateStatus(order._id, 'paid')} className="btn btn-primary" disabled={order.status.paid.message ? 'false': ''} >Paid</button>
                                             <button onClick={updateStatus(order._id, 'delivered')} className="btn btn-primary mx-2" disabled={order.status.delivered.message ? 'false': ''}>Delivered</button>
-                                            <button onClick={removeOrder(order._id)} className="btn btn-danger" disabled={order.status.delivered.message ? 'false': ''}>Remove Order</button>
+                                            <button onClick={removeOrder(order._id)} className="btn btn-danger">Remove Order</button>
 
 
                                         </div>

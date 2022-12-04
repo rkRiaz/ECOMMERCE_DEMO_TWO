@@ -29,10 +29,11 @@ function CustomerRegistration() {
         checked === false ? alert("You must agree with the privacy policy") : 
         axios.post("/api/customer/registration", values)
         .then(res => {
-            console.log(res.data)
+            console.log(res)
             alert(res.data.message)
         })
         .catch(err => {
+            console.log(err.response)
             setValues({ ...values, error: err.response.data });
         })
     }
@@ -40,7 +41,6 @@ function CustomerRegistration() {
     return (
         <div className="registration">
             <div className="registration__container">
-                {console.log(values.error)}
                  {/* registrationTop starts */}
                  <div className="registrationTop">
                     <img src={home} alt=""/>

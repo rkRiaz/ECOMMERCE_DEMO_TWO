@@ -1,6 +1,24 @@
 const Category = require('../models/Category')
 const formidable = require('formidable');
 
+exports.category = async (req, res, next) => {
+    let {subCategorySlug} = req.params
+    console.log(subCategorySlug)
+    try{
+        let category = await Category.aggregate([ 
+            {$match:{"subCategory": {$elemMatch: {subCategorySlug: subCategorySlug}}}},
+            {$unset: 'subCategory'} 
+        ])
+        
+        return res.status(200).json({
+            category
+        })
+    }
+    catch(err) {
+        next(err)
+    }
+}
+
 exports.allCategory = async (req, res, next) => {
     try{
         let allCategory = await Category.find()

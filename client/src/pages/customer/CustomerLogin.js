@@ -18,7 +18,7 @@ function CustomerLogin(props) {
     }, [props.customer.error])
     
     let history = useHistory() 
-
+    
     const submit = e => {
         e.preventDefault()
         props.login({loginPhone, loginPassword}, history)

@@ -9,34 +9,45 @@ import Loading from '../../components/Loading'
 
 const AllProducts = (props) => {
     const [products, setProducts] = useState('')
-    const [searchProducts, setSearchProducts] = useState('')
-    const [pageNumber, setPageNumber] = useState(1)
+
     const [totalPage, setTotalPage] = useState('')
 
+    const [pageNumber, setPageNumber] = useState(1)
+    const [itemPerPage, setItemPerPage] = useState(20)
+    const [searchTerm, setSearchTerm] = useState('')
+    const [categorySlug, setCategorySlug] = useState('')
+    const [subCategorySlug, setSubCategorySlug] = useState('')
+    const [lowerPrice, setLowerPrice] = useState()
+    const [higherPrice, setHigherPrice] = useState()
 
-console.log(totalPage)
+
+    // const search = e => {
+    //     axios.get(`http://localhost:8080/api/product/get-all-products-list-by-mega-search?searchTerm=${e.target.value}&&page=${pageNumber}&&itemPerPage=${itemPerPage}&&lowerPrice=${lowerPrice}&&higherPrice=${higherPrice}&&category=${categorySlug}&&subCategory=${subCategorySlug}`)
+
+    //     .then(res => {
+    //         setProducts(res.data.allProducts)
+    //         setTotalPage(res.data.totalPage)
+    //     })
+    //     .catch(err => {
+    //         console.log(err.response)
+    //     })
+    // }
+
+
     useEffect(() => {
-        axios.get(`/api/product/get-all-products-list-by-mega-search?page=${pageNumber}`)
-    
+        axios.get(`http://localhost:8080/api/product/get-all-products-list-by-mega-search?searchTerm=${searchTerm}&&page=${pageNumber}&&itemPerPage=${itemPerPage}&&lowerPrice=${lowerPrice}&&higherPrice=${higherPrice}&&category=${categorySlug}&&subCategory=${subCategorySlug}`)
         .then(res => {
-            setProducts(res.data.allProducts.reverse())
+            setProducts(res.data.allProducts)
             setTotalPage(res.data.totalPage)
         })
         .catch(err => {
             console.log(err)
         })
-    }, [pageNumber])
+    }, [pageNumber, itemPerPage, searchTerm, categorySlug, subCategorySlug, lowerPrice, higherPrice, totalPage])
 
-    const search = e => {
-        axios.get(`/api/product/get-products-by-text-search?q=${e.target.value}`)
+    
 
-        .then(res => {
-             setSearchProducts(res.data.searchProducts)
-        })
-        .catch(err => {
-            console.log(err.response)
-        })
-    }
+
     let changePage = pageNumber => e => {
         e.preventDefault()
         setPageNumber(pageNumber)
@@ -46,23 +57,22 @@ console.log(totalPage)
         <AdminLayout>
             <div className="allProducts">
                 <div className="allProductsSearch">
-                    <input type="text" placeholder="Search" onChange={search}/> 
+                    <input type="text" placeholder="Search" onChange={e => setSearchTerm(e.target.value)}/> 
                     <div className="allProductsSearchIcon"><FiSearch/></div>
                 </div>
                 <div className="allProductsList">
                     {
-                        searchProducts ?
-                            searchProducts.map(product => (
-                                <AdminProductCard key={product._id} product={product}/>
-                            ))
-
-                                :
                         
-                        products ? products.map(product => (
+                        products ? 
+                        products.length === 0 ?
+                        <h2>Sorry! no product found</h2>
+                        :
+                        products.map(product => (
                             <AdminProductCard key={product._id} product={product}/> 
-                        )) : <div className="loading">
-                                <Loading/>
-                            </div>        
+                        )) : 
+                        <div className="loading">
+                            <Loading/>
+                        </div>        
                     }
                 </div>
                     {

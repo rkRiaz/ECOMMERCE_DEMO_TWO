@@ -81,17 +81,10 @@ function App(props) {
               <PrivateRoute exact path="/customerChangePassword"><Header/><CustomerChangePassword/><Footer/></PrivateRoute>
               <Route exact path="/shippingInformation"><Header/><ShippingPage/><Footer/></Route>
               <Route exact path="/paymentInformation"><Header/><PaymentPage/><Footer/></Route>
-
-
-
-  
               {/* <Route exact path="/customer/ordered" component={Ordered} />
               <Route exact path="/customer/ordered/:orderId" component={OrderedDetails} /> */}
 
               {/* Admin Routes */}
-              
-                
-              
                 <Route exact path="/adminDashboard"  component={props.admin.adminLoggedIn ? AdminDashboard : AdminLogin} />
                 <Route exact path="/adminChangePassword"  component={props.admin.adminLoggedIn ? AdminChangePassword : AdminLogin} />
                 <Route exact path="/adminCustomers"  component={props.admin.adminLoggedIn ? Customers : AdminLogin} /> 
@@ -99,14 +92,10 @@ function App(props) {
                 <Route exact path="/admin/all-products"  component={props.admin.adminLoggedIn ? AllProducts : AdminLogin} /> 
                 <Route exact path="/admin/add-product" component={props.admin.adminLoggedIn ? AddProduct : AdminLogin} /> 
                 <Route exact path="/admin/edit-product/:productId" component={props.admin.adminLoggedIn ? EditProduct : AdminLogin} /> 
-             
                 <Route exact path="/adminLogin"  component={props.admin.adminLoggedIn ? AdminDashboard : AdminLogin} />
               
- 
-              {/* <Route exact path="/admin/edit-product/:productId" component={EditProduct} />  */}
-
-              <Route exact path="/cart"><Header/><Cart/><Footer/></Route>
-              <Route path="*"><NotFound/></Route>
+                <Route exact path="/cart"><Header/><Cart/><Footer/></Route>
+                <Route path="*"><NotFound/></Route>
             </Switch>
             
         </Router>
